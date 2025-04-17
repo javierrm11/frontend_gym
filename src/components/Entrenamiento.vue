@@ -9,12 +9,15 @@
         <h3 class="rutina-nombre">{{ rutina.Nombre }}</h3>
         <p class="rutina-descripcion">{{ rutina.Descripcion }}</p>
 
-        <div v-if="rutina.rutinaEjercicio?.length" class="lista-ejercicios">
-          <div v-for="ejercicio in rutina.rutinaEjercicio" :key="ejercicio._id" class="ejercicio-item">
-            <h4>{{ ejercicio.ejercicio.Nombre }}</h4>
-            <p class="ejercicioSeries">Series: {{ ejercicio.Num_Series }}</p>
+        <details>
+          <summary>Ejercicios</summary>
+          <div v-if="rutina.rutinaEjercicio?.length" class="lista-ejercicios">
+            <div v-for="ejercicio in rutina.rutinaEjercicio" :key="ejercicio._id" class="ejercicio-item">
+              <h4>{{ ejercicio.ejercicio.Nombre }}</h4>
+              <p class="ejercicioSeries">Series: {{ ejercicio.Num_Series }}</p>
+            </div>
           </div>
-        </div>
+        </details>
 
         <div class="botones-rutina">
           <button class="btn-ver" @click="verRutina(rutina.id)">👁 Ver Rutina</button>

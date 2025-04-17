@@ -37,10 +37,12 @@ export default ({
         })
         .then(response => {
             this.usuario = response.data;
-            if (!this.usuario.Foto) {
+            // Si tiene foto personalizada, agregamos el host si no está completo
+            if (this.usuario.Foto) {
+                this.usuario.Foto = `http://localhost:3000${this.usuario.Foto}`;
+            } else {
                 this.usuario.Foto = require('@/assets/users/predeterminada.png');
             }
-            console.log(this.usuario);
         })
         .catch(error => {
             console.error("Error al obtener el usuario:", error);

@@ -51,6 +51,13 @@ export default {
             axios.get(busqueda ? 'http://localhost:3000/api/rutinas?busqueda=' + busqueda : 'http://localhost:3000/api/rutinas')
             .then(response => {
                 this.rutinas = response.data;
+                this.rutinas.forEach(rutina => {
+                    if (rutina.Foto) {
+                        rutina.Foto = `http://localhost:3000${rutina.Foto}`;
+                    } else {
+                        rutina.Foto = require('@/assets/users/predeterminada.png');
+                    }
+                });
             })
             .catch(error => {
                 console.error("Error al obtener las rutinas:", error);
@@ -98,6 +105,21 @@ body {
     border-radius: 16px;
     overflow-y: auto;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+.rutina img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid #ff758c;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.rutina:hover img {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
 }
 .busqueda-form {
     display: flex;

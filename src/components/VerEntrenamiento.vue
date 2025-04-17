@@ -7,25 +7,27 @@
       <h1 class="titulo">{{ rutina.Nombre }}</h1>
       <p class="descripcion">{{ rutina.Descripcion }}</p>
 
-      <div v-if="rutina.ejercicios?.length">
-        <div
-          v-for="ejercicio in rutina.ejercicios"
-          :key="ejercicio._id"
-          class="tarjeta-ejercicio"
-        >
-          <h2>{{ ejercicio.Nombre }}</h2>
-          <p><strong>Descripción:</strong> {{ ejercicio.Descripcion }}</p>
-          <p><strong>Series:</strong> {{ ejercicio.Num_Series }}</p>
-          <button class="btn-eliminar" @click="eliminarEjercicio(ejercicio.ejercicioRutina_id)">
-            Eliminar Ejercicio
-          </button>
+      <details>
+        <summary>Ejercicios</summary>
+        <div v-if="rutina.ejercicios?.length">
+          <div
+            v-for="ejercicio in rutina.ejercicios"
+            :key="ejercicio._id"
+            class="tarjeta-ejercicio"
+          >
+            <h2>{{ ejercicio.Nombre }}</h2>
+            <p><strong>Descripción:</strong> {{ ejercicio.Descripcion }}</p>
+            <p><strong>Series:</strong> {{ ejercicio.Num_Series }}</p>
+            <button class="btn-eliminar" @click="eliminarEjercicio(ejercicio.ejercicioRutina_id)">
+              Eliminar Ejercicio
+            </button>
+          </div>
         </div>
-      </div>
-      <div v-else>
-        <p>No hay ejercicios disponibles para esta rutina.</p>
-      </div>
-
-      <button class="btn-agregar" @click="abrirModal">Agregar Ejercicio</button>
+        <div v-else>
+          <p>No hay ejercicios disponibles para esta rutina.</p>
+        </div>
+        <button class="btn-agregar" @click="abrirModal">Agregar Ejercicio</button>
+      </details>
 
       <form v-if="modalAgregar" @submit.prevent="addEjercicio" class="form-modal">
         <h2>Agregar Ejercicio</h2>
@@ -173,6 +175,10 @@ export default {
         );
         this.rutina = response.data[0];
 
+        if(this.rutina.Usuario_id != localStorage.getItem("usuario")) {
+          this.$router.push({ name: "error" });
+          return;
+        }
         if (!this.rutina?.ejercicios?.length) {
           this.isLoading = false;
           return;
@@ -201,11 +207,11 @@ export default {
             }
 
             if (res.data.duracion?.Duracion) {
-              const totalSeconds = res.data.duracion.Duracion * 60;
-              const hours = Math.floor(totalSeconds / 3600);
-              const minutes = Math.floor((totalSeconds % 3600) / 60);
-              const seconds = totalSeconds % 60;
-              this.duracion = `${hours}h ${minutes}m ${seconds}s`;
+                const totalSeconds = res.data.duracion.Duracion;
+                const hours = Math.floor(totalSeconds / 3600);
+                const minutes = Math.floor((totalSeconds % 3600) / 60);
+                const seconds = totalSeconds % 60;
+                this.duracion = `${hours}h ${minutes}m ${seconds}s`;
             } else {
               this.duracion = null;
             }

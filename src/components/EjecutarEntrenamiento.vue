@@ -132,6 +132,11 @@ export default {
         );
         this.rutina = response.data[0];
 
+        if(this.rutina.Usuario_id != localStorage.getItem("usuario")) {
+          this.$router.push({ name: "error" });
+          return;
+        }
+
         this.ejercicios = this.rutina.ejercicios.map((ejercicio) => ({
           ...ejercicio,
           estadisticas: [],
@@ -261,7 +266,7 @@ export default {
 
         // Manejar la respuesta
         console.log("Estadísticas guardadas correctamente:", response.data);
-        alert("Estadísticas guardadas exitosamente!");
+        this.$router.push('/verEntrenamiento/' + this.rutina.id);
         this.isLoading = false; // Ocultar el loader
       } catch (error) {
         console.error("Error guardando las estadísticas:", error);

@@ -17,6 +17,7 @@ import EjecutarEntrenamiento from './components/EjecutarEntrenamiento.vue';
 import Categoria from './components/Categoria.vue';
 import VerRutina from './components/VerRutina.vue';
 import OtherUser from './components/OtherUser.vue';
+import error from './components/404.vue';
 import store from './store';
 
 
@@ -102,6 +103,11 @@ const routes = [
     name: 'VerRutina',
     component: VerRutina,
     props: true
+  },
+  {
+    path: '/error',
+    name: 'error',
+    component: error
   }
 ];
 

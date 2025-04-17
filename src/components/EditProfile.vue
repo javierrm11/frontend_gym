@@ -37,7 +37,8 @@ export default {
     name: 'EditProfile',
     data(){
         return {
-            usuario: {}
+            usuario: {},
+            imagen: null
         }
     },
     mounted() {
@@ -56,25 +57,36 @@ export default {
     },
     methods: {
         handleFileUpload(event) {
-            const file = event.target.files[0].name;
-
-            if (file) {
-                this.usuario.Foto = file;
-            }
+            this.imagen = event.target.files[0];
         },
         updateProfile() {
-            axios.put('http://localhost:3000/api/user', this.usuario, {
+            const formData = new FormData();
+
+            formData.append('Nombre_Usuario', this.usuario.Nombre_Usuario);
+            formData.append('Nombre', this.usuario.Nombre);
+            formData.append('Email', this.usuario.Email);
+            formData.append('Descripcion', this.usuario.Descripcion);
+            formData.append('Password', this.usuario.Password);
+
+            if (this.imagen) {
+                formData.append('fotoPerfil', this.imagen);
+            }
+
+            axios.put('http://localhost:3000/api/user', formData, {
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'multipart/form-data'
                 }
             })
             .then(response => {
                 console.log("Perfil actualizado:", response.data);
+                this.$router.push('/profile');
             })
             .catch(error => {
                 console.error("Error al actualizar el perfil:", error);
             });
         }
+
     }
 }
 </script>
