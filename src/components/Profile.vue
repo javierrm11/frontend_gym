@@ -52,13 +52,6 @@ export default ({
 </script>
 
 <style>
-body {
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-}
-
 #profile {
     max-width: 800px;
     margin: 20px auto;

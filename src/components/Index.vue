@@ -79,14 +79,6 @@ export default {
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
-body {
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
-    padding: 0;
-    background: linear-gradient(135deg, #ff7eb3, #ff758c);
-    color: #333;
-}
-
 #main {
     display: flex;
     flex-wrap: nowrap;

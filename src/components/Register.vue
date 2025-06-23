@@ -1,5 +1,5 @@
 <template>
-  <div id="registro">
+  <main id="registro">
     <form @submit.prevent="registrar">
       <h2>Registro de Usuario</h2>
 
@@ -40,7 +40,7 @@
 
       <button type="submit" class="btn btn-primary">Registrarse</button>
     </form>
-  </div>
+  </main>
 </template>
 
 <script>
@@ -108,3 +108,7 @@ export default {
   }
 };
 </script>
+
+<style>
+
+</style>
