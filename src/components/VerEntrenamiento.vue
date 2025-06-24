@@ -1,33 +1,46 @@
 <template>
-  <div class="entrenamiento">
+  <main class="entrenamiento-container">
+    <div class="header-section">
+      <h1 class="titulo-principal">{{ rutina.Nombre }}</h1>
+      <p class="descripcion-principal">{{ rutina.Descripcion }}</p>
+    </div>
+
     <div v-if="isLoading" class="loading-container">
       <p>Cargando datos...</p>
     </div>
-    <div v-else>
-      <h1 class="titulo">{{ rutina.Nombre }}</h1>
-      <p class="descripcion">{{ rutina.Descripcion }}</p>
 
-      <details>
-        <summary>Ejercicios</summary>
-        <div v-if="rutina.ejercicios?.length">
-          <div
-            v-for="ejercicio in rutina.ejercicios"
-            :key="ejercicio._id"
-            class="tarjeta-ejercicio"
-          >
-            <h2>{{ ejercicio.Nombre }}</h2>
-            <p><strong>Descripción:</strong> {{ ejercicio.Descripcion }}</p>
-            <p><strong>Series:</strong> {{ ejercicio.Num_Series }}</p>
-            <button class="btn-eliminar" @click="eliminarEjercicio(ejercicio.ejercicioRutina_id)">
-              Eliminar Ejercicio
+    <div v-else>
+      <div class="rutinas-grid">
+        <div class="rutina-card">
+          <div class="card-header">
+            <h3 class="rutina-nombre">Ejercicios</h3>
+          </div>
+          <div class="card-content">
+            <div v-if="rutina.ejercicios?.length" class="lista-ejercicios">
+              <div
+                v-for="ejercicio in rutina.ejercicios"
+                :key="ejercicio._id"
+                class="ejercicio-item"
+              >
+                <div class="ejercicio-info">
+                  <h4>{{ ejercicio.Nombre }}</h4>
+                  <p class="series-badge">{{ ejercicio.Num_Series }} series</p>
+                  <p class="ejercicio-descripcion">{{ ejercicio.Descripcion }}</p>
+                </div>
+                <button class="btn-action btn-eliminar" @click="eliminarEjercicio(ejercicio.ejercicioRutina_id)">
+                  <span>🗑</span> Eliminar
+                </button>
+              </div>
+            </div>
+            <div v-else>
+              <p>No hay ejercicios disponibles para esta rutina.</p>
+            </div>
+            <button class="btn-action btn-agregar" @click="abrirModal">
+              <span>➕</span> Agregar Ejercicio
             </button>
           </div>
         </div>
-        <div v-else>
-          <p>No hay ejercicios disponibles para esta rutina.</p>
-        </div>
-        <button class="btn-agregar" @click="abrirModal">Agregar Ejercicio</button>
-      </details>
+      </div>
 
       <form v-if="modalAgregar" @submit.prevent="addEjercicio" class="form-modal">
         <h2>Agregar Ejercicio</h2>
@@ -35,10 +48,11 @@
           <label for="grupo">Grupo Muscular</label>
           <select
             id="grupo"
-            v-model="ejercicios[0].seleccionado"
+            v-model="ejercicios[0].grupoSeleccionado"
             @change="getEjerciciosFiltrados($event.target.value, 0)"
+            required
           >
-            <option value="" disabled selected>Selecciona un grupo muscular</option>
+            <option value="" disabled>Selecciona un grupo muscular</option>
             <option
               v-for="grupo in gruposMusculares"
               :key="grupo.id"
@@ -51,8 +65,12 @@
 
         <div v-if="ejercicios[0].ejerciciosFiltrados.length > 0" class="form-group">
           <label for="ejercicio">Ejercicio</label>
-          <select v-model="ejercicios[0].ejerciciosFiltrados[0]">
-            <option value="" disabled selected>Selecciona un ejercicio</option>
+          <select
+            id="ejercicio"
+            v-model="ejercicios[0].seleccionado"
+            required
+          >
+            <option value="" disabled>Selecciona un ejercicio</option>
             <option
               v-for="ej in ejercicios[0].ejerciciosFiltrados"
               :key="ej.Nombre"
@@ -71,6 +89,7 @@
             v-model="ejercicios[0].series"
             min="1"
             placeholder="Ej: 3"
+            required
           />
         </div>
 
@@ -80,7 +99,7 @@
         </div>
       </form>
 
-      <div v-if="fechaUsada">
+      <div v-if="fechaUsada" class="estadisticas-section">
         <h2 class="subtitulo">Última vez realizado: {{ fechaUsada || "No disponible" }}</h2>
         <p v-if="duracion">Duración: {{ duracion }}</p>
 
@@ -134,7 +153,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </main>
 </template>
 
 <script>
@@ -154,8 +173,9 @@ export default {
       ejercicios: [
         {
           ejerciciosFiltrados: [],
-          seleccionado: null,
-          series: null,
+          grupoSeleccionado: "",
+          seleccionado: "",
+          series: "",
         },
       ],
     };
@@ -245,6 +265,8 @@ export default {
         });
     },
     getEjerciciosFiltrados(categoria, index) {
+      this.ejercicios[index].grupoSeleccionado = categoria;
+      this.ejercicios[index].seleccionado = "";
       axios
         .get(`http://localhost:3000/api/ejercicio/${categoria}`)
         .then((response) => {
@@ -255,9 +277,12 @@ export default {
         });
     },
     addEjercicio() {
-      if (!this.ejercicios[0].ejerciciosFiltrados.length ||
-          !this.ejercicios[0].seleccionado ||
-          !this.ejercicios[0].series) {
+      const ej = this.ejercicios[0];
+      if (
+        !ej.grupoSeleccionado ||
+        !ej.seleccionado ||
+        !ej.series
+      ) {
         alert("Debes completar todos los campos");
         return;
       }
@@ -267,8 +292,8 @@ export default {
           "http://localhost:3000/api/ejercicio",
           {
             Nombre_Rutina: this.rutina.Nombre,
-            Nombre_Ejercicio: this.ejercicios[0].ejerciciosFiltrados[0],
-            Num_Series: this.ejercicios[0].series,
+            Nombre_Ejercicio: ej.seleccionado,
+            Num_Series: ej.series,
           },
           {
             headers: {
@@ -303,63 +328,133 @@ export default {
 </script>
 
 <style scoped>
-.entrenamiento {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 30px 20px;
-  font-family: 'Segoe UI', sans-serif;
-  background: #f8f9fa;
-  border-radius: 10px;
+.entrenamiento-container {
+  margin: 0 2rem;
+  padding: 1.2rem 0.5rem;
+  font-family: 'Poppins', sans-serif;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.header-section {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.titulo-principal {
+  font-size: 1.7rem;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+  color: #222;
+}
+
+.descripcion-principal {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 1.2rem;
 }
 
 .loading-container {
   text-align: center;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
 }
 
-.titulo {
-  font-size: 2rem;
-  margin-bottom: 10px;
-  font-weight: 700;
-  color: #333;
+.rutinas-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: stretch;
 }
 
-.descripcion {
-  margin-bottom: 20px;
-  color: #555;
-}
-
-.subtitulo {
-  margin-top: 20px;
-  font-weight: bold;
-  color: #222;
-}
-
-.tarjeta-ejercicio {
-  background-color: #ffffff;
-  border: 1px solid #dee2e6;
+.rutina-card {
+  background: #fff;
   border-radius: 12px;
-  padding: 16px;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  width: 100%;
 }
 
-.btn-agregar,
-.btn-eliminar,
-.btn-cerrar,
-.btn-enviar {
-  margin: 10px 5px 0 0;
-  padding: 10px 20px;
-  border: none;
+.card-header {
+  padding: 1.2rem 1rem 0.7rem 1rem;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.rutina-nombre {
+  font-size: 1.2rem;
+  color: #222;
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+}
+
+.card-content {
+  padding: 0.7rem 1rem 1.2rem 1rem;
+}
+
+.lista-ejercicios {
+  margin-top: 0.5rem;
+  padding: 0.5rem 0;
+  border-top: 1px solid #f1f1f1;
+}
+
+.ejercicio-item {
+  padding: 0.7rem 0;
+  border-bottom: 1px solid #f4f4f4;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.ejercicio-item:last-child {
+  border-bottom: none;
+}
+
+.ejercicio-info h4 {
+  font-size: 1rem;
+  color: #222;
+  margin-bottom: 0.15rem;
+  font-weight: 500;
+}
+
+.series-badge {
+  display: inline-block;
+  background-color: #007bff;
+  color: #fff;
+  padding: 0.18rem 0.7rem;
+  border-radius: 1rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 0.18rem;
+}
+
+.ejercicio-descripcion {
+  font-size: 0.95rem;
+  color: #555;
+  line-height: 1.5;
+}
+
+.btn-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
   border-radius: 8px;
-  font-weight: bold;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  border: none;
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  transition: background 0.2s;
 }
 
 .btn-agregar {
   background-color: #28a745;
   color: white;
+  margin-top: 1rem;
 }
 .btn-agregar:hover {
   background-color: #218838;
@@ -371,6 +466,45 @@ export default {
 }
 .btn-eliminar:hover {
   background-color: #c82333;
+}
+
+.form-modal {
+  margin: 2rem auto 0 auto;
+  padding: 1.2rem;
+  background-color: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.form-group label {
+  font-weight: 600;
+}
+
+.form-group select,
+.form-group input {
+  width: 100%;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ced4da;
+  box-sizing: border-box;
+  font-size: 1rem;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
 }
 
 .btn-cerrar {
@@ -389,38 +523,28 @@ export default {
   background-color: #0069d9;
 }
 
-.form-modal {
+.estadisticas-section {
+  margin-top: 2rem;
+}
+
+.subtitulo {
   margin-top: 20px;
-  padding: 20px;
+  font-weight: bold;
+  color: #222;
+  text-align: center;
+}
+
+.mb-4 {
+  margin-bottom: 1.5rem;
+}
+
+.tarjeta-ejercicio {
   background-color: #ffffff;
+  border: 1px solid #dee2e6;
   border-radius: 12px;
-  border: 1px solid #ccc;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
-}
-
-.form-group {
-  margin-bottom: 15px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: 600;
-}
-
-.form-group select,
-.form-group input {
-  width: 100%;
-  padding: 8px;
-  border-radius: 6px;
-  border: 1px solid #ced4da;
-  box-sizing: border-box;
-}
-
-.form-buttons {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
+  padding: 16px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
 }
 
 .estadisticas {
@@ -445,5 +569,40 @@ export default {
 }
 .serie-block li {
   list-style-type: disc;
+}
+
+/* Tablet */
+@media (min-width: 600px) {
+  .entrenamiento-container {
+    padding: 2rem 2.5rem;
+  }
+  .rutinas-grid {
+    flex-direction: row;
+    gap: 1.5rem;
+  }
+  .rutina-card {
+    min-width: 320px;
+  }
+  .form-modal {
+    max-width: 400px;
+  }
+  .lista-ejercicios {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+  .ejercicio-item {
+    flex: 1 1 calc(40% - 0.5rem);
+  }
+}
+
+/* Desktop */
+@media (min-width: 1100px) {
+  .entrenamiento-container {
+    padding: 2.5rem 0;
+  }
+  .ejercicio-item {
+    flex: 1 1 calc(30% - 0.5rem);
+  }
 }
 </style>

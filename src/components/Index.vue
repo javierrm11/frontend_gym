@@ -119,21 +119,23 @@ export default {
 </script>
 
 <style scoped>
+/* Mobile First */
 .rutinas-container {
-  display: grid;
-  grid-template-columns: 1fr 300px;
-  gap: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem 0;
+  margin: 0 2rem;
 }
+
 
 .rutinas-buscar {
   display: flex;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   border: 1px solid #e2e8f0;
   border-radius: 8px;
   overflow: hidden;
+  background: #fff;
 }
 
 .rutinas-buscar-input {
@@ -141,6 +143,7 @@ export default {
   padding: 0.75rem 1rem;
   border: none;
   font-size: 1rem;
+  background: transparent;
 }
 
 .rutinas-buscar-input:focus {
@@ -149,28 +152,39 @@ export default {
 
 .rutinas-buscar-btn {
   padding: 0 1rem;
-  background: var(--secondary-color);
+  background: var(--secondary-color, #334155);
   border: none;
   cursor: pointer;
   color: white;
+  display: flex;
+  align-items: center;
+  transition: background 0.2s;
 }
 
 .rutinas-buscar-btn:hover {
-  color: #334155;
+  background: #64748b;
+}
+
+.rutinas-usuarios {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .rutina-card {
   border: 1px solid #e2e8f0;
   border-radius: 8px;
   padding: 1.25rem;
-  margin-bottom: 1rem;
+  background: #fff;
   transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
 }
 
 .rutina-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  cursor: pointer;
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
 .rutina-header {
@@ -186,17 +200,19 @@ export default {
   object-fit: cover;
   margin-right: 1rem;
   border: 2px solid #e2e8f0;
+  background: #f1f5f9;
 }
 
 .rutina-nombre {
   margin: 0;
   font-size: 1.1rem;
   color: #1e293b;
+  font-weight: 600;
 }
 
 .rutina-ejercicios {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 0.5rem;
   padding: 0;
   margin: 0;
@@ -205,17 +221,62 @@ export default {
 
 .rutina-ejercicio {
   background: #f8fafc;
-  padding: 0.5rem;
+  padding: 0.5rem 0.75rem;
   border-radius: 4px;
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   text-align: center;
+  color: #334155;
+  border: 1px solid #e2e8f0;
 }
 
 .rutinas-categorias {
-  background: #f8fafc;
-  border-radius: 8px;
-  padding: 1.25rem;
-  height: fit-content;
+  display: none;
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+  .rutinas-container {
+    flex-direction: row;
+    gap: 2rem;
+    padding: 1rem;
+  }
+  .rutinas-listado {
+    flex: 1 1 0%;
+  }
+  .rutinas-usuarios {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+  .rutina-card {
+    width: 320px;
+    min-width: 240px;
+    max-width: 100%;
+  }
+  .rutinas-categorias {
+    display: block;
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 1.25rem;
+    height: fit-content;
+    min-width: 220px;
+    max-width: 300px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  }
+}
+
+/* Desktop */
+@media (min-width: 1100px) {
+  .rutinas-usuarios {
+    gap: 1.5rem;
+  }
+  .rutina-card {
+    width: 260px;
+  }
+  .rutinas-categorias {
+    min-width: 180px;
+    padding: 1rem;
+  }
 }
 
 .categorias-titulo {
@@ -223,11 +284,12 @@ export default {
   margin-bottom: 1rem;
   font-size: 1.25rem;
   color: #1e293b;
+  font-weight: 700;
 }
 
 .categorias-lista {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 0.75rem;
 }
 
@@ -237,22 +299,15 @@ export default {
   border-radius: 6px;
   padding: 0.75rem;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s, border 0.2s;
   text-align: center;
   font-size: 0.95rem;
+  color: #334155;
+  font-weight: 500;
 }
 
 .categoria-btn:hover {
-  background: #f1f5f9;
-}
-
-@media (max-width: 768px) {
-  .rutinas-container {
-    grid-template-columns: 1fr;
-  }
-
-  .rutinas-categorias {
-    display: none;
-  }
+  background: #e0e7ef;
+  border-color: #94a3b8;
 }
 </style>

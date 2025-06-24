@@ -86,7 +86,6 @@ export default {
           })
           .then((response) => {
             console.log(response.data);
-            
             this.getRutinas();
           })
           .catch((error) => {
@@ -106,9 +105,8 @@ export default {
 
 <style scoped>
 .entrenamiento-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem 1.5rem;
+  margin: 0 1rem;
+  padding: 0 1.5rem;
   font-family: 'Poppins', sans-serif;
 }
 
@@ -133,8 +131,8 @@ export default {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background-color: var(--color-accent);
-  color: var(--text-dark);
+  background-color: var(--color-primary);
+  color: var(--text-primary);
   padding: 0.75rem 1.5rem;
   border-radius: var(--border-radius);
   text-decoration: none;
@@ -150,10 +148,13 @@ export default {
   box-shadow: 0 4px 12px rgba(163, 255, 18, 0.2);
 }
 
+/* FLEX en vez de GRID */
 .rutinas-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  display: flex;
+  flex-wrap: wrap;
   gap: 1.5rem;
+  justify-content: center;
+  align-items: baseline;
 }
 
 .rutina-card {
@@ -164,7 +165,8 @@ export default {
   transition: transform var(--transition-speed), box-shadow var(--transition-speed);
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--color-primary);
+  min-width: 280px;
+  max-width: 100%;
 }
 
 .rutina-card:hover {
@@ -310,15 +312,25 @@ export default {
   background-color: #e53935;
 }
 
+@media (max-width: 1100px) {
+  .rutinas-grid {
+    gap: 1rem;
+  }
+}
+
 @media (max-width: 768px) {
   .entrenamiento-container {
     padding: 1.5rem 1rem;
   }
-  
   .rutinas-grid {
-    grid-template-columns: 1fr;
+    flex-direction: column;
+    align-items: center;
   }
-  
+  .rutina-card {
+    width: 100%;
+    min-width: unset;
+    max-width: 100%;
+  }
   .card-actions {
     flex-direction: column;
   }
