@@ -1,32 +1,55 @@
 <template>
-  <div class="entrenamiento-container">
-    <h1 class="titulo-principal">Entrenamientos</h1>
-    <p class="descripcion-principal">Aquí puedes ver y administrar tus rutinas de entrenamiento.</p>
-    <router-link class="btn-agregar" to="/anadirEntrenamiento">➕ Añadir Rutina</router-link>
+  <main class="entrenamiento-container">
+    <div class="header-section">
+      <h1 class="titulo-principal">Mis Rutinas</h1>
+      <p class="descripcion-principal">Administra y ejecuta tus rutinas personalizadas</p>
+      <router-link class="btn-agregar" to="/anadirEntrenamiento">
+        <span>➕</span> Nueva Rutina
+      </router-link>
+    </div>
 
-    <div class="rutinas">
+    <div class="rutinas-grid">
       <div v-for="rutina in rutinas" :key="rutina.id" class="rutina-card">
-        <h3 class="rutina-nombre">{{ rutina.Nombre }}</h3>
-        <p class="rutina-descripcion">{{ rutina.Descripcion }}</p>
+        <div class="card-header">
+          <h3 class="rutina-nombre">{{ rutina.Nombre }}</h3>
+          <p class="rutina-descripcion">{{ rutina.Descripcion }}</p>
+        </div>
 
-        <details>
-          <summary>Ejercicios</summary>
-          <div v-if="rutina.rutinaEjercicio?.length" class="lista-ejercicios">
-            <div v-for="ejercicio in rutina.rutinaEjercicio" :key="ejercicio._id" class="ejercicio-item">
-              <h4>{{ ejercicio.ejercicio.Nombre }}</h4>
-              <p class="ejercicioSeries">Series: {{ ejercicio.Num_Series }}</p>
+        <div class="card-content">
+          <details class="ejercicios-details">
+            <summary class="ejercicios-summary">
+              <span>Ver ejercicios</span>
+              <svg class="dropdown-icon" viewBox="0 0 24 24">
+                <path d="M7 10l5 5 5-5z"/>
+              </svg>
+            </summary>
+            <div v-if="rutina.rutinaEjercicio?.length" class="lista-ejercicios">
+              <div v-for="ejercicio in rutina.rutinaEjercicio" :key="ejercicio._id" class="ejercicio-item">
+                <div class="ejercicio-info">
+                  <h4>{{ ejercicio.ejercicio.Nombre }}</h4>
+                  <p class="ejercicio-series">
+                    <span class="series-badge">{{ ejercicio.Num_Series }} series</span>
+                  </p>
+                </div>
+              </div>
             </div>
-          </div>
-        </details>
+          </details>
+        </div>
 
-        <div class="botones-rutina">
-          <button class="btn-ver" @click="verRutina(rutina.id)">👁 Ver Rutina</button>
-          <button class="btn-comenzar" @click="comenzarRutina(rutina.id)">🏋️‍♂️ Comenzar</button>
-          <button class="btn-eliminar" @click="eliminarRutina(rutina.id)">🗑 Eliminar</button>
+        <div class="card-actions">
+          <button class="btn-action btn-ver" @click="verRutina(rutina.id)">
+            <span>👁</span> Detalles
+          </button>
+          <button class="btn-action btn-comenzar" @click="comenzarRutina(rutina.id)">
+            <span>🏋️‍♂️</span> Comenzar
+          </button>
+          <button class="btn-action btn-eliminar" @click="eliminarRutina(rutina.id)">
+            <span>🗑</span> Eliminar
+          </button>
         </div>
       </div>
     </div>
-  </div>
+  </main>
 </template>
 
 <script>
@@ -54,19 +77,22 @@ export default {
         });
     },
     eliminarRutina(rutinaId) {
-      axios
-        .delete("http://localhost:3000/api/rutinas/" + rutinaId, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        })
-        .then((response) => {
-          this.getRutinas();
-          console.log(response);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      if (confirm("¿Estás seguro de eliminar esta rutina?")) {
+        axios
+          .delete("http://localhost:3000/api/rutinas/" + rutinaId, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          })
+          .then((response) => {
+            console.log(response.data);
+            
+            this.getRutinas();
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
     },
     verRutina(rutinaId) {
       this.$router.push({ name: "VerEntrenamiento", params: { id: rutinaId } });
@@ -82,125 +108,219 @@ export default {
 .entrenamiento-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 30px 20px;
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #121212;
-  color: #f0f0f0;
+  padding: 2rem 1.5rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+.header-section {
+  text-align: center;
+  margin-bottom: 3rem;
 }
 
 .titulo-principal {
   font-size: 2.5rem;
-  color: #ff4141;
-  margin-bottom: 10px;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
 }
 
 .descripcion-principal {
-  font-size: 1rem;
-  margin-bottom: 20px;
-  color: #ccc;
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
 }
 
 .btn-agregar {
-  display: inline-block;
-  background-color: #ff4141;
-  color: white;
-  padding: 10px 16px;
-  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--color-accent);
+  color: var(--text-dark);
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--border-radius);
   text-decoration: none;
-  margin-bottom: 30px;
-  transition: 0.3s ease;
+  font-weight: 600;
+  transition: all var(--transition-speed);
+  border: 2px solid transparent;
 }
 
 .btn-agregar:hover {
-  background-color: #e63636;
+  background-color: var(--color-accent);
+  color: var(--color-secondary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(163, 255, 18, 0.2);
 }
 
-.rutinas {
+.rutinas-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
-  gap: 20px;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1.5rem;
 }
 
 .rutina-card {
-  background-color: #1e1e1e;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 0 10px rgba(255, 65, 65, 0.3);
-  transition: transform 0.3s;
+  background-color: var(--color-secondary);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-primary);
 }
 
 .rutina-card:hover {
-  transform: scale(1.02);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .rutina-nombre {
-  font-size: 1.5rem;
-  color: #ff4141;
-  margin-bottom: 10px;
+  font-size: 1.4rem;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  font-weight: 600;
 }
 
 .rutina-descripcion {
   font-size: 0.95rem;
-  color: #aaa;
-  margin-bottom: 15px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.card-content {
+  padding: 0 1.5rem;
+}
+
+.ejercicios-details {
+  margin: 1rem 0;
+}
+
+.ejercicios-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  cursor: pointer;
+  color: var(--color-accent);
+  font-weight: 500;
+  list-style: none;
+}
+
+.ejercicios-summary::-webkit-details-marker {
+  display: none;
+}
+
+.dropdown-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  fill: var(--color-accent);
+  transition: transform var(--transition-speed);
+}
+
+.ejercicios-details[open] .dropdown-icon {
+  transform: rotate(180deg);
 }
 
 .lista-ejercicios {
-  margin-top: 10px;
+  margin-top: 0.5rem;
+  padding: 0.5rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .ejercicio-item {
-  background-color: #2a2a2a;
-  padding: 10px;
-  border-radius: 8px;
-  margin-bottom: 10px;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.ejercicioSeries {
-  font-size: 0.9rem;
-  color: #ccc;
+.ejercicio-item:last-child {
+  border-bottom: none;
 }
 
-.botones-rutina {
+.ejercicio-info h4 {
+  font-size: 1rem;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+  font-weight: 500;
+}
+
+.series-badge {
+  display: inline-block;
+  background-color: var(--color-primary);
+  color: var(--text-primary);
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.card-actions {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 15px;
+  padding: 1rem 1.5rem;
+  margin-top: auto;
+  background-color: rgba(0, 0, 0, 0.1);
+  gap: 0.75rem;
 }
 
-button {
-  padding: 10px 14px;
-  border: none;
-  border-radius: 8px;
+.btn-action {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-radius: calc(var(--border-radius) / 2);
+  font-weight: 500;
   cursor: pointer;
-  font-weight: bold;
-  transition: 0.3s ease;
+  transition: all var(--transition-speed);
+  border: none;
+}
+
+.btn-action span {
+  font-size: 1.1rem;
 }
 
 .btn-ver {
-  background-color: #444;
-  color: #fff;
+  background-color: var(--color-primary);
+  color: var(--text-primary);
 }
 
 .btn-ver:hover {
-  background-color: #666;
+  background-color: var(--color-accent);
+  color: var(--color-secondary);
 }
 
 .btn-comenzar {
-  background-color: #28a745;
-  color: white;
+  background-color: var(--color-success);
+  color: var(--text-primary);
 }
 
 .btn-comenzar:hover {
-  background-color: #218838;
+  background-color: #00b347;
 }
 
 .btn-eliminar {
-  background-color: #dc3545;
-  color: white;
+  background-color: var(--color-error);
+  color: var(--text-primary);
 }
 
 .btn-eliminar:hover {
-  background-color: #c82333;
+  background-color: #e53935;
+}
+
+@media (max-width: 768px) {
+  .entrenamiento-container {
+    padding: 1.5rem 1rem;
+  }
+  
+  .rutinas-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .card-actions {
+    flex-direction: column;
+  }
 }
 </style>

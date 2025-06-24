@@ -1,9 +1,28 @@
 :root {
-    --primary-color: #333;
-    --secondary-color: #ff4500;
-    --text-light: #fff;
+    /* Colores principales */
+    --color-primary: #007BFF;
+    --color-secondary: #1C1C1E;
+    --color-accent: #A3FF12;
+  
+    /* Texto */
+    --text-primary: #FFFFFF;
+    --text-secondary: #A0A0A0;
+    --text-dark: #000000;
+  
+    /* Fondos */
+    --background-dark: #0D0D0D;
+    --background-light: #F5F5F7;
+  
+    /* Estados */
+    --color-error: #FF4C4C;
+    --color-success: #00C851;
+    --color-warning: #FFBB33;
+  
+    /* Extras */
+    --border-radius: 12px;
     --transition-speed: 0.3s;
-}
+  }
+  
 body {
     font-family: 'Poppins', sans-serif;
     color: #333;
@@ -12,5 +31,5 @@ body {
     box-sizing: border-box;
 }
 main{
-    margin: 3rem 0;
+    padding: 3rem 0;
 }

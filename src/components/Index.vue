@@ -1,241 +1,258 @@
 <template>
-    <div id="main">
-        <div class="rutinas-left">
-            <form class="busqueda-form" @submit.prevent="rutinasUsuarios(busqueda)">
-                <input type="text" v-model="busqueda" placeholder="Buscar rutina..." class="busqueda-input" />
-                <button type="submit" class="busqueda-btn">Buscar</button>
-            </form>
-            <div class="rutina" v-for="rutina in rutinas" :key="rutina.id" @click="verUsuario(rutina.id)">
-                <h2>{{ rutina.Nombre_Usuario }}</h2>
-                <img :src="rutina.Foto" alt="Foto de rutina" />
-                <div class="ejercicios">
-                    <div class="ejercicio" v-for="ejercicio in rutina.rutinas" :key="ejercicio.id">
-                        <h3>{{ ejercicio.Nombre }}</h3>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="rutinas-right">
-            <div class="rutina grupo" v-for="grupo in grupos" :key="grupo.id" @click="ejerciciosCategoria(grupo.grupo)">
-                <h2>{{ grupo.grupo }}</h2>
-            </div>
-        </div>
-    </div>
+  <main class="rutinas-container">
+    <section class="rutinas-listado">
+      <form class="rutinas-buscar" @submit.prevent="rutinasUsuarios(busqueda)">
+        <input
+          type="text"
+          v-model="busqueda"
+          placeholder="Buscar rutinas..."
+          class="rutinas-buscar-input"
+        />
+        <button type="submit" class="rutinas-buscar-btn">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+      </form>
+
+      <div class="rutinas-usuarios">
+        <article
+          v-for="rutina in rutinas"
+          :key="rutina.id"
+          class="rutina-card"
+          @click="verUsuario(rutina.id)"
+        >
+          <div class="rutina-header">
+            <img :src="rutina.Foto" alt="Foto usuario" class="rutina-avatar" />
+            <h3 class="rutina-nombre">{{ rutina.Nombre_Usuario }}</h3>
+          </div>
+          <ul class="rutina-ejercicios">
+            <li
+              v-for="ejercicio in rutina.rutinas"
+              :key="ejercicio.id"
+              class="rutina-ejercicio"
+            >
+              {{ ejercicio.Nombre }}
+            </li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <aside class="rutinas-categorias">
+      <h2 class="categorias-titulo">Grupos musculares</h2>
+      <div class="categorias-lista">
+        <button
+          v-for="grupo in grupos"
+          :key="grupo.id"
+          class="categoria-btn"
+          @click="ejerciciosCategoria(grupo.grupo)"
+        >
+          {{ grupo.grupo }}
+        </button>
+      </div>
+    </aside>
+  </main>
 </template>
 
 <script>
-import axios from "axios"
+import axios from "axios";
 
 export default {
-    name: 'IndexPage',
-    data() {
-        return {
-            grupos: [],
-            rutinas: [],
-            busqueda: '',
-        }
-    },
-    mounted() {
-        this.rutinasUsuarios();
-
-        axios.get('http://localhost:3000/api/rutinas/index')
-        .then(response => {
-            this.grupos = response.data;
+  name: "IndexPage",
+  data() {
+    return {
+      grupos: [],
+      rutinas: [],
+      busqueda: "",
+    };
+  },
+  mounted() {
+    this.rutinasUsuarios();
+    this.obtenerGrupos();
+  },
+  methods: {
+    obtenerGrupos() {
+      axios
+        .get("http://localhost:3000/api/rutinas/index")
+        .then((response) => {
+          this.grupos = response.data;
         })
-        .catch(error => {
-            console.error("Error al obtener las rutinas:", error);
-        });
+        .catch(console.error);
     },
-    methods: {
-        rutinasUsuarios(busqueda) {
-            axios.get(busqueda ? 'http://localhost:3000/api/rutinas?busqueda=' + busqueda : 'http://localhost:3000/api/rutinas')
-            .then(response => {
-                this.rutinas = response.data;
-                this.rutinas.forEach(rutina => {
-                    if (rutina.Foto) {
-                        rutina.Foto = `http://localhost:3000${rutina.Foto}`;
-                    } else {
-                        rutina.Foto = require('@/assets/users/predeterminada.png');
-                    }
-                });
-            })
-            .catch(error => {
-                console.error("Error al obtener las rutinas:", error);
-            });
-        },
-        ejerciciosCategoria(grupo) {
-            this.$router.push({ name: 'Categoria', params: { nombre: grupo } });
-        },
-        verRutina(id) {
-            this.$router.push({ name: 'VerRutina', params: { id } });
-        },
-        verUsuario(id) {
-            this.$router.push({ name: 'OtherUser', params: { id } });
-        }
-    }
-}
+    rutinasUsuarios(busqueda) {
+      const url = busqueda
+        ? `http://localhost:3000/api/rutinas?busqueda=${busqueda}`
+        : "http://localhost:3000/api/rutinas";
+
+      axios
+        .get(url)
+        .then((response) => {
+          this.rutinas = response.data.map((rutina) => ({
+            ...rutina,
+            Foto: rutina.Foto
+              ? `http://localhost:3000${rutina.Foto}`
+              : require("@/assets/users/predeterminada.png"),
+          }));
+        })
+        .catch(console.error);
+    },
+    ejerciciosCategoria(grupo) {
+      this.$router.push({ name: "Categoria", params: { nombre: grupo } });
+    },
+    verUsuario(id) {
+      this.$router.push({ name: "OtherUser", params: { id } });
+    },
+  },
+};
 </script>
 
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
-
-#main {
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    align-items: flex-start;
-    height: 100vh;
-    padding: 20px;
-    gap: 20px;
+<style scoped>
+.rutinas-container {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
 }
 
-.rutinas-left {
-    flex: 2;
-    height: 100%;
-    padding: 20px;
-    background: linear-gradient(135deg, #ffffff, #f3f3f3);
-    border-radius: 16px;
-    overflow-y: auto;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-}
-.rutina img {
-    width: 120px;
-    height: 120px;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 4px solid #ff758c;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-    margin-top: 10px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+.rutinas-buscar {
+  display: flex;
+  margin-bottom: 1.5rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
-.rutina:hover img {
-    transform: scale(1.05);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-}
-.busqueda-form {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-    background: #fff;
-    padding: 12px 16px;
-    border-radius: 12px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
-    align-items: center;
+.rutinas-buscar-input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: none;
+  font-size: 1rem;
 }
 
-.busqueda-input {
-    flex: 1;
-    padding: 10px 14px;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    background-color: #f3f3f3;
-    transition: background-color 0.3s ease;
+.rutinas-buscar-input:focus {
+  outline: none;
 }
 
-.busqueda-input:focus {
-    outline: none;
-    background-color: #eaeaea;
+.rutinas-buscar-btn {
+  padding: 0 1rem;
+  background: var(--secondary-color);
+  border: none;
+  cursor: pointer;
+  color: white;
 }
 
-.busqueda-btn {
-    padding: 10px 16px;
-    background: linear-gradient(135deg, #ff7eb3, #ff758c);
-    border: none;
-    color: #fff;
-    font-weight: bold;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.3s ease, transform 0.2s ease;
+.rutinas-buscar-btn:hover {
+  color: #334155;
 }
 
-.busqueda-btn:hover {
-    background: linear-gradient(135deg, #ff4e92, #ff2d6f);
-    transform: scale(1.05);
+.rutina-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.rutinas-right {
-    flex: 1;
-    height: 100%;
-    padding: 20px;
-    background: linear-gradient(135deg, #ffe6e6, #ffcccc);
-    border-radius: 16px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+.rutina-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
 }
 
-.grupo {
-    margin: 10px 0;
-    padding: 20px;
-    background: linear-gradient(135deg, #ff7eb3, #ff758c);
-    border-radius: 16px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    color: #fff;
-    font-weight: 600;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+.rutina-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
 }
 
-.grupo:hover {
-    transform: scale(1.1);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+.rutina-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 1rem;
+  border: 2px solid #e2e8f0;
 }
 
-.rutina {
-    background: linear-gradient(135deg, #ffffff, #f9f9f9);
-    margin: 10px;
-    padding: 20px;
-    border-radius: 16px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+.rutina-nombre {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #1e293b;
 }
 
-.rutina:hover {
-    transform: scale(1.05);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+.rutina-ejercicios {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 0.5rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
 }
 
-.ejercicios {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 10px;
-    margin-top: 10px;
+.rutina-ejercicio {
+  background: #f8fafc;
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  text-align: center;
 }
 
-.ejercicio {
-    margin: 8px 0;
-    flex: 1 1 45%;
-    padding: 12px;
-    background: linear-gradient(135deg, #f9f9f9, #ffffff);
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+.rutinas-categorias {
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 1.25rem;
+  height: fit-content;
 }
 
-.ejercicio:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+.categorias-titulo {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  color: #1e293b;
 }
 
-h2 {
-    color: #ff4500;
-    margin: 5px 0;
+.categorias-lista {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
 }
 
-h3 {
-    color: #555;
+.categoria-btn {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 0.75rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  text-align: center;
+  font-size: 0.95rem;
 }
 
-img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 12px;
-    margin-top: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.categoria-btn:hover {
+  background: #f1f5f9;
+}
+
+@media (max-width: 768px) {
+  .rutinas-container {
+    grid-template-columns: 1fr;
+  }
+
+  .rutinas-categorias {
+    display: none;
+  }
 }
 </style>

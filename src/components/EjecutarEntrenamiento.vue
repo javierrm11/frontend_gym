@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <main>
     <h1>Ejecutar Entrenamiento</h1>
     <div class="container">
       <div class="row">
@@ -84,7 +84,7 @@
         Guardar Estadísticas
       </button>
     </div>
-  </div>
+  </main>
 </template>
 
 <script>

@@ -1,5 +1,5 @@
 <template>
-    <div id="profile">
+    <main id="profile">
         <h2>Perfil de Usuario</h2>
         <div class="profile-container">
             <div class="profile-info">
@@ -16,7 +16,7 @@
                 <img :src="usuario.Foto" alt="Imagen de Perfil">
             </div>
         </div>
-    </div>
+    </main>
 </template>
 
 <script>
@@ -62,7 +62,7 @@ export default ({
 }
 
 h2 {
-    color: #ff4500;
+    color: var(--color-primary);
     margin-bottom: 20px;
     text-align: center;
 }

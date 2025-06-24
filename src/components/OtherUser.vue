@@ -1,5 +1,5 @@
 <template>
-    <div class="other-user">
+    <main class="other-user">
         <h1>Perfil de Usuario</h1>
         <div class="user-info">
             <h2>{{ user?.Nombre }}</h2>
@@ -22,7 +22,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 </template>
 
 <script>

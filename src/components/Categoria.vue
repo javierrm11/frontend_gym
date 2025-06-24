@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <main>
         <h1>{{ nombre }}</h1>
         <div class="ejercicios">
             <div class="ejercicio" v-for="ejercicio in ejercicios" :key="ejercicio.id">
@@ -8,7 +8,7 @@
                 <p>{{ ejercicio.Descripcion }}</p>
             </div>
         </div>
-    </div>
+    </main>
 </template>
 
 <script>

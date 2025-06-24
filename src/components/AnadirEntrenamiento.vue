@@ -1,5 +1,5 @@
 <template>
-  <div class="anadir-entrenamiento">
+  <main class="anadir-entrenamiento">
     <h1 class="titulo">Añadir Entrenamiento</h1>
     <p class="descripcion">Crea tu rutina desde cero con los ejercicios que elijas.</p>
     <form @submit.prevent="onSubmit" class="formulario">
@@ -67,7 +67,7 @@
         Crear Rutina
       </button>
     </form>
-  </div>
+  </main>
 </template>
 
 <script>

@@ -1,9 +1,9 @@
 <template>
-    <div>
+    <main>
         <h2>Delete Profile</h2>
         <p>Are you sure you want to delete your profile?</p>
         <button @click="deleteProfile">Delete</button>
-    </div>
+    </main>
 </template>
 
 <script>
