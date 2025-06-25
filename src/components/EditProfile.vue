@@ -131,13 +131,13 @@ export default {
     align-items: center;
     padding: 2rem;
     background-color: var(--background-light);
-    color: var(--text-primary);
     min-height: 100vh;
 }
 
 .edit-title {
     font-size: 2rem;
     margin-bottom: 2rem;
+    color: var(--color-primary);
 }
 
 .edit-form {
