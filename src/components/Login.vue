@@ -99,6 +99,7 @@ export default {
 
 .login-title {
   font-size: 2rem;
+  color: var(--color-primary);
   margin-bottom: 1rem;
 }
 
