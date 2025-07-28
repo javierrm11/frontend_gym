@@ -19,6 +19,7 @@
   --color-error: #FF4C4C; /* Rojo para errores */
   --color-success: #00C851; /* Verde para éxito */
   --color-warning: #FFA500; /* Naranja para advertencias */
+  --color-info: #2196F3; /* Azul para información */
 
   /* Extras */
   --border-radius: 12px;

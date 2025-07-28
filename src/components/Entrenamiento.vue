@@ -4,7 +4,10 @@
       <h1 class="titulo-principal">Mis Rutinas</h1>
       <p class="descripcion-principal">Administra y ejecuta tus rutinas personalizadas</p>
       <router-link class="btn-agregar" to="/anadirEntrenamiento">
-        <span>➕</span> Nueva Rutina
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Nueva Rutina
       </router-link>
     </div>
 
@@ -106,7 +109,6 @@ export default {
 <style scoped>
 .entrenamiento-container {
   margin: 0 1rem;
-  padding: 0 1.5rem;
   font-family: 'Poppins', sans-serif;
 }
 
@@ -131,21 +133,23 @@ export default {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background-color: var(--color-primary);
-  color: var(--text-primary);
+  background-color: var(--color-secondary);
+  color: var(--color-accent);
   padding: 0.75rem 1.5rem;
   border-radius: var(--border-radius);
   text-decoration: none;
   font-weight: 600;
   transition: all var(--transition-speed);
   border: 2px solid transparent;
+  text-decoration: none;
+  filter: drop-shadow(4px 4px 0 var(--color-accent));
 }
 
 .btn-agregar:hover {
   background-color: var(--color-accent);
   color: var(--color-secondary);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(163, 255, 18, 0.2);
+  filter: drop-shadow(4px 4px 0 var(--color-secondary));
 }
 
 /* FLEX en vez de GRID */
@@ -165,8 +169,7 @@ export default {
   transition: transform var(--transition-speed), box-shadow var(--transition-speed);
   display: flex;
   flex-direction: column;
-  min-width: 280px;
-  max-width: 100%;
+  width: 400px;
 }
 
 .rutina-card:hover {
@@ -251,7 +254,7 @@ export default {
 .series-badge {
   display: inline-block;
   background-color: var(--color-primary);
-  color: var(--text-primary);
+  color: var(--color-secondary);
   padding: 0.25rem 0.75rem;
   border-radius: 1rem;
   font-size: 0.8rem;
@@ -285,13 +288,12 @@ export default {
 }
 
 .btn-ver {
-  background-color: var(--color-primary);
+  background-color: var(--color-info);
   color: var(--text-primary);
 }
 
 .btn-ver:hover {
-  background-color: var(--color-accent);
-  color: var(--color-secondary);
+  background-color: #126ab3;
 }
 
 .btn-comenzar {
@@ -300,7 +302,7 @@ export default {
 }
 
 .btn-comenzar:hover {
-  background-color: #00b347;
+  background-color: #005c25;
 }
 
 .btn-eliminar {
@@ -309,7 +311,7 @@ export default {
 }
 
 .btn-eliminar:hover {
-  background-color: #e53935;
+  background-color: #8b1513;
 }
 
 @media (max-width: 1100px) {
