@@ -1,7 +1,7 @@
 <template>
   <header>
     <div class="header-container">
-      <h1>Gym</h1>
+      <a><h1>Gym</h1></a>
       <button
         class="hamburger"
         @click="toggleMenu"
@@ -230,8 +230,5 @@ nav ul li a.router-link-exact-active {
     border-radius: var(--border-radius);
   }
 
-  nav ul li a.router-link-exact-active {
-    color: var(--color-primary);
-  }
 }
 </style>
