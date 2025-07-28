@@ -1,116 +1,133 @@
 <template>
-  <main class="training-execution">
+  <main class="entrenamiento-container">
     <div class="header-section">
-      <h1 class="page-title">Ejecutar Entrenamiento</h1>
-      <div class="training-info">
-        <div class="training-meta">
-          <span class="training-date">{{ fechaMostrada || "No disponible" }}</span>
-          <span class="training-duration">
-            <i class="bi bi-clock"></i> {{ formattedDuration }}
+      <h1 class="titulo-principal">Ejecutar Entrenamiento</h1>
+      <div class="rutina-info">
+        <h2>{{ rutina.Nombre }}</h2>
+        <p class="descripcion-rutina">{{ rutina.Descripcion }}</p>
+        <div class="meta-info">
+          <span class="info-badge">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/>
+            </svg>
+            {{ fechaMostrada || "No disponible" }}
+          </span>
+          <span class="info-badge">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z"/>
+            </svg>
+            {{ duracion.horas }}h {{ duracion.minutos }}m {{ duracion.segundos }}s
           </span>
         </div>
-        <h2 class="training-name">{{ rutina.nombre }}</h2>
-        <p class="training-description">{{ rutina.descripcion }}</p>
       </div>
     </div>
 
-    <div class="container">
-      <div v-if="isLoading" class="loading-state">
-        <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Cargando...</span>
-        </div>
-        <p>Cargando estadísticas...</p>
-      </div>
+    <div v-if="isLoading" class="loading-container">
+      <div class="spinner"></div>
+      <p>Cargando ejercicios...</p>
+    </div>
 
-      <div v-else class="exercises-container">
-        <div 
-          v-for="(ejercicio, indexEj) in ejercicios"
-          :key="ejercicio.ejercicioRutina_id"
-          class="exercise-card"
-        >
-          <div class="exercise-header">
-            <h3 class="exercise-name">{{ ejercicio.Nombre }}</h3>
-            <p class="exercise-description">{{ ejercicio.Descripcion }}</p>
+    <div v-else class="ejercicios-container">
+      <div 
+        v-for="(ejercicio, indexEj) in ejercicios" 
+        :key="ejercicio.ejercicioRutina_id" 
+        class="ejercicio-card"
+      >
+        <div class="ejercicio-header">
+          <h3>{{ ejercicio.Nombre }}</h3>
+          <p>{{ ejercicio.Descripcion }}</p>
+          <div class="series-indicator">
+            <span>{{ ejercicio.nuevasSeries.length }} serie{{ ejercicio.nuevasSeries.length !== 1 ? 's' : '' }}</span>
           </div>
+        </div>
 
-          <div v-if="ejercicio.estadisticas.length" class="previous-stats">
-            <h4 class="stats-title">
-              <i class="bi bi-graph-up"></i> Histórico
-            </h4>
-            <div class="stats-grid">
-              <div v-for="(est, index) in ejercicio.estadisticas" :key="index" class="stat-item">
-                <span class="stat-label">Serie {{ est.Serie }}</span>
-                <span class="stat-value">{{ est.Peso }} kg</span>
-                <span class="stat-value">{{ est.Repeticiones }} rep</span>
+        <div v-if="ejercicio.estadisticas.length" class="estadisticas-anteriores">
+          <details class="estadisticas-details">
+            <summary class="estadisticas-summary">
+              <span>Estadísticas anteriores</span>
+              <svg class="dropdown-icon" viewBox="0 0 24 24">
+                <path d="M7 10l5 5 5-5z"/>
+              </svg>
+            </summary>
+            <ul class="estadisticas-lista">
+              <li v-for="(est, index) in ejercicio.estadisticas" :key="index" class="estadistica-item">
+                <div class="estadistica-info">
+                  <span class="serie-badge">Serie {{ est.Serie }}</span>
+                  <span class="serie-info">{{ est.Peso }} kg × {{ est.Repeticiones }} rep</span>
+                </div>
+              </li>
+            </ul>
+          </details>
+        </div>
+        <div v-else class="sin-estadisticas">
+          <p>No hay estadísticas previas para este ejercicio</p>
+        </div>
+
+        <div class="series-container">
+          <div 
+            v-for="(serie, indexSerie) in ejercicio.nuevasSeries" 
+            :key="indexSerie" 
+            class="serie-item"
+          >
+            <div class="serie-header">
+              <h4>Serie {{ indexSerie + 1 }}</h4>
+              <button 
+                class="btn-eliminar-serie" 
+                @click="eliminarSerie(indexEj, indexSerie)"
+                :disabled="ejercicio.nuevasSeries.length <= 1"
+              >
+                <svg viewBox="0 0 24 24" width="16" height="16">
+                  <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                </svg>
+              </button>
+            </div>
+            <div class="serie-inputs">
+              <div class="input-group">
+                <label>Peso (kg)</label>
+                <input
+                  type="number"
+                  v-model.number="serie.peso"
+                  min="0"
+                  step="0.5"
+                  class="input-peso"
+                  placeholder="0"
+                />
+              </div>
+              <div class="input-group">
+                <label>Repeticiones</label>
+                <input
+                  type="number"
+                  v-model.number="serie.repeticiones"
+                  min="0"
+                  class="input-repeticiones"
+                  placeholder="0"
+                />
               </div>
             </div>
           </div>
-          <div v-else class="no-stats">
-            <p>No hay estadísticas disponibles para este ejercicio.</p>
-          </div>
 
-          <div class="new-sets">
-            <h4 class="sets-title">
-              <i class="bi bi-plus-circle"></i> Nuevas Series
-            </h4>
-            <div 
-              v-for="(serie, indexSerie) in ejercicio.nuevasSeries"
-              :key="indexSerie"
-              class="set-row"
-            >
-              <div class="set-number">Serie {{ indexSerie + 1 }}</div>
-              <div class="set-inputs">
-                <div class="input-group">
-                  <input
-                    type="number"
-                    class="form-control"
-                    v-model.number="serie.peso"
-                    min="0"
-                    placeholder="Peso (kg)"
-                  />
-                  <span class="input-group-text">kg</span>
-                </div>
-                <div class="input-group">
-                  <input
-                    type="number"
-                    class="form-control"
-                    v-model.number="serie.repeticiones"
-                    min="0"
-                    placeholder="Repeticiones"
-                  />
-                  <span class="input-group-text">rep</span>
-                </div>
-                <button 
-                  @click="eliminarSerie(indexEj, indexSerie)"
-                  class="btn btn-danger btn-sm set-delete"
-                  title="Eliminar serie"
-                >
-                  <i class="bi bi-trash"></i>
-                </button>
-              </div>
-            </div>
-
-            <button
-              class="btn btn-outline-primary add-set-btn"
-              @click="anadirSerie(indexEj)"
-            >
-              <i class="bi bi-plus-lg"></i> Añadir Serie
-            </button>
-          </div>
+          <button class="btn-anadir-serie" @click="anadirSerie(indexEj)">
+            <svg viewBox="0 0 24 24" width="18" height="18">
+              <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+            </svg>
+            Añadir Serie
+          </button>
         </div>
       </div>
+    </div>
 
-      <div class="action-buttons">
-        <button class="btn btn-secondary">
-          <i class="bi bi-skip-backward"></i> Cancelar
-        </button>
-        <button 
-          class="btn btn-success save-btn"
-          @click="guardarEstadisticas"
-        >
-          <i class="bi bi-check-circle"></i> Guardar Entrenamiento
-        </button>
-      </div>
+    <div class="actions-container">
+      <button class="btn-cancelar" @click="$router.go(-1)">
+        Cancelar
+      </button>
+      <button 
+        class="btn-guardar" 
+        @click="guardarEstadisticas" 
+        :disabled="isLoading"
+      >
+        <span v-if="isLoading" class="spinner-btn"></span>
+        <span v-else>Guardar Entrenamiento</span>
+      </button>
     </div>
   </main>
 </template>
@@ -130,15 +147,8 @@ export default {
         horas: 0,
         minutos: 0,
         segundos: 0,
-      },
+      }, // Duración de la rutina
     };
-  },
-  computed: {
-    formattedDuration() {
-      return `${this.duracion.horas.toString().padStart(2, '0')}:${
-        this.duracion.minutos.toString().padStart(2, '0')}:${
-        this.duracion.segundos.toString().padStart(2, '0')}`;
-    }
   },
   mounted() {
     this.getRutina();
@@ -147,8 +157,7 @@ export default {
     const mes = String(fecha.getMonth() + 1).padStart(2, "0");
     const anio = fecha.getFullYear();
     this.fechaMostrada = `${anio}-${mes}-${dia}`;
-    
-    this.interval = setInterval(() => {
+    setInterval(() => {
       this.duracion.segundos++;
       if (this.duracion.segundos >= 60) {
         this.duracion.segundos = 0;
@@ -159,9 +168,6 @@ export default {
         this.duracion.horas++;
       }
     }, 1000);
-  },
-  beforeUnmount() {
-    clearInterval(this.interval);
   },
   methods: {
     async getRutina() {
@@ -179,7 +185,7 @@ export default {
         this.ejercicios = this.rutina.ejercicios.map((ejercicio) => ({
           ...ejercicio,
           estadisticas: [],
-          nuevasSeries: [],
+          nuevasSeries: [], // Aquí guardamos nuevas series ingresadas por el usuario
         }));
         await this.getIdSerieEjercicios();
         await this.cargarEstadisticas();
@@ -210,6 +216,7 @@ export default {
           const stats = response.data || [];
           ejercicio.estadisticas = stats;
 
+          // Inicializar nuevasSeries con valores anteriores o con Num_Series si está vacío
           if (stats.length > 0) {
             ejercicio.nuevasSeries = stats.map((serie) => ({
               peso: serie.Peso,
@@ -233,7 +240,6 @@ export default {
 
       await Promise.all(promesas);
     },
-    
     async getIdSerieEjercicios(){
       const token = localStorage.getItem("token");
       const promesas = this.ejercicios.map(async (ejercicio) => {
@@ -247,7 +253,7 @@ export default {
             }
           );
 
-          ejercicio.id_serie = response.data.id_serie + 1 || 1;
+          ejercicio.id_serie = response.data.id_serie + 1|| 1;
         } catch (err) {
           ejercicio.id_serie = 1;
         }
@@ -258,21 +264,12 @@ export default {
 
     anadirSerie(indexEjercicio) {
       this.ejercicios[indexEjercicio].nuevasSeries.push({
-        peso: this.ejercicios[indexEjercicio].nuevasSeries.length > 0 
-          ? this.ejercicios[indexEjercicio].nuevasSeries[this.ejercicios[indexEjercicio].nuevasSeries.length - 1].peso
-          : 0,
-        repeticiones: this.ejercicios[indexEjercicio].nuevasSeries.length > 0
-          ? this.ejercicios[indexEjercicio].nuevasSeries[this.ejercicios[indexEjercicio].nuevasSeries.length - 1].repeticiones
-          : 0,
+        peso: this.ejercicios[indexEjercicio].nuevasSeries[this.ejercicios[indexEjercicio].nuevasSeries.length - 1].peso,
+        repeticiones: this.ejercicios[indexEjercicio].nuevasSeries[this.ejercicios[indexEjercicio].nuevasSeries.length - 1].repeticiones,
       });
     },
-    
     eliminarSerie(indexEjercicio, indexSerie) {
-      if (this.ejercicios[indexEjercicio].nuevasSeries.length > 1) {
-        this.ejercicios[indexEjercicio].nuevasSeries.splice(indexSerie, 1);
-      } else {
-        alert("Debe haber al menos una serie por ejercicio");
-      }
+      this.ejercicios[indexEjercicio].nuevasSeries.splice(indexSerie, 1);
     },
 
     async guardarEstadisticas() {
@@ -288,20 +285,20 @@ export default {
       // Preparar los datos para enviar
       const datos = {
         fecha: this.fechaMostrada,
-        duracion: duracionTotalSegundos,
+        duracion: duracionTotalSegundos, // Duración en segundos
         ejercicios: this.ejercicios.flatMap((ejercicio) =>
           ejercicio.nuevasSeries.map((serie, index) => ({
-            RutinaEjercicio_id: ejercicio.ejercicioRutina_id,
-            id_serie: ejercicio.id_serie,
-            serie: index + 1,
-            peso: serie.peso,
-            repeticiones: serie.repeticiones,
+        RutinaEjercicio_id: ejercicio.ejercicioRutina_id,
+        id_serie: ejercicio.id_serie, // Asumiendo que cada ejercicio tiene una propiedad 'id_serie'
+        serie: index + 1, // El número de serie (1, 2, 3...)
+        peso: serie.peso,
+        repeticiones: serie.repeticiones,
           }))
         ),
       };
 
       try {
-        this.isLoading = true;
+        this.isLoading = true; // Mostrar el loader
         const response = await axios.post(
           `http://localhost:3000/api/estadisticasEjercicio/agregar/${rutinaId}`,
           datos,
@@ -312,13 +309,13 @@ export default {
           }
         );
 
+        // Manejar la respuesta
         console.log("Estadísticas guardadas correctamente:", response.data);
         this.$router.push('/verEntrenamiento/' + this.rutina.id);
+        this.isLoading = false; // Ocultar el loader
       } catch (error) {
         console.error("Error guardando las estadísticas:", error);
         alert("Hubo un error al guardar las estadísticas.");
-      } finally {
-        this.isLoading = false;
       }
     },
   },
@@ -326,295 +323,380 @@ export default {
 </script>
 
 <style scoped>
-/* Variables de color */
-:root {
-  --primary-color: #4361ee;
-  --secondary-color: #3f37c9;
-  --success-color: #4cc9f0;
-  --light-color: #f8f9fa;
-  --dark-color: #212529;
-  --gray-color: #6c757d;
-  --light-gray: #e9ecef;
-  --border-radius: 12px;
-  --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  --transition: all 0.3s ease;
-}
-
-/* Estilos generales */
-.training-execution {
-  background-color: #f5f7fa;
-  min-height: 100vh;
-  padding-bottom: 3rem;
-}
-
-.container {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 0 1.5rem;
-}
-
-/* Header section */
-.header-section {
-  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-  color: white;
-  padding: 2rem 1.5rem;
-  margin-bottom: 2rem;
-  border-radius: 0 0 var(--border-radius) var(--border-radius);
-  box-shadow: var(--box-shadow);
-}
-
-.page-title {
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 1.5rem;
-  text-align: center;
-}
-
-.training-info {
+.entrenamiento-container {
+  padding: 1rem;
   max-width: 800px;
   margin: 0 auto;
+  font-family: 'Poppins', sans-serif;
 }
 
-.training-meta {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 0.5rem;
-  font-size: 0.9rem;
-  opacity: 0.9;
+.header-section {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.training-name {
-  font-size: 1.75rem;
+.titulo-principal {
+  font-size: 2rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
 }
 
-.training-description {
-  font-size: 1rem;
-  opacity: 0.9;
-  margin-bottom: 0;
+.rutina-info {
+  margin-top: 1.5rem;
 }
 
-/* Exercise cards */
-.exercises-container {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.exercise-card {
-  background-color: white;
-  border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow);
-  overflow: hidden;
-  transition: var(--transition);
-}
-
-.exercise-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
-}
-
-.exercise-header {
-  padding: 1.5rem;
-  border-bottom: 1px solid var(--light-gray);
-}
-
-.exercise-name {
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: var(--dark-color);
+.rutina-info h2 {
+  font-size: 1.5rem;
   margin-bottom: 0.5rem;
 }
 
-.exercise-description {
-  color: var(--gray-color);
-  font-size: 0.95rem;
-  margin-bottom: 0;
+.descripcion-rutina {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
 }
 
-/* Stats sections */
-.previous-stats,
-.new-sets {
-  padding: 1.5rem;
-}
-
-.previous-stats {
-  border-bottom: 1px solid var(--light-gray);
-}
-
-.stats-title,
-.sets-title {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
+.meta-info {
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: var(--dark-color);
-}
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  justify-content: center;
   gap: 1rem;
-}
-
-.stat-item {
-  background-color: var(--light-color);
-  padding: 0.75rem;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.stat-label {
-  font-weight: 600;
-  font-size: 0.85rem;
-  margin-bottom: 0.25rem;
-}
-
-.stat-value {
-  font-size: 0.9rem;
-  color: var(--gray-color);
-}
-
-.no-stats {
-  padding: 1rem;
-  text-align: center;
-  color: var(--gray-color);
-  font-style: italic;
-}
-
-/* New sets section */
-.set-row {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  padding: 0.75rem;
-  background-color: var(--light-color);
-  border-radius: 8px;
-}
-
-.set-number {
-  font-weight: 600;
-  min-width: 70px;
-}
-
-.set-inputs {
-  display: flex;
-  gap: 1rem;
-  flex-grow: 1;
   flex-wrap: wrap;
 }
 
-.input-group {
-  flex: 1;
-  min-width: 150px;
-  display: flex;
-}
-
-.input-group .form-control {
-  border-radius: 8px 0 0 8px !important;
-}
-
-.input-group-text {
-  background-color: white;
-  border-left: 0;
-  border-radius: 0 8px 8px 0;
-}
-
-.set-delete {
-  padding: 0.5rem;
-  border-radius: 8px;
-}
-
-.add-set-btn {
-  width: 100%;
-  margin-top: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-}
-
-/* Action buttons */
-.action-buttons {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 3rem;
-  padding: 0 1.5rem;
-}
-
-.save-btn {
-  padding: 0.75rem 2rem;
-  font-weight: 600;
+.info-badge {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  background-color: var(--color-primary);
+  color: var(--text-primary);
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
 }
 
-/* Loading state */
-.loading-state {
+.icon {
+  width: 1rem;
+  height: 1rem;
+  fill: currentColor;
+}
+
+.loading-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 3rem;
+  padding: 2rem;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(163, 255, 18, 0.3);
+  border-radius: 50%;
+  border-top-color: var(--color-accent);
+  animation: spin 1s ease-in-out infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.ejercicios-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.ejercicio-card {
+  background-color: var(--color-secondary);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+}
+
+.ejercicio-header {
+  position: relative;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ejercicio-header h3 {
+  font-size: 1.3rem;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.ejercicio-header p {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.series-indicator {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: var(--color-primary);
+  color: var(--text-primary);
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.estadisticas-anteriores {
+  margin: 1.5rem 0;
+}
+
+.estadisticas-details {
+  margin-bottom: 1rem;
+}
+
+.estadisticas-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  cursor: pointer;
+  color: var(--color-accent);
+  font-weight: 500;
+  list-style: none;
+}
+
+.estadisticas-summary::-webkit-details-marker {
+  display: none;
+}
+
+.dropdown-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  fill: var(--color-accent);
+  transition: transform var(--transition-speed);
+}
+
+.estadisticas-details[open] .dropdown-icon {
+  transform: rotate(180deg);
+}
+
+.estadisticas-lista {
+  margin-top: 0.5rem;
+  padding: 0.5rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.estadistica-item {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.estadistica-item:last-child {
+  border-bottom: none;
+}
+
+.estadistica-info {
+  display: flex;
+  align-items: center;
+}
+
+.serie-badge {
+  background-color: var(--color-primary);
+  color: var(--text-primary);
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  margin-right: 1rem;
+}
+.serie-info{
+  color: var(--text-secondary);
+}
+.sin-estadisticas {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin: 1rem 0;
+  font-style: italic;
+  text-align: center;
+}
+
+.series-container {
+  margin-top: 1.5rem;
+}
+
+.serie-item {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: calc(var(--border-radius) / 2);
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.serie-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.serie-header h4 {
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.btn-eliminar-serie {
+  background: none;
+  border: none;
+  color: var(--color-error);
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-eliminar-serie:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-eliminar-serie svg {
+  fill: currentColor;
+}
+
+.serie-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 1rem;
 }
 
-.loading-state p {
-  font-size: 1.1rem;
-  color: var(--gray-color);
+.input-group {
+  display: flex;
+  flex-direction: column;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .header-section {
-    padding: 1.5rem 1rem;
+.input-group label {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.25rem;
+}
+
+.input-peso, .input-repeticiones {
+  background-color: var(--color-secondary);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: calc(var(--border-radius) / 2);
+  padding: 0.75rem;
+  color: var(--text-primary);
+  font-size: 1rem;
+}
+
+.input-peso:focus, .input-repeticiones:focus {
+  outline: none;
+  border-color: var(--color-accent);
+}
+
+.btn-anadir-serie {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: var(--color-primary);
+  color: var(--text-primary);
+  border: none;
+  padding: 0.75rem;
+  border-radius: calc(var(--border-radius) / 2);
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  width: 100%;
+  transition: all var(--transition-speed);
+}
+
+.btn-anadir-serie:hover {
+  background-color: var(--color-accent);
+  color: var(--color-secondary);
+}
+
+.btn-anadir-serie svg {
+  fill: currentColor;
+}
+
+.actions-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.btn-cancelar, .btn-guardar {
+  padding: 0.75rem 1.5rem;
+  border-radius: calc(var(--border-radius) / 2);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-speed);
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-cancelar {
+  background-color: transparent;
+  border: 1px solid var(--color-error);
+  color: var(--color-error);
+}
+
+.btn-cancelar:hover {
+  background-color: var(--color-error);
+  color: var(--text-primary);
+}
+
+.btn-guardar {
+  background-color: var(--color-success);
+  color: var(--text-primary);
+  border: none;
+}
+
+.btn-guardar:hover:not(:disabled) {
+  background-color: #00b347;
+}
+
+.btn-guardar:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.spinner-btn {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@media (max-width: 600px) {
+  .serie-inputs {
+    grid-template-columns: 1fr;
   }
   
-  .page-title {
-    font-size: 1.75rem;
-  }
-  
-  .training-name {
-    font-size: 1.5rem;
-  }
-  
-  .stats-grid {
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-  }
-  
-  .set-row {
+  .meta-info {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
   }
   
-  .set-inputs {
+  .info-badge {
     width: 100%;
-  }
-  
-  .action-buttons {
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  .action-buttons .btn {
-    width: 100%;
+    justify-content: center;
   }
 }
 
-@media (max-width: 576px) {
-  .container {
-    padding: 0 1rem;
-  }
-  
-  .stats-grid {
-    grid-template-columns: 1fr 1fr;
+@media (max-width: 400px) {
+  .actions-container {
+    flex-direction: column;
   }
 }
 </style>

@@ -1,35 +1,35 @@
 :root {
-  /* Colores principales */
-  --color-primary: #FFFFFF; /* Amarillo dorado */
-  --color-secondary: #000000; /* Negro puro */
-  --color-accent: #FFD700; /* Blanco como acento */
-
-  /* Texto */
-  --text-primary: #FFFFFF; /* Blanco para textos sobre fondo oscuro */
-  --text-secondary: #CCCCCC; /* Gris claro para textos secundarios */
-  --text-dark: #000000; /* Negro para textos sobre fondo claro */
-
-  /* Fondos */
-  --background-dark: #000000; /* Fondo negro */
-  --background-dark-alt: #121212; /* Fondo negro alternativo */
-  --background-light: #FFFFFF; /* Fondo blanco */
-
-  /* Estados */
-  --color-error: #FF4C4C; /* Rojo para errores */
-  --color-success: #00C851; /* Verde para éxito */
-  --color-warning: #FFA500; /* Naranja para advertencias */
-
-  /* Extras */
-  --border-radius: 12px;
-  --transition-speed: 0.3s;
-}
+    /* Colores principales */
+    --color-primary: #007BFF;
+    --color-secondary: #1C1C1E;
+    --color-accent: #A3FF12;
+  
+    /* Texto */
+    --text-primary: #FFFFFF;
+    --text-secondary: #A0A0A0;
+    --text-dark: #000000;
+  
+    /* Fondos */
+    --background-dark: #0D0D0D;
+    --background-light: #F5F5F7;
+  
+    /* Estados */
+    --color-error: #FF4C4C;
+    --color-success: #00C851;
+    --color-warning: #FFBB33;
+  
+    /* Extras */
+    --border-radius: 12px;
+    --transition-speed: 0.3s;
+  }
+  
 body {
-    font-family: 'Poppins', sans-serif;
-    color: #333;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-main{
-    padding: 3rem 0;
+main {
+  padding: 3rem 0;
 }

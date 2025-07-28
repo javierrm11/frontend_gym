@@ -127,6 +127,7 @@ export default {
 
 .register-title {
   font-size: 2rem;
+  color: var(--color-primary);
   margin-bottom: 1rem;
 }
 
