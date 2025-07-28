@@ -31,8 +31,8 @@
           v-for="rutina in rutinas"
           :key="rutina.id"
           class="rutina-card"
-          @click="verUsuario(rutina.id)"
         >
+          <a class="rutina-perfil-link" @click="verUsuario(rutina.id)">Visitar perfil</a>
           <div class="rutina-header">
             <img :src="rutina.Foto" alt="Foto usuario" class="rutina-avatar" />
             <h3 class="rutina-nombre">{{ rutina.Nombre_Usuario }}</h3>
@@ -42,6 +42,7 @@
               v-for="ejercicio in rutina.rutinas"
               :key="ejercicio.id"
               class="rutina-ejercicio"
+              @click="verRutina(ejercicio.id)"
             >
               {{ ejercicio.Nombre }}
             </li>
@@ -114,6 +115,9 @@ export default {
     verUsuario(id) {
       this.$router.push({ name: "OtherUser", params: { id } });
     },
+    verRutina(id) {
+      this.$router.push({ name: "VerRutina", params: { id } });
+    },
   },
 };
 </script>
@@ -132,7 +136,7 @@ export default {
 .rutinas-buscar {
   display: flex;
   margin-bottom: 1rem;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--color-terciario);
   border-radius: 8px;
   overflow: hidden;
   background: #fff;
@@ -152,7 +156,7 @@ export default {
 
 .rutinas-buscar-btn {
   padding: 0 1rem;
-  background: var(--secondary-color, #334155);
+  background: var(--color-terciario);
   border: none;
   cursor: pointer;
   color: white;
@@ -162,7 +166,7 @@ export default {
 }
 
 .rutinas-buscar-btn:hover {
-  background: #64748b;
+  background: var(--color-secondary);
 }
 
 .rutinas-usuarios {
@@ -172,19 +176,29 @@ export default {
 }
 
 .rutina-card {
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--color-terciario);
   border-radius: 8px;
   padding: 1.25rem;
   background: #fff;
   transition: transform 0.2s, box-shadow 0.2s;
-  cursor: pointer;
   display: flex;
   flex-direction: column;
 }
 
 .rutina-card:hover {
   transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  filter: drop-shadow(0 2px 4px var(--color-terciario));
+}
+.rutina-perfil-link{
+  position: absolute;
+  top: 0;
+  right: 0px;
+  padding: 0.5rem;
+  background: var(--color-secondary);
+  color: var(--color-accent);
+  border-radius: 0 8px 0 8px;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .rutina-header {
@@ -199,8 +213,8 @@ export default {
   border-radius: 50%;
   object-fit: cover;
   margin-right: 1rem;
-  border: 2px solid #e2e8f0;
-  background: #f1f5f9;
+  border: 2px solid var(--color-terciario);
+  background: var(--color-secondary);
 }
 
 .rutina-nombre {
@@ -220,13 +234,18 @@ export default {
 }
 
 .rutina-ejercicio {
-  background: #f8fafc;
+  background: var(--color-primary);
+  color: var(--color-secondary);
+  border: 1px solid var(--color-terciario);
   padding: 0.5rem 0.75rem;
-  border-radius: 4px;
-  font-size: 0.92rem;
-  text-align: center;
-  color: #334155;
-  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  flex: 1 1 auto;
+  cursor: pointer;
+}
+.rutina-ejercicio:hover {
+  background: var(--color-secondary);
+  color: var(--color-accent);
 }
 
 .rutinas-categorias {
@@ -255,12 +274,13 @@ export default {
   }
   .rutinas-categorias {
     display: block;
-    background: #f8fafc;
+    background: var(--color-primary);
+    border: 1px solid var(--color-terciario);
     border-radius: 8px;
     padding: 1.25rem;
     height: fit-content;
     min-width: 220px;
-    max-width: 300px;
+    max-width: 400px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.03);
   }
 }
@@ -275,7 +295,7 @@ export default {
   }
   .rutinas-categorias {
     min-width: 180px;
-    padding: 1rem;
+    padding: 1rem 1.5rem;
   }
 }
 
@@ -283,7 +303,7 @@ export default {
   margin-top: 0;
   margin-bottom: 1rem;
   font-size: 1.25rem;
-  color: #1e293b;
+  color: var(--color-secondary);
   font-weight: 700;
 }
 
@@ -307,7 +327,8 @@ export default {
 }
 
 .categoria-btn:hover {
-  background: #e0e7ef;
-  border-color: #94a3b8;
+  background: var(--color-secondary);
+  border-color: var(--color-terciario);
+  color: var(--color-accent);
 }
 </style>

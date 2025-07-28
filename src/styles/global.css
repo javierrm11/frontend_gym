@@ -3,6 +3,7 @@
   --color-primary: #FFFFFF; /* Amarillo dorado */
   --color-secondary: #000000; /* Negro puro */
   --color-accent: #FFD700; /* Blanco como acento */
+  --color-terciario: #CCCCCC; /* Gris claro como terciario */
 
   /* Texto */
   --text-primary: #FFFFFF; /* Blanco para textos sobre fondo oscuro */
@@ -29,6 +30,7 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  background-color: var(--background-light);
 }
 main {
   padding: 3rem 0;
