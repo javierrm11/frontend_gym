@@ -1,155 +1,37 @@
 <template>
   <main class="entrenamiento-container">
     <div class="header-section">
-      <h1 class="titulo-principal">{{ rutina.Nombre }}</h1>
-      <p class="descripcion-principal">{{ rutina.Descripcion }}</p>
-    </div>
-
-    <div v-if="isLoading" class="loading-container">
-      <p>Cargando datos...</p>
-    </div>
-
-    <div v-else>
-      <div class="rutinas-grid">
-        <div class="rutina-card">
-          <div class="card-header">
-            <h3 class="rutina-nombre">Ejercicios</h3>
-          </div>
-          <div class="card-content">
-            <div v-if="rutina.ejercicios?.length" class="lista-ejercicios">
-              <div
-                v-for="ejercicio in rutina.ejercicios"
-                :key="ejercicio._id"
-                class="ejercicio-item"
-              >
-                <div class="ejercicio-info">
-                  <h4>{{ ejercicio.Nombre }}</h4>
-                  <p class="series-badge">{{ ejercicio.Num_Series }} series</p>
-                  <p class="ejercicio-descripcion">{{ ejercicio.Descripcion }}</p>
-                </div>
-                <button class="btn-action btn-eliminar" @click="eliminarEjercicio(ejercicio.ejercicioRutina_id)">
-                  <span>🗑</span> Eliminar
-                </button>
-              </div>
-            </div>
-            <div v-else>
-              <p>No hay ejercicios disponibles para esta rutina.</p>
-            </div>
-            <button class="btn-action btn-agregar" @click="abrirModal">
-              <span>➕</span> Agregar Ejercicio
-            </button>
-          </div>
-        </div>
+      <h2 class="titulo-principal">Detalles de la Rutina</h2>
+      <div class="descripcion-principal-container">
+        <h3 v-if="rutina.Nombre" class="rutina-nombre">{{ rutina.Nombre }}</h3>
+        <p v-if="rutina.Descripcion" class="descripcion-principal">
+          {{ rutina.Descripcion }}
+        </p>
       </div>
+    </div>
 
-      <form v-if="modalAgregar" @submit.prevent="addEjercicio" class="form-modal">
-        <h2>Agregar Ejercicio</h2>
-        <div class="form-group">
-          <label for="grupo">Grupo Muscular</label>
-          <select
-            id="grupo"
-            v-model="ejercicios[0].grupoSeleccionado"
-            @change="getEjerciciosFiltrados($event.target.value, 0)"
-            required
-          >
-            <option value="" disabled>Selecciona un grupo muscular</option>
-            <option
-              v-for="grupo in gruposMusculares"
-              :key="grupo.id"
-              :value="grupo.Categoria.trim()"
+    <div class="rutinas-grid">
+      <div class="rutina-card">
+        <div class="card-header">
+          <h3 class="rutina-nombre">Ejercicios</h3>
+        </div>
+        <div class="card-content">
+          <div v-if="rutina.ejercicios?.length" class="lista-ejercicios">
+            <div
+              v-for="ejercicio in rutina.ejercicios"
+              :key="ejercicio._id"
+              class="ejercicio-item"
             >
-              {{ grupo.Categoria.trim() }}
-            </option>
-          </select>
-        </div>
-
-        <div v-if="ejercicios[0].ejerciciosFiltrados.length > 0" class="form-group">
-          <label for="ejercicio">Ejercicio</label>
-          <select
-            id="ejercicio"
-            v-model="ejercicios[0].seleccionado"
-            required
-          >
-            <option value="" disabled>Selecciona un ejercicio</option>
-            <option
-              v-for="ej in ejercicios[0].ejerciciosFiltrados"
-              :key="ej.Nombre"
-              :value="ej.Nombre"
-            >
-              {{ ej.Nombre }}
-            </option>
-          </select>
-        </div>
-
-        <div class="form-group" v-if="ejercicios[0].ejerciciosFiltrados.length > 0">
-          <label for="series">Número de Series</label>
-          <input
-            type="number"
-            id="series"
-            v-model="ejercicios[0].series"
-            min="1"
-            placeholder="Ej: 3"
-            required
-          />
-        </div>
-
-        <div class="form-buttons">
-          <button type="button" class="btn-cerrar" @click="modalAgregar = false">Cerrar</button>
-          <button type="submit" class="btn-enviar">Añadir Ejercicio</button>
-        </div>
-      </form>
-
-      <div v-if="fechaUsada" class="estadisticas-section">
-        <h2 class="subtitulo">Última vez realizado: {{ fechaUsada || "No disponible" }}</h2>
-        <p v-if="duracion">Duración: {{ duracion }}</p>
-
-        <div class="mb-4">
-          <label for="fecha">Seleccionar fecha:</label>
-          <input
-            type="date"
-            id="fecha"
-            v-model="fechaSeleccionada"
-            @change="getRutina"
-          />
-        </div>
-
-        <div v-if="rutina.ejercicios?.length && duracion">
-          <div
-            v-for="ejercicio in rutina.ejercicios"
-            :key="ejercicio._id || ejercicio.ejercicioRutina_id"
-            class="tarjeta-ejercicio"
-          >
-            <h4>{{ ejercicio.Nombre }}</h4>
-            <p>Descripción: {{ ejercicio.Descripcion }}</p>
-            <p>Veces Realizado hoy: {{ Object.keys(ejercicio.estadisticas || {}).length }}</p>
-
-            <div class="estadisticas">
-              <h4>Estadísticas</h4>
-              <div v-if="Object.keys(ejercicio.estadisticas || {}).length">
-                <div
-                  v-for="(series, serieId) in ejercicio.estadisticas"
-                  :key="serieId"
-                  class="serie-block"
-                >
-                  <h5>Series {{ Object.keys(series || {}).length }}</h5>
-                  <ul>
-                    <li
-                      v-for="(detalle, index) in series"
-                      :key="detalle?.id || index"
-                    >
-                      Peso: {{ detalle.Peso }}kg - Reps: {{ detalle.Repeticiones }}
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div v-else>
-                <p>No hay estadísticas disponibles.</p>
+              <div class="ejercicio-info">
+                <h4>{{ ejercicio.Nombre }}</h4>
+                <p class="series-badge">{{ ejercicio.Num_Series }} series</p>
+                <p class="ejercicio-descripcion">{{ ejercicio.Descripcion }}</p>
               </div>
             </div>
           </div>
-        </div>
-        <div v-else>
-          <p>No hay estadísticas disponibles en este día.</p>
+          <div v-else>
+            <p>No hay ejercicios disponibles para esta rutina.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -333,7 +215,6 @@ export default {
   padding: 1.2rem 0.5rem;
   font-family: 'Poppins', sans-serif;
   min-height: 100vh;
-  box-sizing: border-box;
 }
 
 .header-section {
@@ -343,15 +224,14 @@ export default {
 
 .titulo-principal {
   font-size: 1.7rem;
-  margin-bottom: 0.5rem;
   font-weight: 700;
-  color: #222;
+  color: var(--color-secondary);
 }
 
 .descripcion-principal {
   font-size: 1rem;
-  color: #555;
-  margin-bottom: 1.2rem;
+  color: var(--color-secondary);
+  margin-top: 0.5rem;
 }
 
 .loading-container {
@@ -367,9 +247,7 @@ export default {
 }
 
 .rutina-card {
-  background: #fff;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -378,15 +256,24 @@ export default {
 }
 
 .card-header {
-  padding: 1.2rem 1rem 0.7rem 1rem;
-  border-bottom: 1px solid #f1f1f1;
+  padding: 1.2rem 1rem 0 1rem;
+  text-align: center;
 }
+.descripcion-principal-container{
+  text-align: center;
+  font-size: 1rem;
+  background: var(--color-accent);
+  padding: 0.5rem 1rem;
+  place-self: center;
+  width: 400px;
+  filter: drop-shadow(4px 4px 0px var(--color-secondary));
 
+}
 .rutina-nombre {
-  font-size: 1.2rem;
-  color: #222;
+  font-size: 1.5rem;
+  color: var(--color-secondary);
   font-weight: 600;
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.5rem;
 }
 
 .card-content {
@@ -396,12 +283,12 @@ export default {
 .lista-ejercicios {
   margin-top: 0.5rem;
   padding: 0.5rem 0;
-  border-top: 1px solid #f1f1f1;
+  gap: 2rem;
 }
 
 .ejercicio-item {
-  padding: 0.7rem 0;
-  border-bottom: 1px solid #f4f4f4;
+  background: var(--color-secondary);
+  padding: 0.8rem 1rem;
   display: flex;
   align-items: baseline;
   justify-content: space-between;
@@ -414,16 +301,16 @@ export default {
 }
 
 .ejercicio-info h4 {
-  font-size: 1rem;
-  color: #222;
-  margin-bottom: 0.15rem;
+  font-size: 1.2rem;
+  color: var(--color-primary);
+  margin: 0.15rem 0;
   font-weight: 500;
 }
 
 .series-badge {
   display: inline-block;
   background-color: #007bff;
-  color: #fff;
+  color: var(--color-primary);
   padding: 0.18rem 0.7rem;
   border-radius: 1rem;
   font-size: 0.85rem;
@@ -433,7 +320,7 @@ export default {
 
 .ejercicio-descripcion {
   font-size: 0.95rem;
-  color: #555;
+  color: var(--color-primary);
   line-height: 1.5;
 }
 
