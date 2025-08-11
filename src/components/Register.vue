@@ -119,29 +119,30 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2rem;
-  background-color: var(--background-light);
-  color: var(--text-primary);
+  padding: 3rem 1rem;
   min-height: 100vh;
 }
 
+/* TÍTULO */
 .register-title {
-  font-size: 2rem;
-  color: var(--color-primary);
-  margin-bottom: 1rem;
+  font-size: 2.5rem;
+  color: var(--color-secondary);
+  margin-bottom: 2rem;
+  text-align: center;
 }
 
+/* FORMULARIO */
 .register-form {
+  background-color: var(--color-primary);
   max-width: 800px;
   width: 100%;
-  background-color: var(--color-secondary);
-  border: 2px solid var(--color-primary);
-  padding: 2rem;
+  padding: 2rem 2.5rem;
   border-radius: var(--border-radius);
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  gap: 1.5rem;
+  box-shadow: var(--box-shadow);
+  border: 1px solid var(--color-accent);
 }
 
 .register-form > div {
@@ -151,25 +152,31 @@ export default {
   gap: 0.5rem;
 }
 
+/* LABELS */
 .register-label {
-  font-weight: bold;
-  color: var(--text-secondary);
+  font-weight: 600;
+  color: var(--color-secondary);
+  font-size: 1rem;
 }
 
+/* INPUTS */
 .register-input {
-  padding: 0.75rem;
-  border: 1px solid #444;
+  padding: 0.75rem 1rem;
+  border: 1px solid #ccc;
   border-radius: var(--border-radius);
-  background-color: #2C2C2E;
-  color: var(--text-primary);
-  transition: border var(--transition-speed);
+  font-size: 1rem;
+  color: var(--color-secondary);
+  background-color: #f9f9f9;
+  transition: border var(--transition-speed), box-shadow var(--transition-speed);
 }
 
 .register-input:focus {
-  border-color: var(--color-primary);
   outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 6px var(--color-accent);
 }
 
+/* BOTÓN */
 .register-btn-group {
   flex: 0 0 100%;
   display: flex;
@@ -178,29 +185,34 @@ export default {
 }
 
 .register-btn {
-  font-size: 1.2rem;
-  background-color: var(--color-primary);
+  font-size: 1.1rem;
+  background-color: var(--color-secondary);
   margin-top: 1rem;
-  padding: 1rem 2rem;
+  padding: 1rem 2.5rem;
   border-radius: var(--border-radius);
   border: none;
-  width: 12rem;
   cursor: pointer;
-  color: white;
-  transition: background-color var(--transition-speed);
+  color: var(--color-primary);
+  transition: background-color var(--transition-speed), color var(--transition-speed), transform var(--transition-speed);
+  box-shadow: 4px 4px 0 var(--color-accent);
 }
 
 .register-btn:hover {
-  background-color: var(--hover-color);
+  background-color: var(--color-accent);
+  color: var(--color-secondary);
+  box-shadow: 4px 4px 0 var(--color-secondary);
+  transform: translateY(-2px);
 }
 
+/* ALERTAS */
 .register-alert {
   flex: 1 1 100%;
   margin-top: 1rem;
-  padding: 1rem;
+  padding: 1rem 1.5rem;
   border-radius: var(--border-radius);
   background-color: var(--color-error);
   color: #fff;
+  box-shadow: var(--box-shadow);
 }
 
 .register-alert-list {
@@ -211,15 +223,21 @@ export default {
 
 .register-alert-list li {
   margin-bottom: 0.5rem;
+  font-weight: 500;
 }
 
+/* MEDIA QUERIES */
 @media (min-width: 600px) {
   .register-form > div {
     flex: 1 1 45%;
   }
-  .register-descripcion-group{
+
+  .register-descripcion-group {
     flex: 1 1 100% !important;
   }
-}
 
+  .register-btn-group {
+    justify-content: flex-end;
+  }
+}
 </style>

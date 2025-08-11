@@ -127,7 +127,7 @@ export default {
 
 .other-user__email {
   font-size: 1rem;
-  color: var(--text-secondary);
+  color: var(--color-secondary);
   margin-bottom: 1.5rem;
 }
 
@@ -169,14 +169,14 @@ export default {
 
 .routine-card__name {
   font-size: 1.4rem;
-  color: var(--text-primary);
+  color: var(--color-primary);
   margin-bottom: 0.5rem;
   font-weight: 600;
 }
 
 .routine-card__description {
   font-size: 0.95rem;
-  color: var(--text-secondary);
+  color: var(--color-primary);
   line-height: 1.5;
 }
 
@@ -231,7 +231,7 @@ export default {
 
 .exercise-item__info h4 {
   font-size: 1rem;
-  color: var(--text-primary);
+  color: var(--color-primary);
   margin-bottom: 0.25rem;
   font-weight: 500;
 }
@@ -248,7 +248,7 @@ export default {
 .exercise-item__badge {
   display: inline-block;
   background-color: var(--color-primary);
-  color: var(--text-primary);
+  color: var(--color-secondary);
   padding: 0.25rem 0.75rem;
   border-radius: 1rem;
   font-size: 0.8rem;
@@ -258,7 +258,7 @@ export default {
 .other-user__no-routines {
   text-align: center;
   font-size: 1.2rem;
-  color: var(--text-secondary);
+  color: var(--color-secondary);
   margin-top: 2rem;
 }
 

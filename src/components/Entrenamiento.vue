@@ -125,7 +125,7 @@ export default {
 
 .descripcion-principal {
   font-size: 1.1rem;
-  color: var(--text-secondary);
+  color: var(--color-secondary);
   margin-bottom: 1.5rem;
 }
 
@@ -162,10 +162,10 @@ export default {
 }
 
 .rutina-card {
-  background-color: var(--color-secondary);
+  background-color: var(--color-primary);
+  filter: drop-shadow(4px 4px 0 var(--color-secondary));
   border-radius: var(--border-radius);
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: transform var(--transition-speed), box-shadow var(--transition-speed);
   display: flex;
   flex-direction: column;
@@ -174,40 +174,39 @@ export default {
 
 .rutina-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  filter: drop-shadow(4px 4px 0px var(--color-accent));
 }
 
 .card-header {
-  padding: 1.5rem;
+  padding: 0.5rem 1.5rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .rutina-nombre {
   font-size: 1.4rem;
-  color: var(--text-primary);
+  color: var(--color-secondary);
   margin-bottom: 0.5rem;
   font-weight: 600;
 }
 
 .rutina-descripcion {
   font-size: 0.95rem;
-  color: var(--text-secondary);
+  color: var(--color-secondary);
   line-height: 1.5;
+  margin-bottom: 0;
 }
 
 .card-content {
-  padding: 0 1.5rem;
+  margin-bottom: 1rem;
 }
 
-.ejercicios-details {
-  margin: 1rem 0;
-}
 
 .ejercicios-summary {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.75rem 0;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--color-secondary);
   cursor: pointer;
   color: var(--color-accent);
   font-weight: 500;
@@ -230,8 +229,7 @@ export default {
 }
 
 .lista-ejercicios {
-  margin-top: 0.5rem;
-  padding: 0.5rem 0;
+  padding: 0.5rem 1.5rem;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -246,15 +244,15 @@ export default {
 
 .ejercicio-info h4 {
   font-size: 1rem;
-  color: var(--text-primary);
+  color: var(--color-secondary);
   margin-bottom: 0.25rem;
   font-weight: 500;
 }
 
 .series-badge {
   display: inline-block;
-  background-color: var(--color-primary);
-  color: var(--color-secondary);
+  background-color: var(--color-info);
+  color: var(--color-primary);
   padding: 0.25rem 0.75rem;
   border-radius: 1rem;
   font-size: 0.8rem;
@@ -289,7 +287,7 @@ export default {
 
 .btn-ver {
   background-color: var(--color-info);
-  color: var(--text-primary);
+  color: var(--color-primary);
 }
 
 .btn-ver:hover {
@@ -298,7 +296,7 @@ export default {
 
 .btn-comenzar {
   background-color: var(--color-success);
-  color: var(--text-primary);
+  color: var(--color-primary);
 }
 
 .btn-comenzar:hover {
@@ -307,7 +305,7 @@ export default {
 
 .btn-eliminar {
   background-color: var(--color-error);
-  color: var(--text-primary);
+  color: var(--color-primary);
 }
 
 .btn-eliminar:hover {

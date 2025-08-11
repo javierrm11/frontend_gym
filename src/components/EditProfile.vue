@@ -166,7 +166,7 @@ export default {
 
 .form-label {
     font-weight: bold;
-    color: var(--text-secondary);
+    color: var(--color-secondary);
     font-size: 0.95rem;
 }
 
@@ -176,7 +176,7 @@ export default {
   border: 1px solid #444;
   border-radius: var(--border-radius);
   background-color: #2C2C2E;
-  color: var(--text-primary);
+  color: var(--color-primary);
   transition: border var(--transition-speed);
 }
 
@@ -201,7 +201,7 @@ export default {
 
 .form-button {
     background-color: var(--color-primary);
-    color: var(--text-primary);
+    color: var(--color-primary);
     border: none;
     padding: 0.75rem 2rem;
     font-size: 1rem;

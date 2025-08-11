@@ -5,16 +5,6 @@
   --color-accent: #FFD700; /* Blanco como acento */
   --color-terciario: #CCCCCC; /* Gris claro como terciario */
 
-  /* Texto */
-  --text-primary: #FFFFFF; /* Blanco para textos sobre fondo oscuro */
-  --text-secondary: #CCCCCC; /* Gris claro para textos secundarios */
-  --text-dark: #000000; /* Negro para textos sobre fondo claro */
-
-  /* Fondos */
-  --background-dark: #000000; /* Fondo negro */
-  --background-dark-alt: #121212; /* Fondo negro alternativo */
-  --background-light: #FFFFFF; /* Fondo blanco */
-
   /* Estados */
   --color-error: #FF4C4C; /* Rojo para errores */
   --color-success: #00C851; /* Verde para éxito */
@@ -25,13 +15,31 @@
   --border-radius: 12px;
   --transition-speed: 0.3s;
 }
+.oscuro{
+  /* Colores principales */
+  --color-primary: #000000; /* Amarillo dorado */
+  --color-secondary: #FFFF; /* Negro puro */
+  --color-accent: #FFD700; /* Blanco como acento */
+  --color-terciario: #acacac; /* Gris claro como terciario */
+
+  /* Estados */
+  --color-error: #FF4C4C; /* Rojo para errores */
+  --color-success: #00C851; /* Verde para éxito */
+  --color-warning: #FFA500; /* Naranja para advertencias */
+  --color-info: #2196F3; /* Azul para información */
+
+  /* Extras */
+  --border-radius: 12px;
+  --transition-speed: 0.3s;
+
+}
 body {
   font-family: "Poppins", sans-serif;
   color: #333;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  background-color: var(--background-light);
+  background-color: #e7e7e7;
 }
 main {
   padding: 3rem 0;

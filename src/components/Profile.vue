@@ -97,12 +97,16 @@ export default ({
 </script>
 
 <style scoped>
+
+/* CONTENEDOR GENERAL */
 .profile-container {
-  margin: 0 1rem;
-  padding: 0 1.5rem;
-  font-family: 'Poppins', sans-serif;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: var(--font-family);
+  min-height: 100vh;
 }
 
+/* ENCABEZADO */
 .header-section {
   text-align: center;
   margin-bottom: 3rem;
@@ -110,33 +114,35 @@ export default ({
 
 .titulo-principal {
   font-size: 2.5rem;
-  margin-bottom: 0.5rem;
   font-weight: 700;
-  color: #2c3e50;
+  color: var(--color-secondary);
+  margin-bottom: 0.5rem;
 }
 
 .descripcion-principal {
   font-size: 1.1rem;
-  color: #7f8c8d;
-  margin-bottom: 1.5rem;
+  color: #555;
 }
 
+/* TARJETA DE PERFIL */
 .profile-content {
   display: flex;
   justify-content: center;
 }
 
 .profile-card {
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: var(--color-primary);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
   display: flex;
   max-width: 800px;
   width: 100%;
   padding: 2rem;
   gap: 2rem;
+  border: 1px solid var(--color-accent);
 }
 
+/* IMAGEN DE PERFIL */
 .profile-image {
   display: flex;
   flex-direction: column;
@@ -149,20 +155,11 @@ export default ({
   height: 180px;
   border-radius: 50%;
   object-fit: cover;
-  border: 4px solid #3498db;
+  border: 4px solid var(--color-accent);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.btn-edit-avatar {
-  background-color: #3498db;
-  color: white;
-  padding: 0.5rem 1rem;
-}
-
-.btn-edit-avatar:hover {
-  background-color: #2980b9;
-}
-
+/* INFORMACIÓN DEL PERFIL */
 .profile-info {
   flex: 1;
   display: flex;
@@ -178,27 +175,30 @@ export default ({
 
 .info-label {
   font-weight: 600;
-  color: #2c3e50;
+  color: var(--color-secondary);
   font-size: 0.95rem;
 }
 
 .info-value {
   font-size: 1.1rem;
-  color: #34495e;
-  padding: 0.5rem;
-  background-color: #f8f9fa;
-  border-radius: 6px;
+  color: var(--color-secondary);
+  background-color: #f9f9f9;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--color-terciario);
 }
 
 .info-description {
   font-size: 1rem;
-  color: #7f8c8d;
-  padding: 0.75rem;
-  background-color: #f8f9fa;
-  border-radius: 6px;
+  color: #555;
+  padding: 0.75rem 1rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  border: 1px solid var(--color-terciario);
   line-height: 1.5;
 }
 
+/* ACCIONES */
 .profile-actions {
   display: flex;
   gap: 1rem;
@@ -209,34 +209,34 @@ export default ({
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.25rem;
-  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--border-radius);
   font-weight: 500;
   cursor: pointer;
-  border: none;
-  transition: all 0.2s;
   text-decoration: none;
+  transition: all var(--transition-speed);
+  border: none;
 }
 
 .btn-edit {
-  background-color: #2ecc71;
+  background-color: var(--color-success);
   color: white;
 }
 
 .btn-edit:hover {
-  background-color: #27ae60;
+  background-color: #009e3f;
 }
 
 .btn-delete {
-  background-color: #e74c3c;
+  background-color: var(--color-error);
   color: white;
 }
 
 .btn-delete:hover {
-  background-color: #c0392b;
+  background-color: #d73737;
 }
 
-/* Modal styles */
+/* MODAL */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -251,8 +251,8 @@ export default ({
 }
 
 .avatar-modal {
-  background-color: white;
-  border-radius: 12px;
+  background-color: var(--color-primary);
+  border-radius: var(--border-radius);
   padding: 2rem;
   width: 90%;
   max-width: 600px;
@@ -261,7 +261,7 @@ export default ({
 
 .avatar-modal h3 {
   margin-bottom: 1.5rem;
-  color: #2c3e50;
+  color: var(--color-secondary);
   text-align: center;
 }
 
@@ -279,12 +279,14 @@ export default ({
   gap: 0.5rem;
   cursor: pointer;
   padding: 1rem;
-  border-radius: 8px;
-  transition: background-color 0.2s;
+  border-radius: var(--border-radius);
+  transition: background-color var(--transition-speed);
+  border: 1px solid transparent;
 }
 
 .avatar-option:hover {
   background-color: #f8f9fa;
+  border-color: var(--color-accent);
 }
 
 .avatar-preview {
@@ -292,14 +294,15 @@ export default ({
   height: 80px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid #eee;
+  border: 2px solid var(--color-terciario);
 }
 
 .avatar-option span {
   font-size: 0.9rem;
-  color: #7f8c8d;
+  color: #666;
 }
 
+/* BOTONES MODAL */
 .modal-actions {
   display: flex;
   justify-content: flex-end;
@@ -307,23 +310,24 @@ export default ({
 }
 
 .btn-cancel {
-  background-color: #95a5a6;
-  color: white;
+  background-color: var(--color-warning);
+  color: var(--color-secondary);
 }
 
 .btn-cancel:hover {
-  background-color: #7f8c8d;
+  background-color: #e69500;
 }
 
 .btn-confirm {
-  background-color: #3498db;
-  color: white;
+  background-color: var(--color-accent);
+  color: var(--color-secondary);
 }
 
 .btn-confirm:hover {
-  background-color: #2980b9;
+  background-color: #e6c200;
 }
 
+/* RESPONSIVE */
 @media (max-width: 768px) {
   .profile-card {
     flex-direction: column;
@@ -337,10 +341,16 @@ export default ({
 
   .profile-actions {
     flex-direction: column;
+    width: 100%;
+  }
+
+  .btn-action {
+    justify-content: center;
   }
 
   .avatar-options {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
 </style>

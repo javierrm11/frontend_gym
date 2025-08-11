@@ -80,7 +80,7 @@ export default {
 /* Estilos base (mobile first) */
 header {
   background-color: var(--color-secondary);
-  color: var(--text-primary);
+  color: var(--color-primary);
   padding: 1rem 2rem;
   position: sticky;
   top: 0;
@@ -120,7 +120,7 @@ header h1 {
 .hamburger span {
   width: 100%;
   height: 0.25rem;
-  background: var(--text-primary);
+  background: var(--color-primary);
   border-radius: 0.25rem;
   transition: all var(--transition-speed) ease;
   position: relative;
@@ -167,7 +167,7 @@ nav ul li a,
 nav ul li .logout-btn {
   display: block;
   text-decoration: none;
-  color: var(--text-primary);
+  color: var(--color-terciario);
   font-size: 1.1rem;
   padding: 0.8rem 0;
   transition: background-color var(--transition-speed),
