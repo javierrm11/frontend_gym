@@ -123,31 +123,33 @@ export default {
 </script>
 
 <style scoped>
-/* Mobile First */
 .rutinas-container {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  padding: 1rem 0;
-  margin: 0 2rem;
+  min-height: 100dvh;
+  padding: 2rem 1rem;
+  background: var(--color-secondary);
 }
 
-
+/* Buscador */
 .rutinas-buscar {
   display: flex;
   margin-bottom: 1rem;
   border: 1px solid var(--color-terciario);
   border-radius: 8px;
   overflow: hidden;
-  background: #fff;
+  background: var(--color-secondary);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
 .rutinas-buscar-input {
   flex: 1;
-  padding: 0.75rem 1rem;
+  padding: 0.8rem 1rem;
   border: none;
   font-size: 1rem;
   background: transparent;
+  color: var(--color-primary);
 }
 
 .rutinas-buscar-input:focus {
@@ -156,19 +158,20 @@ export default {
 
 .rutinas-buscar-btn {
   padding: 0 1rem;
-  background: var(--color-terciario);
+  background: var(--color-accent);
   border: none;
   cursor: pointer;
-  color: white;
+  color: var(--color-secondary);
   display: flex;
   align-items: center;
-  transition: background 0.2s;
+  transition: background 0.2s ease;
 }
 
 .rutinas-buscar-btn:hover {
-  background: var(--color-secondary);
+  background: var(--color-quinto);
 }
 
+/* Listado de rutinas */
 .rutinas-usuarios {
   display: flex;
   flex-direction: column;
@@ -176,35 +179,42 @@ export default {
 }
 
 .rutina-card {
+  position: relative;
   border: 1px solid var(--color-terciario);
-  border-radius: 8px;
+  border-radius: 12px;
   padding: 1.25rem;
-  background: #fff;
-  transition: transform 0.2s, box-shadow 0.2s;
-  display: flex;
-  flex-direction: column;
+  background: var(--color-secondary);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .rutina-card:hover {
-  transform: translateY(-2px) scale(1.02);
-  filter: drop-shadow(0 2px 4px var(--color-terciario));
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
 }
-.rutina-perfil-link{
+
+.rutina-perfil-link {
   position: absolute;
   top: 0;
-  right: 0px;
-  padding: 0.5rem;
-  background: var(--color-secondary);
-  color: var(--color-accent);
-  border-radius: 0 8px 0 8px;
+  right: 0;
+  padding: 0.5rem 0.75rem;
+  background: var(--color-cuarto);
+  color: var(--color-secondary);
+  border-radius: 0 12px 0 12px;
+  font-size: 0.85rem;
   text-decoration: none;
   cursor: pointer;
+}
+
+.rutina-perfil-link:hover {
+  background: var(--color-quinto);
 }
 
 .rutina-header {
   display: flex;
   align-items: center;
   margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--color-accent);
 }
 
 .rutina-avatar {
@@ -214,16 +224,16 @@ export default {
   object-fit: cover;
   margin-right: 1rem;
   border: 2px solid var(--color-terciario);
-  background: var(--color-secondary);
 }
 
 .rutina-nombre {
   margin: 0;
   font-size: 1.1rem;
-  color: #1e293b;
+  color: var(--color-primary);
   font-weight: 600;
 }
 
+/* Ejercicios */
 .rutina-ejercicios {
   display: flex;
   flex-wrap: wrap;
@@ -234,76 +244,31 @@ export default {
 }
 
 .rutina-ejercicio {
-  background: var(--color-primary);
+  background: linear-gradient(to right, var(--color-primary), var(--color-accent));
   color: var(--color-secondary);
   border: 1px solid var(--color-terciario);
   padding: 0.5rem 0.75rem;
   border-radius: 6px;
   font-size: 0.9rem;
-  flex: 1 1 auto;
   cursor: pointer;
-}
-.rutina-ejercicio:hover {
-  background: var(--color-secondary);
-  color: var(--color-accent);
+  transition: background 0.2s ease;
 }
 
+.rutina-ejercicio:hover {
+  background: var(--color-quinto);
+  color: var(--color-secondary);
+}
+
+/* Categorías */
 .rutinas-categorias {
   display: none;
-}
-
-/* Tablet */
-@media (min-width: 768px) {
-  .rutinas-container {
-    flex-direction: row;
-    gap: 2rem;
-    padding: 1rem;
-  }
-  .rutinas-listado {
-    flex: 1 1 0%;
-  }
-  .rutinas-usuarios {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-  }
-  .rutina-card {
-    width: 320px;
-    min-width: 240px;
-    max-width: 100%;
-  }
-  .rutinas-categorias {
-    display: block;
-    background: var(--color-primary);
-    border: 1px solid var(--color-terciario);
-    border-radius: 8px;
-    padding: 1.25rem;
-    height: fit-content;
-    min-width: 220px;
-    max-width: 400px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-  }
-}
-
-/* Desktop */
-@media (min-width: 1100px) {
-  .rutinas-usuarios {
-    gap: 1.5rem;
-  }
-  .rutina-card {
-    width: 260px;
-  }
-  .rutinas-categorias {
-    min-width: 180px;
-    padding: 1rem 1.5rem;
-  }
 }
 
 .categorias-titulo {
   margin-top: 0;
   margin-bottom: 1rem;
   font-size: 1.25rem;
-  color: var(--color-secondary);
+  color: var(--color-primary);
   font-weight: 700;
 }
 
@@ -314,21 +279,59 @@ export default {
 }
 
 .categoria-btn {
-  background: white;
-  border: 1px solid #e2e8f0;
+  background: var(--color-secondary);
+  border: 1px solid var(--color-terciario);
   border-radius: 6px;
   padding: 0.75rem;
   cursor: pointer;
-  transition: background 0.2s, border 0.2s;
-  text-align: center;
   font-size: 0.95rem;
-  color: #334155;
+  color: var(--color-primary);
   font-weight: 500;
+  transition: background 0.2s ease, border 0.2s ease;
 }
 
 .categoria-btn:hover {
-  background: var(--color-secondary);
-  border-color: var(--color-terciario);
-  color: var(--color-accent);
+  background: var(--color-cuarto);
+  color: var(--color-secondary);
+  border-color: var(--color-quinto);
 }
+
+/* Responsive */
+@media (min-width: 768px) {
+  .rutinas-container {
+    flex-direction: row;
+    gap: 2rem;
+  }
+  .rutinas-listado {
+    flex: 1;
+  }
+  .rutinas-usuarios {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+  .rutina-card {
+    width: 300px;
+  }
+  .rutinas-categorias {
+    display: block;
+    background: var(--color-secondary);
+    border: 1px solid var(--color-terciario);
+    border-radius: 12px;
+    padding: 1.25rem;
+    height: fit-content;
+    min-width: 220px;
+  }
+}
+
+@media (min-width: 1100px) {
+  .rutina-card {
+    width: 260px;
+  }
+  .rutinas-categorias {
+    min-width: 180px;
+    padding: 1rem 1.5rem;
+  }
+}
+
 </style>
