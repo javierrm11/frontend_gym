@@ -131,6 +131,11 @@ export default {
   padding: 2rem 1rem;
   background: var(--color-secondary);
 }
+.rutinas-listado {
+  background: linear-gradient(to right, var(--color-primary), var(--color-accent));
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+}
 
 /* Buscador */
 .rutinas-buscar {

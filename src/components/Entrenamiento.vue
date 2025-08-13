@@ -108,7 +108,6 @@ export default {
 
 <style scoped>
 .entrenamiento-container {
-  margin: 0 1rem;
   font-family: 'Poppins', sans-serif;
 }
 
@@ -121,11 +120,14 @@ export default {
   font-size: 2.5rem;
   margin-bottom: 0.5rem;
   font-weight: 700;
+  background: linear-gradient(to right, var(--color-primary), var(--color-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .descripcion-principal {
   font-size: 1.1rem;
-  color: var(--color-secondary);
+  color: var(--color-quinto);
   margin-bottom: 1.5rem;
 }
 
@@ -133,8 +135,8 @@ export default {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background-color: var(--color-secondary);
-  color: var(--color-accent);
+  background-color: var(--color-cuarto);
+  color: var(--color-secondary);
   padding: 0.75rem 1.5rem;
   border-radius: var(--border-radius);
   text-decoration: none;
@@ -142,18 +144,18 @@ export default {
   transition: all var(--transition-speed);
   border: 2px solid transparent;
   text-decoration: none;
-  filter: drop-shadow(4px 4px 0 var(--color-accent));
 }
 
 .btn-agregar:hover {
-  background-color: var(--color-accent);
+  background-color: var(--color-quinto);
   color: var(--color-secondary);
   transform: translateY(-2px);
-  filter: drop-shadow(4px 4px 0 var(--color-secondary));
 }
 
 /* FLEX en vez de GRID */
 .rutinas-grid {
+  background: linear-gradient(to right, var(--color-primary), var(--color-accent));
+  padding: 2rem 1rem;
   display: flex;
   flex-wrap: wrap;
   gap: 1.5rem;
@@ -162,8 +164,7 @@ export default {
 }
 
 .rutina-card {
-  background-color: var(--color-primary);
-  filter: drop-shadow(4px 4px 0 var(--color-secondary));
+  background-color: var(--color-secondary);
   border-radius: var(--border-radius);
   overflow: hidden;
   transition: transform var(--transition-speed), box-shadow var(--transition-speed);
@@ -174,24 +175,24 @@ export default {
 
 .rutina-card:hover {
   transform: translateY(-5px);
-  filter: drop-shadow(4px 4px 0px var(--color-accent));
 }
 
 .card-header {
   padding: 0.5rem 1.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .rutina-nombre {
   font-size: 1.4rem;
-  color: var(--color-secondary);
+  background: linear-gradient(to right, var(--color-primary), var(--color-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   margin-bottom: 0.5rem;
   font-weight: 600;
 }
 
 .rutina-descripcion {
   font-size: 0.95rem;
-  color: var(--color-secondary);
+  color: var(--color-quinto);
   line-height: 1.5;
   margin-bottom: 0;
 }
@@ -230,12 +231,10 @@ export default {
 
 .lista-ejercicios {
   padding: 0.5rem 1.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .ejercicio-item {
   padding: 0.75rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .ejercicio-item:last-child {
@@ -244,15 +243,17 @@ export default {
 
 .ejercicio-info h4 {
   font-size: 1rem;
-  color: var(--color-secondary);
+  background: linear-gradient(to right, var(--color-primary), var(--color-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   margin-bottom: 0.25rem;
   font-weight: 500;
 }
 
 .series-badge {
   display: inline-block;
-  background-color: var(--color-info);
-  color: var(--color-primary);
+  background-color: var(--color-cuarto);
+  color: var(--color-secondary);
   padding: 0.25rem 0.75rem;
   border-radius: 1rem;
   font-size: 0.8rem;
@@ -263,7 +264,7 @@ export default {
   display: flex;
   padding: 1rem 1.5rem;
   margin-top: auto;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: var(--color-secondary);
   gap: 0.75rem;
 }
 
@@ -287,7 +288,7 @@ export default {
 
 .btn-ver {
   background-color: var(--color-info);
-  color: var(--color-primary);
+  color: var(--color-secondary);
 }
 
 .btn-ver:hover {
@@ -296,7 +297,7 @@ export default {
 
 .btn-comenzar {
   background-color: var(--color-success);
-  color: var(--color-primary);
+  color: var(--color-secondary);
 }
 
 .btn-comenzar:hover {
@@ -305,7 +306,7 @@ export default {
 
 .btn-eliminar {
   background-color: var(--color-error);
-  color: var(--color-primary);
+  color: var(--color-secondary);
 }
 
 .btn-eliminar:hover {
