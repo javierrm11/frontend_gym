@@ -1,9 +1,10 @@
 :root {
   /* Colores principales */
-  --color-primary: #FFFFFF; /* Amarillo dorado */
-  --color-secondary: #000000; /* Negro puro */
-  --color-accent: #FFD700; /* Blanco como acento */
-  --color-terciario: #CCCCCC; /* Gris claro como terciario */
+  --color-primary: #ff9c24; /* Amarillo dorado */
+  --color-secondary: #FFFF; /* Negro puro */
+  --color-accent: #fe7000; /* Blanco como acento */
+  --color-terciario: #ece9e8; /* Gris claro como terciario */
+  --color-cuarto: #8A4FFF;
 
   /* Estados */
   --color-error: #FF4C4C; /* Rojo para errores */
@@ -20,7 +21,8 @@
   --color-primary: #000000; /* Amarillo dorado */
   --color-secondary: #FFFF; /* Negro puro */
   --color-accent: #FFD700; /* Blanco como acento */
-  --color-terciario: #acacac; /* Gris claro como terciario */
+  --color-terciario: #969696; /* Gris claro como terciario */
+  --color-cuarto: #8A4FFF;
 
   /* Estados */
   --color-error: #FF4C4C; /* Rojo para errores */
@@ -39,7 +41,7 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  background-color: #e7e7e7;
+  background-color: var(--color-terciario);
 }
 main {
   padding: 3rem 0;

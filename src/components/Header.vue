@@ -1,5 +1,5 @@
 <template>
-  <header>
+  <header class="header">
     <div class="header-container">
       <a><h1>Gym</h1></a>
       <button
@@ -78,9 +78,9 @@ export default {
 </script>
 <style>
 /* Estilos base (mobile first) */
-header {
+.header {
   background-color: var(--color-secondary);
-  color: var(--color-primary);
+  color: var(--color-secondary);
   padding: 1rem 2rem;
   position: sticky;
   top: 0;
@@ -96,7 +96,9 @@ header {
 header h1 {
   margin: 0;
   font-size: 1.5rem;
-  color: var(--color-accent);
+  background: linear-gradient(to right, var(--color-primary), var(--color-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 /* Menú hamburguesa */
@@ -167,11 +169,11 @@ nav ul li a,
 nav ul li .logout-btn {
   display: block;
   text-decoration: none;
-  color: var(--color-terciario);
+  color: var(--color-primary);
   font-size: 1.1rem;
   padding: 0.8rem 0;
   transition: background-color var(--transition-speed),
-    color var(--transition-speed);
+    color var(--transition-speed) transform var(--transition-speed);
   width: 100%;
   border: none;
   background: none;
@@ -181,6 +183,8 @@ nav ul li .logout-btn {
 nav ul li a:hover,
 nav ul li .logout-btn:hover {
   color: var(--color-accent);
+  transform: translate(-2px, -2px);
+
 }
 
 nav ul li a.router-link-exact-active {
