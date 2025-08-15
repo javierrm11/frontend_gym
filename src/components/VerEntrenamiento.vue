@@ -13,7 +13,7 @@
     <div class="rutinas-grid">
       <div class="rutina-card">
         <div class="card-header">
-          <h3 class="rutina-nombre">Ejercicios</h3>
+          <h3 class="rutina-ejercicios-nombre">Ejercicios</h3>
         </div>
         <div class="card-content">
           <div v-if="rutina.ejercicios?.length" class="lista-ejercicios">
@@ -211,17 +211,15 @@ export default {
 
 <style scoped>
 .entrenamiento-container {
-  margin: 0 auto;
-  padding: 1.5rem 1rem;
   font-family: 'Poppins', sans-serif;
-  min-height: 100vh;
-  max-width: 1200px;
 }
 
 .header-section {
   text-align: center;
   margin-bottom: 2.5rem;
   position: relative;
+  padding: 1.5rem;
+  background: linear-gradient(to right, var(--color-primary), var(--color-accent));
 }
 
 .titulo-principal {
@@ -232,42 +230,29 @@ export default {
   position: relative;
   display: inline-block;
 }
-
-.titulo-principal::after {
-  content: '';
-  position: absolute;
-  bottom: -8px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80px;
-  height: 3px;
-  background: var(--color-accent);
+.rutina-ejercicios-nombre{
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(to right, var(--color-primary), var(--color-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 1rem;
+  position: relative;
+  display: inline-block;
 }
+
 
 .descripcion-principal-container {
   text-align: center;
   font-size: 1rem;
-  background: var(--color-primary);
-  padding: 1.5rem;
   margin: 0 auto;
   width: 90%;
   max-width: 800px;
   border-radius: var(--border-radius);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-  border: 1px solid var(--color-terciario);
   position: relative;
   overflow: hidden;
 }
 
-.descripcion-principal-container::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 5px;
-  height: 100%;
-  background: var(--color-accent);
-}
 
 .descripcion-principal {
   font-size: 1.05rem;
@@ -285,21 +270,14 @@ export default {
 .rutina-card {
   border-radius: var(--border-radius);
   overflow: hidden;
-  background: var(--color-primary);
-  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
   border: 1px solid var(--color-terciario);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.rutina-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-}
 
 .card-header {
   padding: 1.5rem 1.5rem 0;
   text-align: center;
-  background: linear-gradient(to right, var(--color-accent), #FFECB3);
   margin: -1px -1px 0 -1px;
 }
 
@@ -312,17 +290,6 @@ export default {
   padding-bottom: 0.5rem;
 }
 
-.rutina-nombre::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 50px;
-  height: 2px;
-  background: var(--color-secondary);
-  opacity: 0.3;
-}
 
 .card-content {
   padding: 1.5rem;
@@ -333,6 +300,7 @@ export default {
   grid-template-columns: 1fr;
   gap: 1.2rem;
   margin-top: 1rem;
+  margin: 0 1rem;
 }
 
 .ejercicio-item {
@@ -340,26 +308,11 @@ export default {
   padding: 1.2rem;
   border-radius: calc(var(--border-radius) - 4px);
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  border: 1px solid var(--color-terciario);
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
 }
 
-.ejercicio-item:hover {
-  border-color: var(--color-accent);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-.ejercicio-item::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 3px;
-  height: 100%;
-  background: var(--color-accent);
-}
 
 .ejercicio-info h4 {
   font-size: 1.2rem;
@@ -401,9 +354,6 @@ export default {
 
 /* Tablet */
 @media (min-width: 768px) {
-  .entrenamiento-container {
-    padding: 2rem;
-  }
   
   .titulo-principal {
     font-size: 2.2rem;
@@ -420,15 +370,12 @@ export default {
 
 /* Desktop */
 @media (min-width: 1024px) {
-  .entrenamiento-container {
-    padding: 3rem 2rem;
-  }
   
   .lista-ejercicios {
     grid-template-columns: repeat(3, 1fr);
   }
   
-  .rutina-nombre {
+  .rutina-nombre, .rutina-ejercicios-nombre {
     font-size: 1.6rem;
   }
   

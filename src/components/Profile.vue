@@ -115,13 +115,15 @@ export default ({
 .titulo-principal {
   font-size: 2.5rem;
   font-weight: 700;
-  color: var(--color-secondary);
+  background: linear-gradient(to right, var(--color-primary), var(--color-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   margin-bottom: 0.5rem;
 }
 
 .descripcion-principal {
   font-size: 1.1rem;
-  color: #555;
+  color: var(--color-quinto);
 }
 
 /* TARJETA DE PERFIL */
@@ -131,15 +133,13 @@ export default ({
 }
 
 .profile-card {
-  background-color: var(--color-primary);
+  background-color: var(--color-secondary);
   border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow);
   display: flex;
   max-width: 800px;
   width: 100%;
   padding: 2rem;
   gap: 2rem;
-  border: 1px solid var(--color-accent);
 }
 
 /* IMAGEN DE PERFIL */
@@ -175,13 +175,13 @@ export default ({
 
 .info-label {
   font-weight: 600;
-  color: var(--color-secondary);
+  color: var(--color-primary);
   font-size: 0.95rem;
 }
 
 .info-value {
   font-size: 1.1rem;
-  color: var(--color-secondary);
+  color: var(--color-quinto);
   background-color: #f9f9f9;
   padding: 0.6rem 1rem;
   border-radius: 8px;

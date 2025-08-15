@@ -129,10 +129,9 @@ export default {
   gap: 1rem;
   min-height: 100dvh;
   padding: 2rem 1rem;
-  background: var(--color-secondary);
+  background: var(--color-terciario);
 }
 .rutinas-listado {
-  background: linear-gradient(to right, var(--color-primary), var(--color-accent));
   padding: 1.5rem;
   border-radius: var(--border-radius);
 }

@@ -226,12 +226,9 @@ export default {
 
 <style scoped>
 .anadir-entrenamiento {
-  width: 100%;
-  max-width: 500px;
-  margin: 0 auto;
+  margin: 0 1rem;
   padding: 1.5rem 0.75rem;
   font-family: 'Poppins', sans-serif;
-  background-color: #f8f9fa;
   border-radius: 10px;
   box-sizing: border-box;
 }
@@ -240,21 +237,22 @@ export default {
   font-size: 2rem;
   margin-bottom: 0.5rem;
   font-weight: 700;
-  color: #333;
+  background: linear-gradient(to right, var(--color-primary), var(--color-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   text-align: center;
 }
 
 .descripcion {
   margin-bottom: 1.5rem;
-  color: #555;
+  color: var(--color-quinto);
   text-align: center;
 }
 
 .formulario {
-  background-color: #ffffff;
+  background-color: var(--color-secondary);
   padding: 1.25rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  border-radius: var(--border-radius);
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
@@ -269,20 +267,25 @@ export default {
 
 .form-group label {
   font-weight: 600;
-  color: #333;
+  color: var(--color-primary);
 }
 
 .form-group input {
   width: 100%;
   padding: 8px;
   border-radius: 6px;
-  border: 1px solid #ced4da;
+  border: 1px solid var(--color-terciario);
   box-sizing: border-box;
   font-size: 1rem;
+  color: var(--color-quinto);
+}
+.form-group input:focus {
+  border-color: var(--color-accent);
+  outline: none;
 }
 
 .ejercicio {
-  background-color: #f1f5f9;
+  background-color: var(--color-terciario);
   padding: 1rem;
   margin: 0.5rem 0;
   border-radius: 8px;
@@ -299,7 +302,7 @@ export default {
 }
 
 .btn-remove {
-  background: #e53935;
+  background: var(--color-error);
   color: #fff;
   border: none;
   border-radius: 50%;
@@ -327,14 +330,18 @@ select {
   width: 100%;
   padding: 8px;
   border-radius: 6px;
-  border: 1px solid #ced4da;
+  border: 1px solid var(--color-terciario);
   font-size: 1rem;
-  background: #fff;
+  background: var(--color-secondary);
 }
 
 select:disabled {
-  background: #e9ecef;
-  color: #888;
+  background: var(--color-secondary);
+  color: var(--color-quinto);
+}
+select:focus {
+  border-color: var(--color-accent);
+  outline: none;
 }
 
 .btn-agregar,
@@ -349,8 +356,8 @@ select:disabled {
 }
 
 .btn-agregar {
-  background-color: #28a745;
-  color: white;
+  background-color: var(--color-success);
+  color: var(--color-secondary);
   margin-top: 0.5rem;
 }
 
@@ -359,19 +366,18 @@ select:disabled {
 }
 
 .btn-enviar {
-  background-color: #007bff;
-  color: white;
+  background-color: var(--color-cuarto);
+  color: var(--color-secondary);
   margin-top: 0.5rem;
 }
 
 .btn-enviar:hover {
-  background-color: #0069d9;
+  background-color: var(--color-quinto);
 }
 
 /* Tablet */
 @media (min-width: 768px) {
   .anadir-entrenamiento {
-    max-width: 700px;
     padding: 2rem 1.5rem;
   }
   .formulario {
@@ -381,9 +387,4 @@ select:disabled {
 }
 
 /* Desktop */
-@media (min-width: 1100px) {
-  .anadir-entrenamiento {
-    max-width: 800px;
-  }
-}
 </style>

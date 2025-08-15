@@ -81,6 +81,7 @@ export default {
 .header {
   background-color: var(--color-secondary);
   color: var(--color-secondary);
+  filter: drop-shadow(0 1px 4px var(--color-accent));
   padding: 1rem 2rem;
   position: sticky;
   top: 0;

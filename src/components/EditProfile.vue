@@ -137,20 +137,20 @@ export default {
 .edit-title {
     font-size: 2rem;
     margin-bottom: 2rem;
-    color: var(--color-primary);
+    background: linear-gradient(to right, var(--color-primary), var(--color-accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .edit-form {
     max-width: 800px;
     width: 100%;
     background-color: var(--color-secondary);
-    border: 2px solid var(--color-primary);
     padding: 2rem;
     border-radius: var(--border-radius);
     display: flex;
     flex-wrap: wrap;
     gap: 1.5rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .form-group {
@@ -166,17 +166,16 @@ export default {
 
 .form-label {
     font-weight: bold;
-    color: var(--color-secondary);
+    color: var(--color-primary);
     font-size: 0.95rem;
 }
 
 .form-input,
 .form-textarea {
   padding: 0.75rem;
-  border: 1px solid #444;
+  border: 1px solid var(--color-terciario);
   border-radius: var(--border-radius);
-  background-color: #2C2C2E;
-  color: var(--color-primary);
+  color: var(--color-quinto);
   transition: border var(--transition-speed);
 }
 
@@ -184,7 +183,6 @@ export default {
 .form-textarea:focus {
     outline: none;
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 2px rgba(163, 255, 18, 0.2);
 }
 
 .form-textarea {
@@ -200,8 +198,8 @@ export default {
 }
 
 .form-button {
-    background-color: var(--color-primary);
-    color: var(--color-primary);
+    background-color: var(--color-cuarto);
+    color: var(--color-secondary);
     border: none;
     padding: 0.75rem 2rem;
     font-size: 1rem;
@@ -214,7 +212,7 @@ export default {
 }
 
 .form-button:hover {
-    background-color: var(--color-accent);
+    background-color: var(--color-quinto);
     color: var(--color-secondary);
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(163, 255, 18, 0.3);

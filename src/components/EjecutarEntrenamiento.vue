@@ -325,8 +325,6 @@ export default {
 <style scoped>
 .entrenamiento-container {
   padding: 1rem;
-  max-width: 800px;
-  margin: 0 auto;
   font-family: 'Poppins', sans-serif;
 }
 
@@ -375,6 +373,7 @@ export default {
   border-radius: 1rem;
   font-size: 0.9rem;
   font-weight: 500;
+  box-sizing: border-box;
 }
 
 .icon {
@@ -591,6 +590,8 @@ export default {
   padding: 0.75rem;
   color: var(--text-primary);
   font-size: 1rem;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .input-peso:focus, .input-repeticiones:focus {

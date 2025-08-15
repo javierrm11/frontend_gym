@@ -116,33 +116,38 @@ export default {
   border-radius: 50%;
   object-fit: cover;
   margin-bottom: 1rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .other-user__name {
   font-size: 2rem;
   margin-bottom: 0.5rem;
   font-weight: 700;
+  background: linear-gradient(to right, var(--color-primary), var(--color-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .other-user__email {
   font-size: 1rem;
-  color: var(--color-secondary);
+  color: var(--color-quinto);
   margin-bottom: 1.5rem;
 }
 
 .other-user__routines {
   display: flex;
-  margin: 0 2rem;
+  padding: 2rem;
   flex-wrap: wrap;
   gap: 1.5rem;
   justify-content: center;
   align-items: baseline;
+  background: var(--color-primary);
 }
 .other-user__routines h2 {
   flex: 0 0 100%;
   font-size: 1.8rem;
   text-align: center;
+  color: var(--color-secondary);
+  
 }
 
 .routine-card {
@@ -164,7 +169,6 @@ export default {
 
 .routine-card__header {
   padding: 1.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .routine-card__name {
@@ -176,7 +180,7 @@ export default {
 
 .routine-card__description {
   font-size: 0.95rem;
-  color: var(--color-primary);
+  color: var(--color-quinto);
   line-height: 1.5;
 }
 
@@ -217,12 +221,10 @@ export default {
 .routine-card__exercises {
   margin-top: 0.5rem;
   padding: 0.5rem 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .exercise-item {
   padding: 0.75rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .exercise-item:last-child {
@@ -247,7 +249,7 @@ export default {
 
 .exercise-item__badge {
   display: inline-block;
-  background-color: var(--color-primary);
+  background-color: var(--color-cuarto);
   color: var(--color-secondary);
   padding: 0.25rem 0.75rem;
   border-radius: 1rem;
