@@ -75,7 +75,7 @@ export default {
         }
     },
     mounted() {
-        axios.get('http://localhost:3000/api/user', {
+        axios.get(`${process.env.VUE_APP_BASE_URL}/api/user`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             }
@@ -106,7 +106,7 @@ export default {
                 formData.append('fotoPerfil', this.imagen);
             }
 
-            axios.put('http://localhost:3000/api/user', formData, {
+            axios.put(`${process.env.VUE_APP_BASE_URL}/api/user`, formData, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`,
                     'Content-Type': 'multipart/form-data'

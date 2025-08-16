@@ -173,7 +173,7 @@ export default {
     async getRutina() {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/rutinas/${this.$route.params.id}`
+          `${process.env.VUE_APP_BASE_URL}/api/rutinas/${this.$route.params.id}`
         );
         this.rutina = response.data[0];
 
@@ -202,7 +202,7 @@ export default {
       const promesas = this.ejercicios.map(async (ejercicio) => {
         try {
           const response = await axios.post(
-            "http://localhost:3000/api/estadisticasEjercicio/getByNumSeries",
+            `${process.env.VUE_APP_BASE_URL}/api/estadisticasEjercicio/getByNumSeries`,
             {
               id: ejercicio.ejercicioRutina_id,
             },
@@ -245,7 +245,7 @@ export default {
       const promesas = this.ejercicios.map(async (ejercicio) => {
         try {
           const response = await axios.get(
-            "http://localhost:3000/api/estadisticasEjercicio/getIdSerie/" + ejercicio.ejercicioRutina_id,
+            `${process.env.VUE_APP_BASE_URL}/api/estadisticasEjercicio/getIdSerie/` + ejercicio.ejercicioRutina_id,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -300,7 +300,7 @@ export default {
       try {
         this.isLoading = true; // Mostrar el loader
         const response = await axios.post(
-          `http://localhost:3000/api/estadisticasEjercicio/agregar/${rutinaId}`,
+          `${process.env.VUE_APP_BASE_URL}/api/estadisticasEjercicio/agregar/${rutinaId}`,
           datos,
           {
             headers: {

@@ -58,7 +58,7 @@ export default {
       }
       if (this.errores.length === 0) {
         axios
-          .post("http://localhost:3000/api/auth/login", {
+          .post(`${process.env.VUE_APP_BASE_URL}/api/auth/login`, {
             nombreUsuario: this.nombreUsuario,
             password: this.password,
           })

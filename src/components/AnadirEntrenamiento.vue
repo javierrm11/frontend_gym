@@ -124,7 +124,7 @@ export default {
   methods: {
     getEjercicios() {
       axios
-        .get("http://localhost:3000/api/ejercicio/categorias")
+        .get(`${process.env.VUE_APP_BASE_URL}/api/ejercicio/categorias`)
         .then((response) => {
           this.gruposMusculares = response.data;
         })
@@ -156,7 +156,7 @@ export default {
       }
       axios
         .post(
-          "http://localhost:3000/api/rutinas",
+          `${process.env.VUE_APP_BASE_URL}/api/rutinas`,
           {
             Nombre: this.nombre,
             Descripcion: this.descripcion,
@@ -173,7 +173,7 @@ export default {
           const rutinaNombre = this.nombre;
           const peticiones = this.ejercicios.map((ejercicio) =>
             axios.post(
-              "http://localhost:3000/api/ejercicio",
+              `${process.env.VUE_APP_BASE_URL}/api/ejercicio`,
               {
                 Nombre_Rutina: rutinaNombre,
                 Nombre_Ejercicio: ejercicio.seleccionado,
@@ -201,7 +201,7 @@ export default {
       this.ejercicios[index].grupoSeleccionado = categoria;
       this.ejercicios[index].seleccionado = "";
       axios
-        .get(`http://localhost:3000/api/ejercicio/${categoria}`)
+        .get(`${process.env.VUE_APP_BASE_URL}/api/ejercicio/${categoria}`)
         .then((response) => {
           this.ejercicios[index].ejerciciosFiltrados = response.data;
         })

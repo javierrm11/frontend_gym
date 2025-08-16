@@ -86,7 +86,7 @@ export default {
   methods: {
     obtenerGrupos() {
       axios
-        .get("http://localhost:3000/api/rutinas/index")
+        .get(`${process.env.VUE_APP_BASE_URL}/api/rutinas/index`)
         .then((response) => {
           this.grupos = response.data;
         })
@@ -94,8 +94,8 @@ export default {
     },
     rutinasUsuarios(busqueda) {
       const url = busqueda
-        ? `http://localhost:3000/api/rutinas?busqueda=${busqueda}`
-        : "http://localhost:3000/api/rutinas";
+        ? `${process.env.VUE_APP_BASE_URL}/api/rutinas?busqueda=${busqueda}`
+        : `${process.env.VUE_APP_BASE_URL}/api/rutinas`;
 
       axios
         .get(url)
@@ -103,7 +103,7 @@ export default {
           this.rutinas = response.data.map((rutina) => ({
             ...rutina,
             Foto: rutina.Foto
-              ? `http://localhost:3000${rutina.Foto}`
+              ? `${process.env.VUE_APP_BASE_URL}${rutina.Foto}`
               : require("@/assets/users/predeterminada.png"),
           }));
         })

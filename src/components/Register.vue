@@ -98,7 +98,7 @@ export default {
           formData.append('fotoPerfil', this.imagen);
         }
 
-        axios.post('http://localhost:3000/api/auth/register', formData, {
+        axios.post(`${process.env.VUE_APP_BASE_URL}/api/auth/register`, formData, {
           headers: { 'Content-Type': 'multipart/form-data' }
         })
         .then(response => {

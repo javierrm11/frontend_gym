@@ -71,7 +71,7 @@ export default {
   methods: {
     getRutinas() {
       axios
-        .get("http://localhost:3000/api/rutinas/usuario/" + this.$store.state.usuario)
+        .get(`${process.env.VUE_APP_BASE_URL}/api/rutinas/usuario/` + this.$store.state.usuario)
         .then((response) => {
           this.rutinas = response.data;
         })
@@ -82,7 +82,7 @@ export default {
     eliminarRutina(rutinaId) {
       if (confirm("¿Estás seguro de eliminar esta rutina?")) {
         axios
-          .delete("http://localhost:3000/api/rutinas/" + rutinaId, {
+          .delete(`${process.env.VUE_APP_BASE_URL}/api/rutinas/` + rutinaId, {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },

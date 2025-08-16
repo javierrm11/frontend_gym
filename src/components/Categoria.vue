@@ -49,7 +49,7 @@
     methods: {
       obtenerEjerciciosPorCategoria() {
         const grupo = this.$route.params.nombre;
-        axios.get(`http://localhost:3000/api/ejercicio/${grupo}`)
+        axios.get(`${process.env.VUE_APP_BASE_URL}/api/ejercicio/${grupo}`)
         .then(response => {
           this.ejercicios = response.data;
         })

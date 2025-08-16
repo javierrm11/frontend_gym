@@ -45,7 +45,7 @@ export default {
     methods: {
         obtenerRutina() {
             const id = this.$route.params.id;
-            axios.get(`http://localhost:3000/api/rutinas/${id}`)
+            axios.get(`${process.env.VUE_APP_BASE_URL}/api/rutinas/${id}`)
                 .then(response => {
                     this.rutina = response.data[0];
                     this.ejercicios = response.data[0].ejercicios;
@@ -55,7 +55,7 @@ export default {
                 });
         },
         copiarRutina(rutina){
-            axios.post("http://localhost:3000/api/rutinas", {
+            axios.post(`${process.env.VUE_APP_BASE_URL}/api/rutinas`, {
                 Nombre: rutina.Nombre,
                 Descripcion: rutina.Descripcion,
             },{
@@ -65,7 +65,7 @@ export default {
             })
             .then(response => {
                 this.rutina.ejercicios.forEach(ejercicio => {
-                    axios.post("http://localhost:3000/api/ejercicio", {
+                    axios.post(`${process.env.VUE_APP_BASE_URL}/api/ejercicio`, {
                         Nombre_Rutina: response.data.Nombre,
                         Nombre_Ejercicio: ejercicio.Nombre,
                         Descripcion: ejercicio.Descripcion,

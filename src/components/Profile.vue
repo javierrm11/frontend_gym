@@ -75,7 +75,7 @@ export default ({
         }
     },
     mounted() {
-        axios.get('http://localhost:3000/api/user', {
+        axios.get(`${process.env.VUE_APP_BASE_URL}/api/user`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             }
@@ -84,7 +84,7 @@ export default ({
             this.usuario = response.data;
             // Si tiene foto personalizada, agregamos el host si no está completo
             if (this.usuario.Foto) {
-                this.usuario.Foto = `http://localhost:3000${this.usuario.Foto}`;
+                this.usuario.Foto = `${process.env.VUE_APP_BASE_URL}${this.usuario.Foto}`;
             } else {
                 this.usuario.Foto = require('@/assets/users/predeterminada.png');
             }

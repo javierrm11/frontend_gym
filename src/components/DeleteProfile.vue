@@ -14,7 +14,7 @@ export default {
     methods: {
         async deleteProfile() {
             try {
-                await axios.delete('http://localhost:3000/api/user', {
+                await axios.delete(`${process.env.VUE_APP_BASE_URL}/api/user`, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('token')}`
                     }

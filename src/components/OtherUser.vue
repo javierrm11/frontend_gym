@@ -78,11 +78,11 @@ export default {
     fetchUser() {
       const userId = this.$route.params.id;
       axios
-        .get(`http://localhost:3000/api/user/${userId}`)
+        .get(`${process.env.VUE_APP_BASE_URL}/api/user/${userId}`)
         .then((response) => {
           this.user = response.data;
           if (this.user.Foto) {
-            this.user.Foto = `http://localhost:3000${this.user.Foto}`;
+            this.user.Foto = `${process.env.VUE_APP_BASE_URL}${this.user.Foto}`;
           } else {
             this.user.Foto = require("@/assets/users/predeterminada.png");
           }

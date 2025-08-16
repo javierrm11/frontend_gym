@@ -73,7 +73,7 @@ export default {
 
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/rutinas/${this.$route.params.id}`
+          `${process.env.VUE_APP_BASE_URL}/api/rutinas/${this.$route.params.id}`
         );
         this.rutina = response.data[0];
 
@@ -89,7 +89,7 @@ export default {
         const estadisticasPromises = this.rutina.ejercicios.map(async (ejercicio) => {
           try {
             const res = await axios.post(
-              "http://localhost:3000/api/estadisticasEjercicio/getByDate",
+              `${process.env.VUE_APP_BASE_URL}/api/estadisticasEjercicio/getByDate`,
               {
                 id: ejercicio.ejercicioRutina_id,
                 Rutina_id: this.rutina.id,
@@ -138,7 +138,7 @@ export default {
     },
     getEjercicios() {
       axios
-        .get("http://localhost:3000/api/ejercicio/categorias")
+        .get(`${process.env.VUE_APP_BASE_URL}/api/ejercicio/categorias`)
         .then((response) => {
           this.gruposMusculares = response.data;
         })
@@ -150,7 +150,7 @@ export default {
       this.ejercicios[index].grupoSeleccionado = categoria;
       this.ejercicios[index].seleccionado = "";
       axios
-        .get(`http://localhost:3000/api/ejercicio/${categoria}`)
+        .get(`${process.env.VUE_APP_BASE_URL}/api/ejercicio/${categoria}`)
         .then((response) => {
           this.ejercicios[index].ejerciciosFiltrados = response.data;
         })
@@ -171,7 +171,7 @@ export default {
 
       axios
         .post(
-          "http://localhost:3000/api/ejercicio",
+          `${process.env.VUE_APP_BASE_URL}/api/ejercicio`,
           {
             Nombre_Rutina: this.rutina.Nombre,
             Nombre_Ejercicio: ej.seleccionado,
@@ -193,7 +193,7 @@ export default {
     },
     eliminarEjercicio(id) {
       axios
-        .delete(`http://localhost:3000/api/ejercicio/${id}`, {
+        .delete(`${process.env.VUE_APP_BASE_URL}/api/ejercicio/${id}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
