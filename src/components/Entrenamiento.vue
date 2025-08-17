@@ -155,7 +155,7 @@ export default {
 /* FLEX en vez de GRID */
 .rutinas-grid {
   background: linear-gradient(to right, var(--color-primary), var(--color-accent));
-  padding: 2rem 1rem;
+  padding: 5rem 1rem;
   display: flex;
   flex-wrap: wrap;
   gap: 1.5rem;
@@ -323,6 +323,7 @@ export default {
   .rutinas-grid {
     flex-direction: column;
     align-items: center;
+    gap: 5rem;
   }
   .rutina-card {
     width: 100%;
