@@ -132,7 +132,6 @@ export default {
   background: var(--color-terciario);
 }
 .rutinas-listado {
-  padding: 1.5rem;
   border-radius: var(--border-radius);
 }
 
