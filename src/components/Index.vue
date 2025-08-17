@@ -142,12 +142,12 @@ export default {
   margin-bottom: 1rem;
   border: 1px solid var(--color-terciario);
   border-radius: 8px;
-  overflow: hidden;
   background: var(--color-secondary);
   box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
 .rutinas-buscar-input {
+  width: 100%;
   flex: 1;
   padding: 0.8rem 1rem;
   border: none;
