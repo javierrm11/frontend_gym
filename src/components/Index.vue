@@ -161,6 +161,7 @@ export default {
 }
 
 .rutinas-buscar-btn {
+  border-radius: 0 8px 8px 0;
   padding: 0 1rem;
   background: var(--color-accent);
   border: none;
