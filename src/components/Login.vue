@@ -115,6 +115,7 @@ export default {
   flex-direction: column;
   gap: 1.5rem;
   place-self: center;
+  box-sizing: border-box;
 }
 
 .login-form-group {
