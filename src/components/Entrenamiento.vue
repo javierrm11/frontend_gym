@@ -320,9 +320,6 @@ export default {
 }
 
 @media (max-width: 768px) {
-  .entrenamiento-container {
-    padding: 1.5rem 1rem;
-  }
   .rutinas-grid {
     flex-direction: column;
     align-items: center;
