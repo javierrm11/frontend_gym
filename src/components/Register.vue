@@ -168,7 +168,7 @@ export default {
 
 #imagen {
   width: 100%;
-  padding: 0.8rem 0;
+  box-sizing: border-box;
 }
 
 .register-input:focus {
