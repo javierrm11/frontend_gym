@@ -524,9 +524,13 @@ export default {
 
 .series-container {
   margin-top: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .serie-item {
+  flex: 1 1 calc(30% - 1rem);
   background-color: rgba(0, 0, 0, 0.1);
   border-radius: calc(var(--border-radius) / 2);
   padding: 1rem;
@@ -692,6 +696,10 @@ export default {
   .info-badge {
     width: 100%;
     justify-content: center;
+  }
+  .serie-item {
+    flex: 0 0 100%;
+    box-sizing: border-box;
   }
 }
 
