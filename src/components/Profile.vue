@@ -93,6 +93,29 @@ export default ({
             console.error("Error al obtener el usuario:", error);
         });
     },
+    methods: {
+        confirmDelete() {
+            if (confirm("¿Estás seguro de que deseas eliminar tu perfil? Esta acción no se puede deshacer.")) {
+                this.deleteProfile();
+            }
+        },
+        deleteProfile() {
+            axios.delete(`${process.env.VUE_APP_BASE_URL}/api/user`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            })
+            .then(() => {
+                alert("Perfil eliminado con éxito.");
+                localStorage.removeItem('token');
+                this.$router.push('/login');
+            })
+            .catch(error => {
+                console.error("Error al eliminar el perfil:", error);
+                alert("Ocurrió un error al eliminar el perfil.");
+            });
+        }
+    }
 })
 </script>
 
