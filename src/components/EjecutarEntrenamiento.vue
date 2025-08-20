@@ -490,6 +490,7 @@ export default {
 }
 
 .estadistica-item {
+  list-style: none;
   padding: 0.5rem 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
