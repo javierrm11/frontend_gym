@@ -35,6 +35,64 @@
         </div>
       </div>
     </div>
+    <div v-if="fechaUsada" class="estadisticas-section">
+      <h2 class="subtitulo">
+        Última vez realizado: {{ fechaUsada || "No disponible" }}
+      </h2>
+      <div class="mb-4 container-fecha">
+        <label for="fecha">Seleccionar fecha:</label>
+        <input
+          type="date"
+          id="fecha"
+          v-model="fechaSeleccionada"
+          @change="getRutina"
+        />
+      </div>
+      <p v-if="duracion" class="duracion">Duración: {{ duracion }}</p>
+
+      <div v-if="rutina.ejercicios?.length && duracion" class="estadisticas-group">
+        <div
+          v-for="ejercicio in rutina.ejercicios"
+          :key="ejercicio._id || ejercicio.ejercicioRutina_id"
+          class="tarjeta-ejercicio"
+        >
+          <h4>{{ ejercicio.Nombre }}</h4>
+          <p>Descripción: {{ ejercicio.Descripcion }}</p>
+          <p>
+            Veces Realizado hoy:
+            {{ Object.keys(ejercicio.estadisticas || {}).length }}
+          </p>
+
+          <div class="estadisticas">
+            <h4>Estadísticas</h4>
+            <div v-if="Object.keys(ejercicio.estadisticas || {}).length">
+              <div
+                v-for="(series, serieId) in ejercicio.estadisticas"
+                :key="serieId"
+                class="serie-block"
+              >
+                <h5>Series {{ Object.keys(series || {}).length }}</h5>
+                <ul>
+                  <li
+                    v-for="(detalle, index) in series"
+                    :key="detalle?.id || index"
+                  >
+                    Peso: {{ detalle.Peso }}kg - Reps:
+                    {{ detalle.Repeticiones }}
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div v-else>
+              <p>No hay estadísticas disponibles.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div v-else>
+        <p>No hay estadísticas disponibles en este día.</p>
+      </div>
+    </div>
   </main>
 </template>
 
@@ -77,7 +135,7 @@ export default {
         );
         this.rutina = response.data[0];
 
-        if(this.rutina.Usuario_id != localStorage.getItem("usuario")) {
+        if (this.rutina.Usuario_id != localStorage.getItem("usuario")) {
           this.$router.push({ name: "error" });
           return;
         }
@@ -86,44 +144,46 @@ export default {
           return;
         }
 
-        const estadisticasPromises = this.rutina.ejercicios.map(async (ejercicio) => {
-          try {
-            const res = await axios.post(
-              `${process.env.VUE_APP_BASE_URL}/api/estadisticasEjercicio/getByDate`,
-              {
-                id: ejercicio.ejercicioRutina_id,
-                Rutina_id: this.rutina.id,
-                fecha: this.fechaSeleccionada,
-              },
-              {
-                headers: {
-                  Authorization: `Bearer ${localStorage.getItem("token")}`,
+        const estadisticasPromises = this.rutina.ejercicios.map(
+          async (ejercicio) => {
+            try {
+              const res = await axios.post(
+                `${process.env.VUE_APP_BASE_URL}/api/estadisticasEjercicio/getByDate`,
+                {
+                  id: ejercicio.ejercicioRutina_id,
+                  Rutina_id: this.rutina.id,
+                  fecha: this.fechaSeleccionada,
                 },
+                {
+                  headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                  },
+                }
+              );
+
+              if (!this.fechaUsada && res.data.fecha) {
+                this.fechaUsada = res.data.fecha;
+              } else if (!this.fechaUsada && this.fechaSeleccionada) {
+                this.fechaUsada = this.fechaSeleccionada;
               }
-            );
 
-            if (!this.fechaUsada && res.data.fecha) {
-              this.fechaUsada = res.data.fecha;
-            } else if (!this.fechaUsada && this.fechaSeleccionada) {
-              this.fechaUsada = this.fechaSeleccionada;
-            }
-
-            if (res.data.duracion?.Duracion) {
+              if (res.data.duracion?.Duracion) {
                 const totalSeconds = res.data.duracion.Duracion;
                 const hours = Math.floor(totalSeconds / 3600);
                 const minutes = Math.floor((totalSeconds % 3600) / 60);
                 const seconds = totalSeconds % 60;
                 this.duracion = `${hours}h ${minutes}m ${seconds}s`;
-            } else {
-              this.duracion = null;
-            }
+              } else {
+                this.duracion = null;
+              }
 
-            ejercicio.estadisticas = res.data.estadisticas || {};
-          } catch (error) {
-            console.error("Error obteniendo estadísticas:", error);
-            ejercicio.estadisticas = {};
+              ejercicio.estadisticas = res.data.estadisticas || {};
+            } catch (error) {
+              console.error("Error obteniendo estadísticas:", error);
+              ejercicio.estadisticas = {};
+            }
           }
-        });
+        );
 
         await Promise.all(estadisticasPromises);
       } catch (error) {
@@ -160,11 +220,7 @@ export default {
     },
     addEjercicio() {
       const ej = this.ejercicios[0];
-      if (
-        !ej.grupoSeleccionado ||
-        !ej.seleccionado ||
-        !ej.series
-      ) {
+      if (!ej.grupoSeleccionado || !ej.seleccionado || !ej.series) {
         alert("Debes completar todos los campos");
         return;
       }
@@ -211,7 +267,7 @@ export default {
 
 <style scoped>
 .entrenamiento-container {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .header-section {
@@ -219,7 +275,11 @@ export default {
   margin-bottom: 2.5rem;
   position: relative;
   padding: 1.5rem;
-  background: linear-gradient(to right, var(--color-primary), var(--color-accent));
+  background: linear-gradient(
+    to right,
+    var(--color-primary),
+    var(--color-accent)
+  );
 }
 
 .titulo-principal {
@@ -230,17 +290,20 @@ export default {
   position: relative;
   display: inline-block;
 }
-.rutina-ejercicios-nombre{
+.rutina-ejercicios-nombre {
   font-size: 2rem;
   font-weight: 700;
-  background: linear-gradient(to right, var(--color-primary), var(--color-accent));
+  background: linear-gradient(
+    to right,
+    var(--color-primary),
+    var(--color-accent)
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-bottom: 1rem;
   position: relative;
   display: inline-block;
 }
-
 
 .descripcion-principal-container {
   text-align: center;
@@ -252,7 +315,6 @@ export default {
   position: relative;
   overflow: hidden;
 }
-
 
 .descripcion-principal {
   font-size: 1.05rem;
@@ -274,7 +336,6 @@ export default {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-
 .card-header {
   padding: 1.5rem 1.5rem 0;
   text-align: center;
@@ -289,7 +350,6 @@ export default {
   position: relative;
   padding-bottom: 0.5rem;
 }
-
 
 .card-content {
   padding: 1.5rem;
@@ -307,12 +367,11 @@ export default {
   background: var(--color-primary);
   padding: 1.2rem;
   border-radius: calc(var(--border-radius) - 4px);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
 }
-
 
 .ejercicio-info h4 {
   font-size: 1.2rem;
@@ -351,18 +410,101 @@ export default {
   color: var(--color-secondary);
   opacity: 0.7;
 }
+.estadisticas-section{
+  margin: 2rem 1rem;
+  padding: 1rem;
+  border-radius: var(--border-radius);
+}
+.subtitulo{
+  width: fit-content;
+  place-self: center;
+  font-size: 1.5rem;
+  background: linear-gradient(to right, var(--color-primary), var(--color-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.duracion {
+  place-self: center;
+  font-size: 1.1rem;
+  color: var(--color-quinto);
+  margin-top: 0.5rem;
+}
+.container-fecha{
+  place-self: center;
+  margin: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 300px;
+
+}
+.container-fecha label {
+  font-size: 1rem;
+  color: var(--color-quinto);
+  place-self: center;
+}
+.container-fecha input {
+  padding: 0.5rem;
+  border-radius: var(--border-radius);
+  border: none;
+  font-size: 1rem;
+  background-color: var(--color-primary);
+  color: var(--color-secondary);
+}
+.rutina-card:hover {
+  outline: none;
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+.estadisticas-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+.tarjeta-ejercicio {
+  background: var(--color-secondary);
+  padding: 1.2rem;
+  border-radius: calc(var(--border-radius) - 4px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  flex: 1 1 30%;
+  min-width: 300px;
+}
+.tarjeta-ejercicio h4{
+  font-size: 1.2rem;
+  color: var(--color-primary);
+  margin-bottom: 0.5rem;
+}
+.tarjeta-ejercicio p{
+  font-size: 0.95rem;
+  color: var(--color-quinto);
+  margin: 0.25rem 0;
+}
+.serie-block h5{
+  font-size: 1.1rem;
+  color: var(--color-cuarto);
+  margin: 0.5rem 0;
+}
+.serie-block ul{
+  padding: 0rem;
+  margin: 0;
+}
+.serie-block li{
+  list-style: none;
+}
+
 
 /* Tablet */
 @media (min-width: 768px) {
-  
   .titulo-principal {
     font-size: 2.2rem;
   }
-  
+
   .lista-ejercicios {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .descripcion-principal {
     font-size: 1.1rem;
   }
@@ -370,15 +512,15 @@ export default {
 
 /* Desktop */
 @media (min-width: 1024px) {
-  
   .lista-ejercicios {
     grid-template-columns: repeat(3, 1fr);
   }
-  
-  .rutina-nombre, .rutina-ejercicios-nombre {
+
+  .rutina-nombre,
+  .rutina-ejercicios-nombre {
     font-size: 1.6rem;
   }
-  
+
   .ejercicio-info h4 {
     font-size: 1.25rem;
   }
@@ -386,20 +528,38 @@ export default {
 
 /* Animation */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .ejercicio-item {
   animation: fadeIn 0.4s ease forwards;
 }
 
-.ejercicio-item:nth-child(1) { animation-delay: 0.1s; }
-.ejercicio-item:nth-child(2) { animation-delay: 0.2s; }
-.ejercicio-item:nth-child(3) { animation-delay: 0.3s; }
-.ejercicio-item:nth-child(4) { animation-delay: 0.4s; }
-.ejercicio-item:nth-child(5) { animation-delay: 0.5s; }
-.ejercicio-item:nth-child(6) { animation-delay: 0.6s; }
+.ejercicio-item:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.ejercicio-item:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.ejercicio-item:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.ejercicio-item:nth-child(4) {
+  animation-delay: 0.4s;
+}
+.ejercicio-item:nth-child(5) {
+  animation-delay: 0.5s;
+}
+.ejercicio-item:nth-child(6) {
+  animation-delay: 0.6s;
+}
 
 /* Loading state */
 .loading-container {
@@ -419,7 +579,11 @@ export default {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>
