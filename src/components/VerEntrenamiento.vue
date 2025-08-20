@@ -455,7 +455,6 @@ export default {
 .rutina-card:hover {
   outline: none;
   transform: translateY(-5px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 .estadisticas-group {
   display: flex;
