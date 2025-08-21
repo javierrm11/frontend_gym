@@ -4,6 +4,21 @@
       <img :src="user?.Foto" alt="Foto de usuario" class="other-user__avatar" />
       <h1 class="other-user__name">{{ user?.Nombre_Usuario }}</h1>
       <p class="other-user__email">{{ user?.Email }}</p>
+      <div class="other-user_seguidores_siguiendo">
+        <div class="other-user__followers">
+          <h3>Seguidores</h3>
+          <p>{{ user?.seguidores ? user.seguidores.length : 0 }}</p>
+        </div>
+        <div class="other-user__following">
+          <h3>Seguidos</h3>
+          <p>{{ user?.seguidos ? user.seguidos.length : 0 }}</p>
+        </div>
+        <div class="btn-follow">
+          <button v-if="user?.seguidores?.some(seguidor => seguidor.seguidor_id == $store.state.usuario)" class="btn-siguiendo">Siguiendo</button>
+          <button v-else @click="seguir(user?.id)" class="btn-seguir">Seguir</button>
+          <button v-if="user?.seguidores?.some(seguidor => seguidor.seguidor_id == $store.state.usuario)" @click="dejarDeSeguir(user?.id)" class="btn-dejar">Dejar de seguir</button>
+        </div>
+      </div>
     </div>
 
     <div v-if="user?.rutinas?.length > 0" class="other-user__routines">
@@ -81,6 +96,8 @@ export default {
         .get(`${process.env.VUE_APP_BASE_URL}/api/user/${userId}`)
         .then((response) => {
           this.user = response.data;
+          console.log("Usuario obtenido:", this.user);
+          
           if (this.user.Foto) {
             this.user.Foto = `${process.env.VUE_APP_BASE_URL}${this.user.Foto}`;
           } else {
@@ -94,6 +111,45 @@ export default {
     verRutina(id) {
       this.$router.push({ name: "VerRutina", params: { id } });
     },
+    seguir(id){
+      const userId = this.$route.params.id;
+      axios
+        .post(`${process.env.VUE_APP_BASE_URL}/api/seguidores`, {
+          seguido_id: id,
+          seguidor_id: userId,
+        }, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          console.log("Seguido correctamente:", response.data);
+          this.fetchUser(); // Actualizar el usuario para reflejar el cambio
+        })
+        .catch((error) => {
+          console.error("Error al seguir al usuario:", error);
+        });
+    },
+    dejarDeSeguir(id){
+      const userId = this.$route.params.id;
+      axios
+        .delete(`${process.env.VUE_APP_BASE_URL}/api/seguidores/${id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          data: {
+            seguido_id: id,
+            seguidor_id: userId,
+          },
+        })
+        .then((response) => {
+          console.log("Seguido correctamente:", response.data);
+          this.fetchUser(); // Actualizar el usuario para reflejar el cambio
+        })
+        .catch((error) => {
+          console.error("Error al seguir al usuario:", error);
+        });
+      }
   },
 };
 </script>
@@ -131,6 +187,57 @@ export default {
   font-size: 1rem;
   color: var(--color-quinto);
   margin-bottom: 1.5rem;
+}
+.other-user_seguidores_siguiendo{
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 1000px;
+  margin: 0 auto;
+  gap: 1rem;
+}
+.other-user__followers, .other-user__following {
+  flex: 1 1 40%;
+}
+.btn-follow{
+  flex: 0 0 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
+.btn-follow button {
+  flex: 1;
+  max-width: 200px;
+  font-size: 1rem;
+}
+.btn-siguiendo, .btn-seguir {
+  background: transparent;
+  color: var(--color-cuarto);
+  border: 1px solid var(--color-cuarto);
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-weight: 600;
+}
+.btn-siguiendo:hover, .btn-seguir:hover {
+  background: var(--color-cuarto);
+  color: var(--color-secondary);
+}
+
+.btn-dejar {
+  background: transparent;
+  color: var(--color-error);
+  border: 1px solid var(--color-error);
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-weight: 600;
+}
+.btn-dejar:hover {
+  background: var(--color-error);
+  color: var(--color-secondary);
 }
 
 .other-user__routines {
