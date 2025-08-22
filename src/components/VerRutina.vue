@@ -206,12 +206,36 @@ export default {
   line-height: 1.6;
   opacity: 0.9;
 }
+.ejercicio-categoria {
+  font-size: 0.9rem;
+  color: var(--color-terciario);
+  margin-top: 0.5rem;
+}
 
 .empty-state {
   text-align: center;
   padding: 2rem;
   color: var(--color-secondary);
   opacity: 0.7;
+}
+.acciones {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+.btn-copiar{
+  background-color: var(--color-cuarto);
+  color: var(--color-secondary);
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.btn-copiar:hover {
+  background-color: var(--color-accent);
+  transform: translateY(-2px);
 }
 
 /* Responsividad */

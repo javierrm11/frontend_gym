@@ -5,14 +5,14 @@
       <h1 class="profile-name">{{ usuario?.Nombre_Usuario }}</h1>
       <p class="profile-email">{{ usuario?.Email }}</p>
       <div class="profile_seguidores_siguiendo">
-      <div class="profile__followers">
+      <router-link :to="{ path: `/followers/${usuario?.id}/Seguidores`}" class="profile__followers">
         <h3>Seguidores</h3>
         <p>{{ usuario?.seguidores ? usuario.seguidores.length : 0 }}</p>
-      </div>
-      <div class="profile__following">
+      </router-link>
+      <router-link :to="{ path: `/followers/${usuario?.id}/Seguidos` }" class="profile__following">
         <h3>Seguidos</h3>
         <p>{{ usuario?.seguidos ? usuario.seguidos.length : 0 }}</p>
-      </div>
+      </router-link>
     </div>
       <p class="info-value">{{ usuario?.Nombre }}</p>
       <p class="info-description">{{ usuario?.Descripcion || "Sin descripción" }}</p>
@@ -134,6 +134,7 @@ export default ({
 }
 .profile__followers, .profile__following {
   flex: 1 1 40%;
+  text-decoration: none;
 }
 
 /* INFORMACIÓN DEL PERFIL */

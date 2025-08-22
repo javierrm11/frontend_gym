@@ -4,15 +4,15 @@
       <img :src="user?.Foto" alt="Foto de usuario" class="other-user__avatar" />
       <h1 class="other-user__name">{{ user?.Nombre_Usuario }}</h1>
       <p class="other-user__email">{{ user?.Email }}</p>
-      <div class="other-user_seguidores_siguiendo">
-        <div class="other-user__followers">
+      <div class="other-user_seguidores_siguiendo" v-if="this.$store.state.usuario">
+        <router-link :to="{ path: `/followers/${user?.id}/Seguidores` }" class="other-user__followers">
           <h3>Seguidores</h3>
           <p>{{ user?.seguidores ? user.seguidores.length : 0 }}</p>
-        </div>
-        <div class="other-user__following">
+        </router-link>
+        <router-link :to="{ path: `/followers/${user?.id}/Seguidos` }" class="other-user__following">
           <h3>Seguidos</h3>
           <p>{{ user?.seguidos ? user.seguidos.length : 0 }}</p>
-        </div>
+        </router-link>
         <div class="btn-follow">
           <button v-if="user?.seguidores?.some(seguidor => seguidor.seguidor_id == $store.state.usuario)" class="btn-siguiendo">Siguiendo</button>
           <button v-else @click="seguir(user?.id)" class="btn-seguir">Seguir</button>
@@ -197,6 +197,7 @@ export default {
 }
 .other-user__followers, .other-user__following {
   flex: 1 1 40%;
+  text-decoration: none;
 }
 .btn-follow{
   flex: 0 0 100%;
@@ -221,7 +222,12 @@ export default {
   cursor: pointer;
   font-weight: 600;
 }
-.btn-siguiendo:hover, .btn-seguir:hover {
+.btn-siguiendo{
+  background: var(--color-cuarto);
+  color: var(--color-secondary);
+  border: none;
+}
+.btn-seguir:hover {
   background: var(--color-cuarto);
   color: var(--color-secondary);
 }
