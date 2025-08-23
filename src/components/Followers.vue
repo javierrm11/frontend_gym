@@ -52,14 +52,14 @@
                                 <button
                                     v-if="type === 'Seguidos' && userData.id == $store.state.usuario"
                                     class="btn-action btn-follow"
-                                    @click.stop="dejarDeSeguir(userData.id)"
+                                    @click.stop="dejarDeSeguir(item.seguidor?.id)"
                                 >
                                     Dejar de Seguir
                                 </button>
                                 <button
                                     v-if="type === 'Seguidores' && userData.id == $store.state.usuario"
                                     class="btn-action btn-unfollow"
-                                    @click.stop="suprimir(item.seguido.id)"
+                                    @click.stop="suprimir(item.seguidor?.id)"
                                 >
                                     Suprimir Seguidor
                                 </button>
@@ -154,7 +154,7 @@ export default {
             }
         },
         dejarDeSeguir(id){
-        const userId = this.$route.params.id;
+        const userId = this.$store.state.usuario;
         axios
             .delete(`${process.env.VUE_APP_BASE_URL}/api/seguidores/${id}`, {
             headers: {
@@ -174,7 +174,7 @@ export default {
             });
         },
         suprimir(id) {
-            const userId = this.$route.params.id;
+            const userId = this.$store.state.usuario;
             axios
             .delete(`${process.env.VUE_APP_BASE_URL}/api/seguidores/suprimir/${id}`, {
                 headers: {
