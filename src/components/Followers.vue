@@ -59,7 +59,7 @@
                                 <button
                                     v-if="type === 'Seguidores' && userData.id == $store.state.usuario"
                                     class="btn-action btn-unfollow"
-                                    @click.stop="suprimir(item.seguidor?.id)"
+                                    @click.stop="suprimir(item.seguido?.id)"
                                 >
                                     Suprimir Seguidor
                                 </button>
