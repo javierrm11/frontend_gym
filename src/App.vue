@@ -14,7 +14,24 @@ export default {
   components: {
     Header,
   },
-};
+  mounted() {
+    this.verificarSesion();
+  },
+  methods: {
+    async verificarSesion() {
+      const horaExpiracion = localStorage.getItem("expirationDate");
+      if (horaExpiracion) {
+        const ahora = Date.now();
+        const diferencia = ahora - new Date(horaExpiracion).getTime();
+        console.log(`Diferencia de tiempo: ${diferencia} ms`);
+        if (diferencia > 3600000) { // 1 hora en milisegundos
+          await this.$store.dispatch('logout');
+          this.$router.push('/');
+        }
+      }
+    },
+  },
+}
 </script>
 
 <style>
