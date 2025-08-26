@@ -42,7 +42,8 @@ const routes = [
   {
     path: '/profile',
     name: 'Profile',
-    component: Profile
+    component: Profile,
+    meta: { requiereAuth: true }
   },
   {
     path: '/profile/:id',
@@ -54,16 +55,19 @@ const routes = [
     path: '/edit-profile',
     name: 'EditProfile',
     component: EditProfile,
+    meta: { requiereAuth: true }
   },
   {
     path: '/delete-profile',
     name: 'DeleteProfile',
     component: DeleteProfile,
+    meta: { requiereAuth: true }
   },
   {
     path: '/logout',
     name: 'LogoutUser',
-    component: Logout
+    component: Logout,
+    meta: { requiereAuth: true }
   },
   {
     path: '/mensaje',
@@ -74,24 +78,28 @@ const routes = [
   {
     path: '/entrenamiento',
     name: 'Entrenamiento',
-    component: Entrenamiento
+    component: Entrenamiento,
+    meta: { requiereAuth: true }
   },
   {
     path: '/anadirEntrenamiento',
     name: 'AnadirEntrenamiento',
-    component: AnadirEntrenamiento
+    component: AnadirEntrenamiento,
+    meta: { requiereAuth: true }
   },
   {
     path: '/verEntrenamiento/:id',
     name: 'VerEntrenamiento',
     component: VerEntrenamiento,
-    props: true
+    props: true,
+    meta: { requiereAuth: true }
   },
   {
     path: '/ejecutarEntrenamiento/:id',
     name: 'EjecutarEntrenamiento',
     component: EjecutarEntrenamiento,
-    props: true
+    props: true,
+    meta: { requiereAuth: true }
   },
   {
     path: '/categoria/:nombre',
@@ -122,6 +130,31 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes
+});
+
+router.beforeEach((to, from, next) => {
+  const usuario = JSON.parse(localStorage.getItem("usuario"));
+
+  // Si requiere login y no hay usuario → redirigir a /login
+  if (to.meta.requiereAuth && !usuario) {
+    return next("/login");
+  }
+
+  // Evitar que un usuario acceda a rutas de otro
+  if (to.name === "OtherUser" && usuario) {
+    if (to.params.id === usuario.id) {
+      // Si intenta acceder a su propio perfil con /profile/:id lo mandamos a /profile
+      return next("/profile");
+    }
+  }
+
+  if (to.name === "Profile" && usuario) {
+    // Aquí puedes reforzar que siempre vea solo su perfil
+    // Si no está logueado ya lo frenamos arriba
+    return next();
+  }
+
+  next();
 });
 
 // Crear la aplicación Vue
