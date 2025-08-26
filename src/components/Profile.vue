@@ -1,31 +1,67 @@
 <template>
   <main class="profile-container">
     <div class="profile-header">
-      <img :src="usuario?.Foto" alt="Foto de perfil" class="profile-avatar" />
-      <h1 class="profile-name">{{ usuario?.Nombre_Usuario }}</h1>
-      <p class="profile-email">{{ usuario?.Email }}</p>
+      <div class="profile-foto">
+        <img :src="usuario?.Foto" alt="Foto de perfil" class="profile-avatar" />
+      </div>
+      <div class="profile-info">
+        <h1 class="profile-name">{{ usuario?.Nombre_Usuario }}</h1>
+        <p class="info-value">{{ usuario?.Nombre }}</p>
+        <p class="profile-email">{{ usuario?.Email }}</p>
+        <p class="info-description">{{ usuario?.Descripcion || "Sin descripción" }}</p>
+      </div>
       <div class="profile_seguidores_siguiendo">
-      <router-link :to="{ path: `/followers/${usuario?.id}/Seguidores`}" class="profile__followers">
-        <h3>Seguidores</h3>
-        <p>{{ usuario?.seguidores ? usuario.seguidores.length : 0 }}</p>
-      </router-link>
-      <router-link :to="{ path: `/followers/${usuario?.id}/Seguidos` }" class="profile__following">
-        <h3>Seguidos</h3>
-        <p>{{ usuario?.seguidos ? usuario.seguidos.length : 0 }}</p>
-      </router-link>
+        <router-link :to="{ path: `/followers/${usuario?.id}/Seguidores`}" class="profile__followers">
+          <h3>Seguidores</h3>
+          <p>{{ usuario?.seguidores ? usuario.seguidores.length : 0 }}</p>
+        </router-link>
+        <router-link :to="{ path: `/followers/${usuario?.id}/Seguidos` }" class="profile__following">
+          <h3>Seguidos</h3>
+          <p>{{ usuario?.seguidos ? usuario.seguidos.length : 0 }}</p>
+        </router-link>
+        <div class="profile-actions">
+          <router-link to="/edit-profile" class="btn-action btn-edit">
+            <span>✏️</span> Editar Perfil
+          </router-link>
+          <a class="btn-action btn-delete" @click="confirmDelete">
+            <span>🗑</span> Eliminar Perfil
+          </a>
+        </div>
+      </div>
     </div>
-      <p class="info-value">{{ usuario?.Nombre }}</p>
-      <p class="info-description">{{ usuario?.Descripcion || "Sin descripción" }}</p>
-    </div>
+    <div class="profile-rutinas">
+      <div class="profile-rutinas-propias">
+        <h2>Mis Rutinas: {{ usuario?.rutinas && usuario.rutinas.length > 0 ? usuario.rutinas.length : "0" }}</h2>
+        <div v-if="usuario?.rutinas && usuario.rutinas.length > 0" class="profile-own-routines">
+            <div v-for="(rutina) in usuario.rutinas" :key="rutina.id" class="routine-item">
+              <h3>{{ rutina.Nombre }}</h3>
+              <p>{{ rutina.Descripcion || "Sin descripción" }}</p>
+              <router-link :to="{ path: `/verEntrenamiento/${rutina.id}` }" class="btn-view-routine">
+                Ver Rutina
+              </router-link>
+            </div>
+        </div>
+          <p v-else>No has creado ninguna rutina.</p>
+      </div>
 
-
-    <div class="profile-actions">
-      <router-link to="/edit-profile" class="btn-action btn-edit">
-        <span>✏️</span> Editar Perfil
-      </router-link>
-      <button class="btn-action btn-delete" @click="confirmDelete">
-        <span>🗑</span> Eliminar Perfil
-      </button>
+      <div class="profile-rutinas-favoritas">
+        <h2>Rutinas Favoritas: {{ usuario?.favoritos && usuario.favoritos.length > 0 ? usuario.favoritos.length : "0" }}</h2>
+        <div v-if="usuario?.favoritos && usuario.favoritos.length > 0" class="profile-favorites">
+            <div v-for="(rutina) in usuario.favoritos" :key="rutina.id" class="favorite-item">
+              <h3>{{ rutina.rutina.Nombre }}</h3>
+              <p>{{ rutina.rutina.Descripcion || "Sin descripción" }}</p>
+              <div class="favorite-actions">
+                <router-link :to="{ path: `/verRutina/${rutina.rutina.id}` }" class="btn-view-routine-out">
+                  Ver Rutina
+                </router-link>
+                <a class="btn-remove-favorite" @click="removeFromFavorites(rutina.rutina.id)">
+                  Eliminar
+                </a>
+              </div>
+            </div>
+        </div>
+          <p v-else>No tienes rutinas favoritas.</p>
+      </div>
     </div>
   </main>
 </template>
@@ -82,6 +118,26 @@ export default ({
                 console.error("Error al eliminar el perfil:", error);
                 alert("Ocurrió un error al eliminar el perfil.");
             });
+        },
+        removeFromFavorites(favoriteId) {
+          axios.delete(`${process.env.VUE_APP_BASE_URL}/api/favoritos/${favoriteId}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                },
+                data: {
+                    id_rutina: favoriteId,
+                    id_usuario: this.$store.state.usuario?.id
+                }
+            })
+            .then(response => {
+                console.log('Rutina eliminada de favoritos:', response.data);
+                // Actualizar el usuario para reflejar los cambios
+                this.usuario.favoritos = this.usuario.favoritos.filter(fav => fav.rutina.id !== favoriteId);
+            })
+            .catch(error => {
+                console.error('Error al eliminar rutina de favoritos:', error);
+                alert('Error al eliminar rutina de favoritos.');
+            });
         }
     }
 })
@@ -92,17 +148,21 @@ export default ({
 .profile-container {
   font-family: "Poppins", sans-serif;
   padding: 2rem;
-  text-align: center;
 }
 
 /* ENCABEZADO */
 .profile-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
   margin-bottom: 2rem;
 }
-
+.profile-foto{
+  flex: 1;
+}
 .profile-avatar {
-  width: 120px;
-  height: 120px;
+  height: 220px;
+  width: 220px;
   border-radius: 50%;
   object-fit: cover;
   margin-bottom: 1rem;
@@ -119,30 +179,22 @@ export default ({
   margin-bottom: 0.5rem;
 }
 
-.profile-email {
-  font-size: 1rem;
-  color: var(--color-quinto);
-  margin-bottom: 1.5rem;
-}
 
 .profile_seguidores_siguiendo{
+  flex: 2;
   display: flex;
   flex-wrap: wrap;
-  max-width: 1000px;
-  margin: 0 auto;
+  align-content: space-between;
   gap: 1rem;
 }
 .profile__followers, .profile__following {
-  flex: 1 1 40%;
+  flex: 1;
   text-decoration: none;
 }
 
 /* INFORMACIÓN DEL PERFIL */
 .profile-info {
-  margin-bottom: 2rem;
-  text-align: left;
-  max-width: 600px;
-  margin: 0 auto 2rem;
+  flex: 2;
 }
 
 .info-item {
@@ -155,25 +207,20 @@ export default ({
   font-size: 1rem;
 }
 
-.info-value {
+.info-value, .info-description, .profile-email {
   font-size: 1.1rem;
   color: var(--color-quinto);
   padding: 0.6rem 1rem;
   border-radius: 8px;
-}
-
-.info-description {
-  font-size: 1rem;
-  color: var(--color-quinto);
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  line-height: 1.5;
+  margin: 0;
 }
 
 /* ACCIONES */
 .profile-actions {
+  flex: 0 0 100%;
   display: flex;
-  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
   gap: 1rem;
 }
 
@@ -207,17 +254,101 @@ export default ({
 .btn-delete:hover {
   background-color: #d73737;
 }
-
-/* RESPONSIVE */
-@media (max-width: 768px) {
-  .profile-followers {
-    flex-direction: column;
-    gap: 1rem;
+.profile-rutinas{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+.profile-rutinas-propias, .profile-rutinas-favoritas{
+  flex: 1 1 48%;
+}
+.profile-rutinas-propias h2{
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  color: var(--color-primary);
+}
+.profile-own-routines{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.routine-item{
+  background-color: var(--color-secondary);
+  padding: 1rem;
+  border-radius: 8px;
+  flex: 1 1 43%;
+}
+.btn-view-routine{
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: var(--color-accent);
+  color: white;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: background-color var(--transition-speed);
+}
+.profile-rutinas-favoritas h2{
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  color: var(--color-primary);
+}
+.profile-favorites{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.favorite-item{
+  background-color: var(--color-secondary);
+  padding: 1rem;
+  border-radius: 8px;
+  flex: 1 1 43%;
+  position: relative;
+}
+.favorite-actions{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+.btn-view-routine-out{
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: var(--color-accent);
+  color: var(--color-secondary);
+  border-radius: 4px;
+  text-decoration: none;
+  transition: background-color var(--transition-speed);
+}
+.btn-remove-favorite{
+  padding: 0.5rem 1rem;
+  background-color: var(--color-error);
+  color: var(--color-secondary);
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color var(--transition-speed);
+}
+@media (max-width: 1052px) {
+  .profile_seguidores_siguiendo{
+    flex: 2 1 100%;
+    gap: 3rem;
   }
-
+  .profile-header{
+    text-align-last: center;
+  }
+  .profile-foto {
+    flex: 2;
+  }
+  .profile-info{
+    text-align-last: auto;
+  }
   .profile-actions {
-    flex-direction: column;
-    gap: 1rem;
+    justify-content: center;
   }
+  
 }
 </style>
