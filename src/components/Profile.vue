@@ -63,6 +63,30 @@
           <p v-else>No tienes rutinas favoritas.</p>
       </div>
     </div>
+    <div class="profile-logros-container">
+      <div class="profile-logros">
+        <button class="btn-action btn-logros" @click="toggleLogrosModal">
+          🏆 Logros
+        </button>
+      </div>
+
+      <!-- Modal de logros -->
+      <div v-if="showLogrosModal" class="modal-overlay">
+        <div class="modal">
+          <h2>Logros</h2>
+          <h3 class="profile-puntos">Total de Puntos: {{ usuario?.puntosTotales || 0 }}</h3>
+          <ul>
+            <li v-for="logro in logros" :key="logro.id">{{ logro.nombre }}<span v-if="usuario?.usuariosLogros.some(ul => ul.id_logro === logro.id_logro)"> ✅</span><span class="profile-logro-puntos">+{{ logro.puntos }}</span></li>
+          </ul>
+            <button class="btn-action btn-close" @click="toggleLogrosModal">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="width: 1.5rem; height: 1.5rem;">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+
+            </button>
+        </div>
+      </div>
+    </div>
   </main>
 </template>
 
@@ -73,7 +97,9 @@ export default ({
     name: 'ProfileUser',
     data() {
         return {
-            usuario: {}
+            usuario: {},
+            logros: [],
+            showLogrosModal: false
         }
     },
     mounted() {
@@ -96,6 +122,7 @@ export default ({
         .catch(error => {
             console.error("Error al obtener el usuario:", error);
         });
+        this.fetchLogros();
     },
     methods: {
         confirmDelete() {
@@ -138,6 +165,28 @@ export default ({
                 console.error('Error al eliminar rutina de favoritos:', error);
                 alert('Error al eliminar rutina de favoritos.');
             });
+        },
+        fetchLogros() {
+            axios.get(`${process.env.VUE_APP_BASE_URL}/api/logros`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            })
+            .then(response => {
+                this.logros = response.data;
+                // Logros obtenidos
+                this.usuario.puntosTotales = Array.isArray(this.usuario.usuariosLogros) 
+                    ? this.usuario.usuariosLogros.reduce((total, ul) => total + ul.logro.puntos, 0) 
+                    : 0;
+                console.log("Logros obtenidos:", this.logros);
+                console.log("Puntos totales del usuario:", this.usuario.puntosTotales);
+            })
+            .catch(error => {
+                console.error("Error al obtener los logros:", error);
+            });
+        },
+        toggleLogrosModal() {
+            this.showLogrosModal = !this.showLogrosModal;
         }
     }
 })
@@ -148,6 +197,8 @@ export default ({
 .profile-container {
   font-family: "Poppins", sans-serif;
   padding: 2rem;
+  position: relative;
+  overflow: hidden;
 }
 
 /* ENCABEZADO */
@@ -332,6 +383,92 @@ export default ({
   cursor: pointer;
   transition: background-color var(--transition-speed);
 }
+/* Botón de logros */
+.profile-logros {
+  text-align: center;
+  margin-top: 2rem;
+}
+.profile-logros-container{
+  position: absolute;
+  top: 0px;
+  right: -5px;
+  transition: right 0.3s ease;
+}
+.profile-logros-container:hover{
+  right: 5px;
+}
+
+.btn-logros {
+  background-color: var(--color-accent);
+  color: var(--color-secondary);
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 25rem;
+  height: 100%;
+  filter: drop-shadow(0 4px 8px var(--color-quinto));
+  display: flex;
+  justify-content: flex-end;
+  align-items: stretch;
+  z-index: 1000;
+}
+
+.modal {
+  background: var(--color-accent);
+  padding: 4rem 2rem;
+  max-width: 500px;
+  width: 90%;
+}
+.profile-puntos{
+  position: absolute;
+  width: max-content;
+  top: 0rem;
+  right: 50%;
+  transform: translateX(50%);
+}
+
+.modal h2 {
+  margin-bottom: 1rem;
+  color: var(--color-secondary);
+}
+
+.modal ul {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+
+.modal li {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  color: var(--color-secondary);
+}
+
+.btn-close {
+  position: absolute;
+  top: 5rem;
+  right: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+}
+.profile-logro-puntos{
+  margin-left: 1rem;
+  font-weight: bold;
+  color: var(--color-terciario);
+}
+.btn-close:hover {
+  background-color: var(--color-terciario);
+}
 @media (max-width: 1052px) {
   .profile_seguidores_siguiendo{
     flex: 2 1 100%;
@@ -349,6 +486,11 @@ export default ({
   .profile-actions {
     justify-content: center;
   }
-  
+}
+
+@media (max-width: 500px) {
+  .modal-overlay{
+    width: 100%;
+  }
 }
 </style>

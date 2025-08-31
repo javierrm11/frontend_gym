@@ -105,6 +105,8 @@
 
 <script>
 import axios from "axios";
+import { updateLogro } from "@/services/logrosService";
+
 
 export default {
   name: "AnadirEntrenamiento",
@@ -116,6 +118,7 @@ export default {
       ejercicios: [
         { grupoSeleccionado: "", ejerciciosFiltrados: [], seleccionado: "", series: "" },
       ],
+      countRutines: 0,
     };
   },
   mounted() {
@@ -125,7 +128,7 @@ export default {
     getEjercicios() {
       axios
         .get(`${process.env.VUE_APP_BASE_URL}/api/ejercicio/categorias`)
-        .then((response) => {
+        .then(async (response) => {
           this.gruposMusculares = response.data;
         })
         .catch((error) => {
@@ -167,9 +170,9 @@ export default {
             },
           }
         )
-        .then((response) => {
+        .then(async (response) => {
           console.log("Rutina creada:", response.data);
-          
+          this.fetchNumberRutines();
           const rutinaNombre = this.nombre;
           const peticiones = this.ejercicios.map((ejercicio) =>
             axios.post(
@@ -219,6 +222,22 @@ export default {
     },
     removeExercise(index) {
       this.ejercicios.splice(index, 1);
+    },
+    async fetchNumberRutines() {
+      axios
+        .get(`${process.env.VUE_APP_BASE_URL}/api/rutinas/count/${this.$store.state.usuario}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.countRutines = response.data.count;
+          console.log("Number of routines:", this.countRutines);
+          if(this.countRutines == 1){
+            updateLogro(3, this.$store.state.usuario);
+          }
+          
+        })
     },
   },
 };

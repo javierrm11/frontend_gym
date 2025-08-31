@@ -134,6 +134,8 @@
 
 <script>
 import axios from "axios";
+import { updateLogro } from "@/services/logrosService";
+
 
 export default {
   name: "EjecutarEntrenamiento",
@@ -148,6 +150,7 @@ export default {
         minutos: 0,
         segundos: 0,
       }, // Duración de la rutina
+      countEntrenamientos: 0,
     };
   },
   mounted() {
@@ -311,12 +314,29 @@ export default {
 
         // Manejar la respuesta
         console.log("Estadísticas guardadas correctamente:", response.data);
+        this.fetchNumberRutines();
         this.$router.push('/verEntrenamiento/' + this.rutina.id);
         this.isLoading = false; // Ocultar el loader
       } catch (error) {
         console.error("Error guardando las estadísticas:", error);
         alert("Hubo un error al guardar las estadísticas.");
       }
+    },
+    async fetchNumberRutines() {
+      axios
+        .get(`${process.env.VUE_APP_BASE_URL}/api/duracion/count/${this.$store.state.usuario}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.countEntrenamientos = response.data;
+          console.log(this.countEntrenamientos);
+          if(this.countEntrenamientos.length == 1){
+            updateLogro(1, this.$store.state.usuario);
+          }
+          
+        })
     },
   },
 };

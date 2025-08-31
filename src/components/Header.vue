@@ -28,7 +28,7 @@
         </li>
         <li v-if="isLoggedIn">
           <router-link to="/entrenamiento" @click="closeMenu"
-            >Entrenamiento</router-link
+            >Rutinas</router-link
           >
         </li>
         <li v-if="isLoggedIn">

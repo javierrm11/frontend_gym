@@ -27,7 +27,7 @@ const store = createStore({
             localStorage.removeItem('usuario');
             localStorage.removeItem('expirationDate');
             commit('logout');
-        }
+        },
     },
     getters: {
         isLoggedIn: (state) => state.isLoggedIn,

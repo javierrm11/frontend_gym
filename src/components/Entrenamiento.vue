@@ -57,12 +57,15 @@
 
 <script>
 import axios from "axios";
+import { eliminarLogro } from "@/services/logrosService";
+
 
 export default {
   name: "EntrenamientoGym",
   data() {
     return {
       rutinas: [],
+      countRutines: 0,
     };
   },
   mounted() {
@@ -89,12 +92,28 @@ export default {
           })
           .then((response) => {
             console.log(response.data);
+            this.fetchNumberRutines();
             this.getRutinas();
           })
           .catch((error) => {
             console.log(error);
           });
       }
+    },
+    async fetchNumberRutines() {
+      axios
+        .get(`${process.env.VUE_APP_BASE_URL}/api/rutinas/count/${this.$store.state.usuario}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.countRutines = response.data.count;
+          console.log("Number of routines:", this.countRutines);
+          if(this.countRutines == 0){
+            eliminarLogro(3, this.$store.state.usuario);
+          }
+        })
     },
     verRutina(rutinaId) {
       this.$router.push({ name: "VerEntrenamiento", params: { id: rutinaId } });
