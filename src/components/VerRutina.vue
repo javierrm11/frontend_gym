@@ -20,16 +20,37 @@
         >
           <div class="ejercicio-info">
             <h4>{{ ejercicio.Nombre }}</h4>
-            <p class="ejercicio-descripcion">
-              Descripción: {{ ejercicio.Descripcion }}
-            </p>
             <p class="ejercicio-categoria">
-              Categoría: {{ ejercicio.Categoria }}
+              {{ ejercicio.Categoria }}
+            </p>
+            <p class="ejercicio-descripcion">
+              {{ ejercicio.Descripcion }}
             </p>
             <p class="series-badge">Series: {{ ejercicio.Num_Series }}</p>
           </div>
         </div>
+        <div class="acciones" v-if="this.$store.state.usuario">
+      <button class="btn-copiar" @click="copiarRutina(rutina)">
+        Copiar Rutina
+      </button>
+      <button
+        class="btn-favoritos"
+        @click="agregarAFavoritos(rutina)"
+        v-if="!favoritos.some((favorito) => favorito.id_rutina == rutina.id)"
+      >
+        Agregar a Favoritos
+      </button>
+
+      <button
+        class="btn-eliminar-favoritos"
+        @click="eliminarAFavoritos(rutina.id)"
+        v-else
+      >
+        Eliminar de Favoritos
+      </button>
+    </div>
       </div>
+      
 
       <div v-else class="empty-state">
         <p>
@@ -38,11 +59,11 @@
       </div>
       <div class="comentarios-container">
         <h2>Comentarios</h2>
-        <div class="comentarios-actions">
-          <button class="btn-comentar" @click="mostrarInput = !mostrarInput" v-if="this.$store.state.usuario">
-            {{ mostrarInput ? "Cancelar" : "Agregar Comentario" }}
-          </button>
-        </div>
+        <button class="btn-comentar" @click="mostrarInput = !mostrarInput" v-if="this.$store.state.usuario && !mostrarInput">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-left-text" viewBox="0 0 16 16">
+            <path d="M14 1a1 1 0 0 1 1 1v11.793l-2.5-2.5H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM3 3.5a.5.5 0 0 0 0 1h10a.5.5 0 0 0 0-1H3zm0 3a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1H3zm0 3a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1H3z"/>
+          </svg>
+        </button>
 
         <!-- Input dinámico -->
         <div v-if="mostrarInput" class="comentario-form">
@@ -51,7 +72,10 @@
             type="text"
             placeholder="Escribe tu comentario..."
           />
-          <button @click="agregarComentario(rutina.id)">Enviar</button>
+          <button class="btn-comentar-cancelar" @click="mostrarInput = false">
+            Cancelar
+          </button>
+          <button @click="agregarComentario(rutina.id)" class="btn-comentar-enviar">Enviar</button>
         </div>
         <p
           v-if="!rutina?.comentarios || rutina.comentarios.length === 0"
@@ -87,27 +111,6 @@
             </div>
         </div>
       </div>
-    </div>
-
-    <div class="acciones" v-if="this.$store.state.usuario">
-      <button class="btn-copiar" @click="copiarRutina(rutina)">
-        Copiar Rutina
-      </button>
-      <button
-        class="btn-favoritos"
-        @click="agregarAFavoritos(rutina)"
-        v-if="!favoritos.some((favorito) => favorito.id_rutina == rutina.id)"
-      >
-        Agregar a Favoritos
-      </button>
-
-      <button
-        class="btn-eliminar-favoritos"
-        @click="eliminarAFavoritos(rutina.id)"
-        v-else
-      >
-        Eliminar de Favoritos
-      </button>
     </div>
   </main>
 </template>
@@ -372,20 +375,15 @@ export default {
   font-size: 0.9rem;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
-  margin-bottom: 1rem;
 }
 .comentario-form{
   display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: space-between;
 }
-.comentario-form input {
-  width: 70%;
-  padding: 0.5rem;
-  margin-right: 0.5rem;
-  border: 1px solid var(--color-quinto);
-  border-radius: var(--border-radius);
-}
-.comentario-form button {
-  background-color: var(--color-accent);
+.btn-comentar-cancelar{
+  background-color: var(--color-error);
   color: var(--color-secondary);
   padding: 0.5rem 1rem;
   border: none;
@@ -394,10 +392,43 @@ export default {
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
+.comentario-form input {
+  width: 100%;
+  padding: 0.5rem;
+  margin-right: 0.5rem;
+  color: var(--color-quinto);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--border-radius);
+  background: transparent;
+}
+.comentario-form input:focus {
+  outline: none;
+  border-color: var(--color-accent);
+}
+.btn-comentar-cancelar:hover {
+  background-color: #d32f2f;
+  transform: translateY(-2px);
+}
+.btn-comentar-enviar{
+  background-color: var(--color-success);
+  color: var(--color-secondary);
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.btn-comentar-enviar:hover {
+  background-color: #009e3f;
+  transform: translateY(-2px);
+}
 .comentarios-container h2 {
+  display: inline-block;
   font-size: 1.5rem;
   color: var(--color-primary);
   margin: 0rem;
+  margin-right: 1rem;
 }
 .comentarios-no {
   font-size: 1rem;
@@ -407,9 +438,10 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  margin-top: 1rem;
 }
 .comentario-item {
-  padding: 1rem;
+  padding: 1rem 0;
   border-radius: calc(var(--border-radius) - 4px);
   position: relative;
 }
@@ -420,6 +452,7 @@ export default {
 }
 .comentario-usuario-edit{
   line-break:auto;
+  color: var(--color-quinto);
 }
 .comentario-flex input{
   flex: 1;
@@ -430,10 +463,11 @@ export default {
 }
 .comentario-usuario{
   line-break: anywhere;
+  color: var(--color-quinto);
 }
 .comentario-fecha{
   position: absolute;
-  top: 5px;
+  top: 13px;
   font-size: 14px;
   color: var(--color-warning);
   margin: 0;
@@ -511,7 +545,7 @@ export default {
 }
 
 .ejercicio-item {
-  background: var(--color-primary);
+  background: var(--color-secondary);
   padding: 1.2rem;
   border-radius: calc(var(--border-radius) - 4px);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -527,8 +561,8 @@ export default {
 
 .ejercicio-info h4 {
   font-size: 1.2rem;
-  color: var(--color-secondary);
-  margin: 0 0 0.5rem 0;
+  color: var(--color-accent);
+  margin: 3rem 0 0.5rem 0;
   font-weight: 600;
 }
 
@@ -536,8 +570,8 @@ export default {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--color-secondary);
-  color: var(--color-primary);
+  background-color: var(--color-accent);
+  color: var(--color-secondary);
   padding: 0.25rem 0.75rem;
   border-radius: 1rem;
   font-size: 0.85rem;
@@ -547,14 +581,20 @@ export default {
 
 .ejercicio-descripcion {
   font-size: 0.95rem;
-  color: var(--color-secondary);
+  color: var(--color-quinto);
   line-height: 1.6;
   opacity: 0.9;
 }
 .ejercicio-categoria {
+  min-width: -webkit-fill-available;
   font-size: 0.9rem;
-  color: var(--color-terciario);
-  margin-top: 0.5rem;
+  background: var(--color-cuarto);
+  padding: 0.5rem 1rem;
+  color: var(--color-secondary);
+  position: absolute;
+  top: 0;
+  margin: 0;
+  right: 0;
 }
 
 .empty-state {

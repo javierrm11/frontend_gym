@@ -12,6 +12,7 @@
         <span></span>
         <span></span>
       </button>
+      
     </div>
     <nav :class="{ active: isMenuOpen }" aria-hidden="!isMenuOpen">
       <ul>
@@ -41,14 +42,18 @@
         </li>
       </ul>
     </nav>
+    <BotonToogleDark />
   </header>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-
+import BotonToogleDark from "@/components/botonToogleDark.vue";
 export default {
   name: "HeaderPages",
+  components: {
+    BotonToogleDark,
+  },
   data() {
     return {
       isMenuOpen: false,
@@ -81,7 +86,6 @@ export default {
 .header {
   background-color: var(--color-secondary);
   color: var(--color-secondary);
-  filter: drop-shadow(0 1px 4px var(--color-accent));
   padding: 1rem 2rem;
   position: sticky;
   top: 0;
@@ -149,6 +153,7 @@ nav {
   overflow: hidden;
   transition: max-height var(--transition-speed) ease-out;
   background-color: var(--color-secondary);
+  flex: 1;
 }
 
 nav.active {
@@ -193,15 +198,11 @@ nav ul li a.router-link-exact-active {
   font-weight: bold;
 }
 
-/* Estilos para tablets (min-width: 600px) */
-@media (min-width: 600px) {
+/* Estilos para escritorio (min-width: 900px) */
+@media (min-width: 900px) {
   header h1 {
     font-size: 1.75rem;
   }
-}
-
-/* Estilos para escritorio (min-width: 900px) */
-@media (min-width: 900px) {
   .hamburger {
     display: none;
   }
@@ -221,6 +222,7 @@ nav ul li a.router-link-exact-active {
 
   nav ul {
     display: flex;
+    justify-content: flex-end;
     gap: 1rem;
     padding: 0;
   }

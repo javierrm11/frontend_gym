@@ -356,8 +356,9 @@ export default {
 }
 
 .lista-ejercicios {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 1.2rem;
   margin-top: 1rem;
   margin: 0 1rem;
@@ -371,6 +372,7 @@ export default {
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  flex: 0 0 100%;
 }
 
 .ejercicio-info h4 {
@@ -491,18 +493,21 @@ export default {
 }
 .serie-block li{
   list-style: none;
+  color: var(--color-sexto);
 }
 
 
 /* Tablet */
+@media (min-width: 568px) {
+.ejercicio-item {
+    flex: 1 1 27%;
+  }
+}
 @media (min-width: 768px) {
   .titulo-principal {
     font-size: 2.2rem;
   }
 
-  .lista-ejercicios {
-    grid-template-columns: repeat(2, 1fr);
-  }
 
   .descripcion-principal {
     font-size: 1.1rem;
@@ -511,9 +516,6 @@ export default {
 
 /* Desktop */
 @media (min-width: 1024px) {
-  .lista-ejercicios {
-    grid-template-columns: repeat(3, 1fr);
-  }
 
   .rutina-nombre,
   .rutina-ejercicios-nombre {

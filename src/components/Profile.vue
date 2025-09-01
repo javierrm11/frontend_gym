@@ -242,6 +242,13 @@ export default ({
   flex: 1;
   text-decoration: none;
 }
+.profile__followers h3,.profile__following h3{
+  color: var(--color-cuarto);
+  margin-bottom: 0.3rem;
+}
+.profile__followers p, .profile__following p{
+  color: var(--color-quinto);
+}
 
 /* INFORMACIÓN DEL PERFIL */
 .profile-info {
@@ -329,12 +336,20 @@ export default ({
   border-radius: 8px;
   flex: 1 1 43%;
 }
+.routine-item h3{
+  margin-bottom: 0.5rem;
+  color: var(--color-cuarto);
+}
+.routine-item p{
+  color: var(--color-quinto);
+  min-height: 3rem;
+}
 .btn-view-routine{
   display: inline-block;
   margin-top: 0.5rem;
   padding: 0.5rem 1rem;
   background-color: var(--color-accent);
-  color: white;
+  color: var(--color-secondary);
   border-radius: 4px;
   text-decoration: none;
   transition: background-color var(--transition-speed);
@@ -355,6 +370,14 @@ export default ({
   border-radius: 8px;
   flex: 1 1 43%;
   position: relative;
+}
+.favorite-item h3{
+  margin-bottom: 0.5rem;
+  color: var(--color-cuarto);
+}
+.favorite-item p{
+  color: var(--color-sexto);
+  min-height: 3rem;
 }
 .favorite-actions{
   display: flex;

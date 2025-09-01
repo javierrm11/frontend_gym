@@ -296,7 +296,8 @@ export default {
   border: 1px solid var(--color-terciario);
   box-sizing: border-box;
   font-size: 1rem;
-  color: var(--color-quinto);
+  background: var(--color-secondary);
+  color: var(--color-sexto);
 }
 .form-group input:focus {
   border-color: var(--color-accent);
@@ -316,6 +317,7 @@ export default {
 
 .ejercicio-header {
   display: flex;
+  color: var(--color-cuarto);
   align-items: center;
   justify-content: space-between;
 }
@@ -343,15 +345,18 @@ export default {
 .ejercicio-select label {
   font-weight: 500;
   margin-bottom: 0.25rem;
+  color: var(--color-primary);
 }
 
 select {
   width: 100%;
   padding: 8px;
   border-radius: 6px;
-  border: 1px solid var(--color-terciario);
   font-size: 1rem;
   background: var(--color-secondary);
+  color: var(--color-sexto);
+  border: none;
+  border-radius: var(--border-radius);
 }
 
 select:disabled {

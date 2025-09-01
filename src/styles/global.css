@@ -1,41 +1,46 @@
 :root {
-  /* Colores principales */
-  --color-primary: #ff9c24; /* Amarillo dorado */
-  --color-secondary: #FFFF; /* Negro puro */
-  --color-accent: #fe7000; /* Blanco como acento */
-  --color-terciario: #ece9e8; /* Gris claro como terciario */
-  --color-cuarto: #8A4FFF;
-  --color-quinto: #000;
+  /* 🎨 Colores principales */
+  --color-primary: #f97316;    /* Naranja brillante, protagonista */
+  --color-secondary: #f9fafb;  /* Fondo claro */
+  --color-accent: #fb923c;     /* Naranja suave para acentos */
+  --color-terciario: #e5e7eb;  /* Gris claro para bordes */
+  --color-cuarto: #0f766e;     /* Verde azulado (teal oscuro, elegante) */
+  --color-quinto: #111827;     /* Texto principal (gris carbón) */
+  --color-sexto: #6b7280;      /* Texto secundario (gris medio) */
 
-  /* Estados */
-  --color-error: #FF4C4C; /* Rojo para errores */
-  --color-success: #00C851; /* Verde para éxito */
-  --color-warning: #FFA500; /* Naranja para advertencias */
-  --color-info: #2196F3; /* Azul para información */
+  /* 🚦 Estados */
+  --color-error: #dc2626;   /* Rojo profesional */
+  --color-success: #16a34a; /* Verde éxito */
+  --color-warning: #f59e0b; /* Amarillo advertencia */
+  --color-info: #0284c7;    /* Azul información */
 
-  /* Extras */
+  /* ⚡ Extras */
   --border-radius: 12px;
   --transition-speed: 0.3s;
 }
-.oscuro{
-  /* Colores principales */
-  --color-primary: #000000; /* Amarillo dorado */
-  --color-secondary: #FFFF; /* Negro puro */
-  --color-accent: #FFD700; /* Blanco como acento */
-  --color-terciario: #969696; /* Gris claro como terciario */
-  --color-cuarto: #8A4FFF;
 
-  /* Estados */
-  --color-error: #FF4C4C; /* Rojo para errores */
-  --color-success: #00C851; /* Verde para éxito */
-  --color-warning: #FFA500; /* Naranja para advertencias */
-  --color-info: #2196F3; /* Azul para información */
+.dark {
+  /* 🎨 Colores principales modo oscuro */
+  --color-primary: #fb923c;    /* Naranja más suave para contraste */
+  --color-secondary: #1a1a1a;  /* Fondo oscuro elegante */
+  --color-accent: #f97316;     /* Naranja vivo para botones/links */
+  --color-terciario: #292929;  /* Gris oscuro neutro */
+  --color-cuarto: #14b8a6;     /* Verde azulado más brillante (hover, detalles) */
+  --color-quinto: #f9fafb;     /* Texto claro */
+  --color-sexto: #9ca3af;      /* Texto secundario gris claro */
 
-  /* Extras */
+  /* 🚦 Estados */
+  --color-error: #f87171;   /* Rojo claro */
+  --color-success: #4ade80; /* Verde brillante */
+  --color-warning: #fbbf24; /* Amarillo más vivo */
+  --color-info: #60a5fa;    /* Azul claro */
+
+  /* ⚡ Extras */
   --border-radius: 12px;
   --transition-speed: 0.3s;
-
 }
+
+
 body {
   font-family: "Poppins", sans-serif;
   color: #333;

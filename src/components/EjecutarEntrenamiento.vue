@@ -352,13 +352,15 @@ export default {
   text-align: center;
   margin-bottom: 2rem;
   padding-bottom: 1.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .titulo-principal {
   font-size: 2rem;
-  font-weight: 700;
   margin-bottom: 0.5rem;
+  font-weight: 700;
+  background: linear-gradient(to right, var(--color-primary), var(--color-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .rutina-info {
@@ -366,13 +368,14 @@ export default {
 }
 
 .rutina-info h2 {
+  color: var(--color-quinto);
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
 }
 
 .descripcion-rutina {
   font-size: 1rem;
-  color: var(--text-secondary);
+  color: var(--color-sexto);
   margin-bottom: 1.5rem;
 }
 
@@ -388,7 +391,7 @@ export default {
   align-items: center;
   gap: 0.5rem;
   background-color: var(--color-primary);
-  color: var(--text-primary);
+  color: var(--color-secondary);
   padding: 0.5rem 1rem;
   border-radius: 1rem;
   font-size: 0.9rem;
@@ -441,19 +444,18 @@ export default {
 
 .ejercicio-header {
   position: relative;
-  padding-bottom: 1rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .ejercicio-header h3 {
   font-size: 1.3rem;
-  color: var(--text-primary);
+  color: var(--color-primary);
   margin-bottom: 0.5rem;
 }
 
 .ejercicio-header p {
   font-size: 0.95rem;
-  color: var(--text-secondary);
+  color: var(--color-sexto);
   line-height: 1.5;
 }
 
@@ -461,8 +463,8 @@ export default {
   position: absolute;
   top: 0;
   right: 0;
-  background-color: var(--color-primary);
-  color: var(--text-primary);
+  background-color: var(--color-cuarto);
+  color: var(--color-secondary);
   padding: 0.25rem 0.75rem;
   border-radius: 1rem;
   font-size: 0.8rem;
@@ -525,19 +527,19 @@ export default {
 }
 
 .serie-badge {
-  background-color: var(--color-primary);
-  color: var(--text-primary);
+  background-color: var(--color-cuarto);
+  color: var(--color-secondary);
   padding: 0.25rem 0.75rem;
   border-radius: 1rem;
   font-size: 0.8rem;
   margin-right: 1rem;
 }
 .serie-info{
-  color: var(--text-secondary);
+  color: var(--color-secondary);
 }
 .sin-estadisticas {
   font-size: 0.9rem;
-  color: var(--text-secondary);
+  color: var(--color-secondary);
   margin: 1rem 0;
   font-style: italic;
   text-align: center;
@@ -567,7 +569,7 @@ export default {
 
 .serie-header h4 {
   font-size: 1.1rem;
-  color: var(--text-primary);
+  color: var(--color-primary);
   margin: 0;
 }
 
@@ -604,7 +606,7 @@ export default {
 
 .input-group label {
   font-size: 0.8rem;
-  color: var(--text-secondary);
+  color: var(--color-quinto);
   margin-bottom: 0.25rem;
 }
 
@@ -613,7 +615,7 @@ export default {
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: calc(var(--border-radius) / 2);
   padding: 0.75rem;
-  color: var(--text-primary);
+  color: var(--color-primary);
   font-size: 1rem;
   box-sizing: border-box;
   width: 100%;
@@ -629,8 +631,8 @@ export default {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  background-color: var(--color-primary);
-  color: var(--text-primary);
+  background-color: var(--color-cuarto);
+  color: var(--color-secondary);
   border: none;
   padding: 0.75rem;
   border-radius: calc(var(--border-radius) / 2);
@@ -677,12 +679,12 @@ export default {
 
 .btn-cancelar:hover {
   background-color: var(--color-error);
-  color: var(--text-primary);
+  color: var(--color-secondary);
 }
 
 .btn-guardar {
   background-color: var(--color-success);
-  color: var(--text-primary);
+  color: var(--color-secondary);
   border: none;
 }
 
@@ -700,7 +702,7 @@ export default {
   height: 20px;
   border: 3px solid rgba(255, 255, 255, 0.3);
   border-radius: 50%;
-  border-top-color: white;
+  border-top-color: var(--color-secondary);
   animation: spin 1s ease-in-out infinite;
 }
 

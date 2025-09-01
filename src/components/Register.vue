@@ -160,6 +160,7 @@ export default {
 .register-input {
   padding: 0.8rem 1rem;
   border: 1px solid var(--color-terciario);
+  color: var(--color-sexto);
   border-radius: 8px;
   font-size: 1rem;
   background-color: var(--color-secondary);
