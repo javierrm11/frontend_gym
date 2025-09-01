@@ -127,7 +127,6 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  min-height: 100dvh;
   padding: 2rem 1rem;
   background: var(--color-terciario);
 }

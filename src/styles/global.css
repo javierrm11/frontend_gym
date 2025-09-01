@@ -1,18 +1,18 @@
 :root {
   /* 🎨 Colores principales */
-  --color-primary: #f97316;    /* Naranja brillante, protagonista */
-  --color-secondary: #f9fafb;  /* Fondo claro */
-  --color-accent: #fb923c;     /* Naranja suave para acentos */
-  --color-terciario: #e5e7eb;  /* Gris claro para bordes */
-  --color-cuarto: #0f766e;     /* Verde azulado (teal oscuro, elegante) */
-  --color-quinto: #111827;     /* Texto principal (gris carbón) */
-  --color-sexto: #6b7280;      /* Texto secundario (gris medio) */
+  --color-primary: #ff9f6e;    /* Naranja tierra más vibrante */
+  --color-secondary: #ffffff;  /* Fondo blanco puro */
+  --color-accent: #ffb685;     /* Naranja pastel más brillante */
+  --color-terciario: #f2f2f0;  /* Gris cálido más luminoso */
+  --color-cuarto: #d6b899;     /* Beige cálido más claro */
+  --color-quinto: #1a1a1a;     /* Texto principal negro intenso */
+  --color-sexto: #707070;      /* Texto secundario gris medio más definido */
 
   /* 🚦 Estados */
-  --color-error: #dc2626;   /* Rojo profesional */
-  --color-success: #16a34a; /* Verde éxito */
-  --color-warning: #f59e0b; /* Amarillo advertencia */
-  --color-info: #0284c7;    /* Azul información */
+  --color-error: #e57373;   /* Rojo más vivo */
+  --color-success: #66bb6a; /* Verde más fresco */
+  --color-warning: #ffca28; /* Amarillo más brillante */
+  --color-info: #42a5f5;    /* Azul más vibrante */
 
   /* ⚡ Extras */
   --border-radius: 12px;
@@ -21,24 +21,27 @@
 
 .dark {
   /* 🎨 Colores principales modo oscuro */
-  --color-primary: #fb923c;    /* Naranja más suave para contraste */
-  --color-secondary: #1a1a1a;  /* Fondo oscuro elegante */
-  --color-accent: #f97316;     /* Naranja vivo para botones/links */
-  --color-terciario: #292929;  /* Gris oscuro neutro */
-  --color-cuarto: #14b8a6;     /* Verde azulado más brillante (hover, detalles) */
-  --color-quinto: #f9fafb;     /* Texto claro */
-  --color-sexto: #9ca3af;      /* Texto secundario gris claro */
+  --color-primary: #ffb685;    /* Naranja pastel más cálido */
+  --color-secondary: #121212;  /* Fondo negro elegante */
+  --color-accent: #ff9f6e;     /* Naranja tierra más vibrante */
+  --color-terciario: #2a2a2a;  /* Gris oscuro más definido */
+  --color-cuarto: #b89c80;     /* Beige oscuro con más calidez */
+  --color-quinto: #f5f5f5;     /* Texto claro más brillante */
+  --color-sexto: #c0c0c0;      /* Texto secundario gris claro más definido */
 
   /* 🚦 Estados */
-  --color-error: #f87171;   /* Rojo claro */
-  --color-success: #4ade80; /* Verde brillante */
-  --color-warning: #fbbf24; /* Amarillo más vivo */
-  --color-info: #60a5fa;    /* Azul claro */
+  --color-error: #ef9a9a;   /* Rojo más suave */
+  --color-success: #81c784; /* Verde más vivo */
+  --color-warning: #ffd54f; /* Amarillo más claro */
+  --color-info: #64b5f6;    /* Azul más brillante */
 
   /* ⚡ Extras */
   --border-radius: 12px;
   --transition-speed: 0.3s;
 }
+
+
+
 
 
 body {
@@ -51,4 +54,5 @@ body {
 }
 main {
   padding: 3rem 0 0;
+  min-height: 70dvh;
 }
