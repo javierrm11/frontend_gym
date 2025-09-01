@@ -147,7 +147,7 @@ header h1 {
 }
 
 /* Navegación */
-nav {
+.header nav {
   width: 100%;
   max-height: 0;
   overflow: hidden;
@@ -160,19 +160,19 @@ nav.active {
   max-height: 100vh;
 }
 
-nav ul {
+.header nav ul {
   list-style: none;
   padding: 1rem 0;
   margin: 0;
 }
 
-nav ul li {
+.header nav ul li {
   width: 100%;
   text-align: center;
 }
 
-nav ul li a,
-nav ul li .logout-btn {
+.header nav ul li a,
+.header nav ul li .logout-btn {
   display: block;
   text-decoration: none;
   color: var(--color-primary);
@@ -186,14 +186,14 @@ nav ul li .logout-btn {
   cursor: pointer;
 }
 
-nav ul li a:hover,
-nav ul li .logout-btn:hover {
+.header nav ul li a:hover,
+.header nav ul li .logout-btn:hover {
   color: var(--color-accent);
   transform: translate(-2px, -2px);
 
 }
 
-nav ul li a.router-link-exact-active {
+.header nav ul li a.router-link-exact-active {
   color: var(--color-accent);
   font-weight: bold;
 }
@@ -214,25 +214,25 @@ nav ul li a.router-link-exact-active {
     padding: 1rem 2rem;
   }
 
-  nav {
+  .header nav {
     max-height: none;
     width: auto;
     overflow: visible;
   }
 
-  nav ul {
+  .header nav ul {
     display: flex;
     justify-content: flex-end;
     gap: 1rem;
     padding: 0;
   }
 
-  nav ul li {
+  .header nav ul li {
     width: auto;
   }
 
-  nav ul li a,
-  nav ul li .logout-btn {
+  .header nav ul li a,
+  .header nav ul li .logout-btn {
     padding: 0.5rem 1rem;
     border-radius: var(--border-radius);
   }

@@ -195,6 +195,14 @@ export default {
   margin: 0 auto;
   gap: 1rem;
 }
+.other-user__followers h3,.other-user__following h3{
+  color: var(--color-cuarto);
+  margin-bottom: 0.3rem;
+}
+.other-user__followers p, .other-user__following p{
+  color: var(--color-quinto);
+  margin-left: 4px;
+}
 .other-user__followers, .other-user__following {
   flex: 1 1 40%;
   text-decoration: none;

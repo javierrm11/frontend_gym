@@ -248,6 +248,7 @@ export default ({
 }
 .profile__followers p, .profile__following p{
   color: var(--color-quinto);
+  margin-left: 4px;
 }
 
 /* INFORMACIÓN DEL PERFIL */

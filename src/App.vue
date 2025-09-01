@@ -2,10 +2,12 @@
   <div id="app">
     <Header />
     <router-view />
+    <Footer />
   </div>
 </template>
 
 <script>
+import Footer from './components/Footer.vue';
 import Header from "./components/Header.vue";
 import "./styles/global.css";
 
@@ -13,6 +15,7 @@ export default {
   name: "App",
   components: {
     Header,
+    Footer,
   },
   mounted() {
     this.verificarSesion();

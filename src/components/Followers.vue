@@ -207,7 +207,6 @@ export default {
 .followers-container {
     padding: 0;
     background: var(--color-terciario);
-    max-width: 900px;
     min-height: 92.8vh;
     position: relative;
 }
