@@ -10,6 +10,33 @@
           "Por favor espera mientras cargamos los detalles de la rutina."
         }}
       </p>
+      <button
+            class="btn-me-gusta"
+            :class="{ 'btn-me-gusta-activo': meGustas.some((like) => like.usuario_id == this.$store.state.usuario) }"
+            @click="
+              meGustas.some((like) => like.usuario_id == this.$store.state.usuario)
+              ? eliminarMeGusta(rutina.id)
+              : darMeGusta(rutina.id)
+            "
+            >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              :fill="meGustas.some((like) => like.usuario_id == this.$store.state.usuario) ? 'red' : 'none'"
+              :stroke="meGustas.some((like) => like.usuario_id == this.$store.state.usuario) ? 'red' : 'currentColor'"
+              class="bi bi-heart"
+              viewBox="0 0 16 16"
+            >
+              <path
+              d="M8 2.748-.717-1.737C5.6-.281 8 3.993 8 3.993s2.4-4.274 8.717-3.74C15.6-.281 8 2.748 8 2.748z"
+              />
+              <path
+              d="M8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"
+              fill-rule="evenodd"
+              />
+            </svg>{{ meGustas.length }}
+      </button>
     </div>
     <div class="rutina-container-flex">
       <div v-if="ejercicios?.length" class="rutinas-grid">
@@ -30,25 +57,25 @@
           </div>
         </div>
         <div class="acciones" v-if="this.$store.state.usuario">
-      <button class="btn-copiar" @click="copiarRutina(rutina)">
-        Copiar Rutina
-      </button>
-      <button
-        class="btn-favoritos"
-        @click="agregarAFavoritos(rutina)"
-        v-if="!favoritos.some((favorito) => favorito.id_rutina == rutina.id)"
-      >
-        Agregar a Favoritos
-      </button>
+          <button class="btn-copiar" @click="copiarRutina(rutina)">
+            Copiar Rutina
+          </button>
+          <button
+            class="btn-favoritos"
+            @click="agregarAFavoritos(rutina)"
+            v-if="!favoritos.some((favorito) => favorito.id_rutina == rutina.id)"
+          >
+            Agregar a Favoritos
+          </button>
 
-      <button
-        class="btn-eliminar-favoritos"
-        @click="eliminarAFavoritos(rutina.id)"
-        v-else
-      >
-        Eliminar de Favoritos
-      </button>
-    </div>
+          <button
+            class="btn-eliminar-favoritos"
+            @click="eliminarAFavoritos(rutina.id)"
+            v-else
+          >
+            Eliminar de Favoritos
+          </button>
+        </div>
       </div>
       
 
@@ -122,12 +149,14 @@ export default {
   name: "VerRutina",
   mounted() {
     this.obtenerRutina();
+    this.obtenerMeGustas();
   },
   data() {
     return {
       rutina: null,
       ejercicios: [],
       favoritos: [],
+      meGustas: [],
       mostrarInput: false,
       nuevoComentario: "",
       editarInput: false,
@@ -311,6 +340,58 @@ export default {
           console.error("Error al editar comentario:", error);
         });
     },
+    obtenerMeGustas() {
+      const rutinaId = this.$route.params.id;
+      axios
+      .get(`${process.env.VUE_APP_BASE_URL}/api/like/${rutinaId}`, {
+        headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((response) => {
+        console.log("Me gustas obtenidos:", response.data);
+        this.meGustas = response.data;
+      })
+      .catch((error) => {
+        console.error("Error al obtener me gustas:", error);
+      });
+    },
+    darMeGusta(rutinaId) {
+      axios
+        .post(
+          `${process.env.VUE_APP_BASE_URL}/api/like`,
+          {
+            rutina_id: rutinaId,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        )
+        .then((response) => {
+          console.log("Me gusta agregado:", response.data);
+          this.meGustas.push(response.data);
+        })
+        .catch((error) => {
+          console.error("Error al agregar me gusta:", error);
+        });
+    },
+    eliminarMeGusta(rutinaId) {
+      axios
+      .delete(`${process.env.VUE_APP_BASE_URL}/api/like/${rutinaId}`, {
+        headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((response) => {
+        console.log("Me gusta eliminado:", response.data);
+        this.obtenerMeGustas();
+      })
+      .catch((error) => {
+        console.error("Error al eliminar me gusta:", error);
+      });
+    }
   },
 };
 </script>
@@ -318,11 +399,11 @@ export default {
 <style scoped>
 .ver-rutina-container {
   font-family: "Poppins", sans-serif;
-  margin: 0 auto;
   padding: 2rem 1rem;
 }
 
 .header-section {
+  position: relative;
   text-align: center;
   margin-bottom: 2.5rem;
   padding: 1.5rem;
@@ -650,6 +731,22 @@ export default {
 .btn-eliminar-favoritos:hover {
   background-color: #d32f2f;
   transform: translateY(-2px);
+}
+.btn-me-gusta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--color-secondary);
+  color: var(--color-quinto);
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
 }
 
 /* Responsividad */

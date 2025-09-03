@@ -39,6 +39,22 @@
               <router-link :to="{ path: `/verEntrenamiento/${rutina.id}` }" class="btn-view-routine">
                 Ver Rutina
               </router-link>
+              <p class="profile-meGustas"><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              fill="red"
+              class="bi bi-heart"
+              viewBox="0 0 16 16"
+            >
+              <path
+              d="M8 2.748-.717-1.737C5.6-.281 8 3.993 8 3.993s2.4-4.274 8.717-3.74C15.6-.281 8 2.748 8 2.748z"
+              />
+              <path
+              d="M8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"
+              fill-rule="evenodd"
+              />
+            </svg>{{ rutina.likes.length }}</p>
             </div>
         </div>
           <p v-else>No has creado ninguna rutina.</p>
@@ -336,6 +352,7 @@ export default ({
   padding: 1rem;
   border-radius: 8px;
   flex: 1 1 43%;
+  position: relative;
 }
 .routine-item h3{
   margin-bottom: 0.5rem;
@@ -354,6 +371,17 @@ export default ({
   border-radius: 4px;
   text-decoration: none;
   transition: background-color var(--transition-speed);
+}
+.profile-meGustas{
+  position: absolute;
+  top: 0;
+  right: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.5rem;
+  color: var(--color-quinto);
+  font-weight: bold;
 }
 .profile-rutinas-favoritas h2{
   margin-bottom: 1rem;

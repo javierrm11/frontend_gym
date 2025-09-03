@@ -19,6 +19,7 @@
   --transition-speed: 0.3s;
 }
 
+
 .dark {
   /* 🎨 Colores principales modo oscuro */
   --color-primary: #ffb685;    /* Naranja pastel más cálido */
