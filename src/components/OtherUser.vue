@@ -287,7 +287,7 @@ export default {
   flex-wrap: wrap;
   gap: 1.5rem;
   justify-content: center;
-  align-items: baseline;
+  align-items:stretch;
   background: var(--color-primary);
 }
 .other-user__routines h2 {
@@ -309,6 +309,7 @@ export default {
   display: flex;
   flex-direction: column;
   position: relative;
+  justify-content: space-between;
 }
 
 .routine-card:hover {

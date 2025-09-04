@@ -118,15 +118,15 @@ export default ({
             showLogrosModal: false
         }
     },
-    mounted() {
-        axios.get(`${process.env.VUE_APP_BASE_URL}/api/user`, {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`
-            }
-        })
-        .then(response => {
-          console.log("Usuario obtenido:", response.data);
-          
+    async mounted() {
+        try {
+            const response = await axios.get(`${process.env.VUE_APP_BASE_URL}/api/user`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            console.log("Usuario obtenido:", response.data);
+
             this.usuario = response.data;
             // Si tiene foto personalizada, agregamos el host si no está completo
             if (this.usuario.Foto) {
@@ -134,11 +134,11 @@ export default ({
             } else {
                 this.usuario.Foto = require('@/assets/users/predeterminada.png');
             }
-        })
-        .catch(error => {
+
+            await this.fetchLogros();
+        } catch (error) {
             console.error("Error al obtener el usuario:", error);
-        });
-        this.fetchLogros();
+        }
     },
     methods: {
         confirmDelete() {

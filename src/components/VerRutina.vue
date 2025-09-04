@@ -16,15 +16,15 @@
             @click="
               meGustas.some((like) => like.usuario_id == this.$store.state.usuario)
               ? eliminarMeGusta(rutina.id)
-              : darMeGusta(rutina.id)
+                : this.$store.state.usuario ? darMeGusta(rutina.id) : null
             "
             >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
               height="20"
-              :fill="meGustas.some((like) => like.usuario_id == this.$store.state.usuario) ? 'red' : 'none'"
-              :stroke="meGustas.some((like) => like.usuario_id == this.$store.state.usuario) ? 'red' : 'currentColor'"
+              :fill="meGustas.some((like) => like.usuario_id == this.$store.state.usuario) || !this.$store.state.usuario ? 'red' : 'none'"
+              stroke="red"
               class="bi bi-heart"
               viewBox="0 0 16 16"
             >

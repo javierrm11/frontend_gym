@@ -304,6 +304,7 @@ export default {
 }
 .follower-name{
     flex: 1;
+    color: var(--color-quinto);
 }
 .btn-follow, .btn-unfollow {
   background: transparent;

@@ -131,7 +131,6 @@ export default {
     align-items: center;
     padding: 2rem;
     background-color: var(--background-light);
-    min-height: 100vh;
 }
 
 .edit-title {
@@ -165,26 +164,27 @@ export default {
 }
 
 .form-label {
-    font-weight: bold;
-    color: var(--color-primary);
-    font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  font-size: 0.95rem;
 }
 
 .form-input,
 .form-textarea {
-  padding: 0.75rem;
+  padding: 0.8rem 1rem;
   border: 1px solid var(--color-terciario);
-  border-radius: var(--border-radius);
-  color: var(--color-quinto);
-  transition: border var(--transition-speed);
+  color: var(--color-sexto);
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: var(--color-secondary);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .form-input:focus,
 .form-textarea:focus {
-    outline: none;
     border-color: var(--color-primary);
+    outline: none;
 }
-
 .form-textarea {
     min-height: 120px;
     resize: vertical;

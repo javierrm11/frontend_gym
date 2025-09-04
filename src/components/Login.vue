@@ -91,7 +91,6 @@ export default {
   display: flex;
   flex-direction: column;
   padding: 2rem 1rem;
-  min-height: 100vh;
 }
 
 .login-title {
