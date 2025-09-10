@@ -11,31 +11,31 @@
         }}
       </p>
       <button
-            class="btn-me-gusta"
-            :class="{ 'btn-me-gusta-activo': meGustas.some((like) => like.usuario_id == this.$store.state.usuario) }"
-            @click="
-              meGustas.some((like) => like.usuario_id == this.$store.state.usuario)
-              ? eliminarMeGusta(rutina.id)
-                : this.$store.state.usuario ? darMeGusta(rutina.id) : null
-            "
-            >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              :fill="meGustas.some((like) => like.usuario_id == this.$store.state.usuario) || !this.$store.state.usuario ? 'red' : 'none'"
-              stroke="red"
-              class="bi bi-heart"
-              viewBox="0 0 16 16"
-            >
-              <path
-              d="M8 2.748-.717-1.737C5.6-.281 8 3.993 8 3.993s2.4-4.274 8.717-3.74C15.6-.281 8 2.748 8 2.748z"
-              />
-              <path
-              d="M8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"
-              fill-rule="evenodd"
-              />
-            </svg>{{ meGustas.length }}
+        class="btn-me-gusta"
+        :class="{ 'btn-me-gusta-activo': meGustas.some((like) => like.usuario_id == this.$store.state.usuario) }"
+        @click="
+          meGustas.some((like) => like.usuario_id == this.$store.state.usuario)
+          ? eliminarMeGusta(rutina.id)
+            : this.$store.state.usuario ? darMeGusta(rutina.id) : null
+        "
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          :fill="meGustas.some((like) => like.usuario_id == this.$store.state.usuario) || !this.$store.state.usuario ? 'red' : 'none'"
+          stroke="red"
+          class="bi bi-heart"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M8 2.748-.717-1.737C5.6-.281 8 3.993 8 3.993s2.4-4.274 8.717-3.74C15.6-.281 8 2.748 8 2.748z"
+          />
+          <path
+            d="M8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"
+            fill-rule="evenodd"
+          />
+        </svg>{{ meGustas.length }}
       </button>
     </div>
     <div class="rutina-container-flex">
@@ -111,31 +111,15 @@
           No hay comentarios para esta rutina.
         </p>
         <div class="comentarios-list" v-else>
-            <div v-for="comentario in rutina.comentarios" :key="comentario.id" class="comentario-item">
-              <template v-if="comentarioAEditar === comentario.id">
-                <p class="comentario-fecha">{{ new Date(comentario.fecha_creacion).toLocaleString() }}</p>
-                <div class="comentario-flex">
-                  <p class="comentario-usuario-edit"><strong>{{ comentario.usuario.Nombre_Usuario }}:</strong></p>
-                  <input v-model="comentario.contenido" type="text" />
-                </div>
-                <div class="botones-comentario" v-if="this.$store.state.usuario && this.$store.state.usuario == comentario.id_usuario">
-                  <button class="eliminar-comentario"
-                  @click="editarInput = false; comentarioAEditar = null;">Cancelar</button>
-                  <button @click="editarInput = false; comentarioAEditar = null; editarComentario(comentario.id)" class="editar-comentario">Guardar</button>
-                </div>
-              </template>
-              <template v-else>
-                <p class="comentario-usuario"><strong>{{ comentario.usuario.Nombre_Usuario }}:</strong> {{ comentario.contenido }}</p>
-                <p class="comentario-fecha">{{ new Date(comentario.fecha_creacion).toLocaleString() }}</p>
-                <div class="botones-comentario" v-if="this.$store.state.usuario && this.$store.state.usuario == comentario.id_usuario">
-                  <button class="editar-comentario"
-                  @click="editarInput = true; comentarioAEditar = comentario.id">Editar</button>
-                  <button class="eliminar-comentario"
-                  @click="eliminarComentario(comentario.id)"
-                  >Eliminar</button>
-                </div>
-              </template>
-            </div>
+          <!-- Componente recursivo para comentarios y respuestas -->
+          <comentario-item
+            v-for="comentario in rutina.comentarios"
+            :key="comentario.id"
+            :comentario="comentario"
+            :rutinaId="rutina.id"
+            :nivel="0"
+            @actualizar-rutina="obtenerRutina"
+          />
         </div>
       </div>
     </div>
@@ -144,9 +128,13 @@
 
 <script>
 import axios from "axios";
+import ComentarioItem from '@/components/ComentarioItem.vue'; // Componente recursivo
 
 export default {
   name: "VerRutina",
+  components: {
+    ComentarioItem
+  },
   mounted() {
     this.obtenerRutina();
     this.obtenerMeGustas();
@@ -159,8 +147,6 @@ export default {
       meGustas: [],
       mostrarInput: false,
       nuevoComentario: "",
-      editarInput: false,
-      comentarioAEditar: null,
     };
   },
   methods: {
@@ -295,51 +281,6 @@ export default {
           console.error("Error al agregar comentario:", error);
         });
     },
-    eliminarComentario(comentarioId) {
-      axios
-      .delete(`${process.env.VUE_APP_BASE_URL}/api/comentarios/${comentarioId}`, {
-        headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
-        .then((response) => {
-          console.log("comentario eliminado de favoritos:", response.data);
-          // Actualizar el usuario para reflejar los cambios
-          this.rutina.comentarios = this.rutina.comentarios.filter(
-            (comentario) => comentario.id !== comentarioId
-          );
-        })
-        .catch((error) => {
-          console.error("Error al eliminar comentario:", error);
-          alert("Error al eliminar comentario.");
-        });
-    },
-    editarComentario(comentarioId) {
-      const comentario = this.rutina.comentarios.find(c => c.id === comentarioId);
-      if (!comentario || !comentario.contenido.trim()) return;
-
-      axios
-        .put(
-          `${process.env.VUE_APP_BASE_URL}/api/comentarios/${comentarioId}`,
-          {
-            contenido: comentario.contenido.trim(),
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        )
-        .then((response) => {
-          console.log("Comentario editado:", response.data);
-          this.comentarioAEditar = null;
-          this.editarInput = false;
-          this.obtenerRutina(); // Refrescar la rutina para mostrar el comentario editado
-        })
-        .catch((error) => {
-          console.error("Error al editar comentario:", error);
-        });
-    },
     obtenerMeGustas() {
       const rutinaId = this.$route.params.id;
       axios
@@ -391,7 +332,7 @@ export default {
       .catch((error) => {
         console.error("Error al eliminar me gusta:", error);
       });
-    }
+    },
   },
 };
 </script>
@@ -446,6 +387,8 @@ export default {
   flex: 0 0 100%;
   background: var(--color-terciario);
   border-radius: var(--border-radius);
+  padding: 1rem;
+  box-sizing: border-box;
 }
 .btn-comentar{
   background-color: var(--color-accent);
@@ -519,73 +462,6 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  margin-top: 1rem;
-}
-.comentario-item {
-  padding: 1rem 0;
-  border-radius: calc(var(--border-radius) - 4px);
-  position: relative;
-}
-.comentario-flex{
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-}
-.comentario-usuario-edit{
-  line-break:auto;
-  color: var(--color-quinto);
-}
-.comentario-flex input{
-  flex: 1;
-  padding: 0.5rem;
-  border: 1px solid var(--color-quinto);
-  border-radius: var(--border-radius);
-  font-size: 0.8rem;
-}
-.comentario-usuario{
-  line-break: anywhere;
-  color: var(--color-quinto);
-}
-.comentario-fecha{
-  position: absolute;
-  top: 13px;
-  font-size: 14px;
-  color: var(--color-warning);
-  margin: 0;
-}
-.botones-comentario{
-  display: flex;
-  gap: 0.5rem;
-  justify-content: space-between;
-  align-items: center;
-}
-.eliminar-comentario {
-  background-color: var(--color-error);
-  color: var(--color-secondary);
-  padding: 0.5rem;
-  border: none;
-  border-radius: var(--border-radius);
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-.eliminar-comentario:hover {
-  background-color: #d32f2f;
-  transform: translateY(-2px);
-}
-.editar-comentario {
-  background-color: var(--color-success);
-  color: var(--color-secondary);
-  padding: 0.5rem;
-  border: none;
-  border-radius: var(--border-radius);
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-.editar-comentario:hover {
-  background-color: #009e3f;
-  transform: translateY(-2px);
 }
 
 .rutina-card {
@@ -687,8 +563,7 @@ export default {
 .acciones {
   display: flex;
   gap: 2rem;
-  justify-content: center;
-  margin-top: 2rem;
+  justify-content:space-between;
 }
 .btn-copiar {
   background-color: var(--color-cuarto);
@@ -751,12 +626,6 @@ export default {
 
 /* Responsividad */
 @media (min-width: 768px) {
-  .rutinas-grid {
-    flex: 2;
-  }
-  .comentarios-container {
-    flex: 1;
-  }
   .lista-ejercicios {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -772,10 +641,12 @@ export default {
 
 @media (min-width: 1024px) {
   .rutinas-grid {
-    flex: 4;
+    flex: 2;
   }
   .comentarios-container {
     flex: 1;
+    padding: 0rem;
+  box-sizing: border-box;
   }
   .lista-ejercicios {
     grid-template-columns: repeat(3, 1fr);
@@ -828,7 +699,7 @@ export default {
 /* Loading Spinner */
 .loading-container {
   display: flex;
-  justify-content: center;
+  justifstyletent: center;
   align-items: center;
   min-height: 200px;
 }

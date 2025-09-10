@@ -26,7 +26,7 @@
       </div>
     </div>
     <div class="rutinas-ejercicios-comentarios-flex">
-      <div class="rutinas-grid">
+      <div class="rutinas-ejercicios-grid">
         <div class="rutina-card">
           <div class="card-header">
             <h3 class="rutina-ejercicios-nombre">Ejercicios</h3>
@@ -136,29 +136,15 @@
           No hay comentarios para esta rutina.
         </p>
         <div class="comentarios-list" v-else>
-            <div v-for="comentario in rutina.comentarios" :key="comentario.id" class="comentario-item">
-              <template v-if="comentarioAEditar === comentario.id">
-                <p class="comentario-fecha">{{ new Date(comentario.fecha_creacion).toLocaleString() }}</p>
-                <div class="comentario-flex">
-                  <p class="comentario-usuario-edit"><strong>{{ comentario.usuario.Nombre_Usuario }}:</strong></p>
-                  <input v-model="comentario.contenido" type="text" />
-                </div>
-                <div class="botones-comentario" v-if="this.$store.state.usuario && this.$store.state.usuario == comentario.id_usuario">
-                  <button class="eliminar-comentario"
-                  @click="editarInput = false; comentarioAEditar = null;">Cancelar</button>
-                  <button @click="editarInput = false; comentarioAEditar = null; editarComentario(comentario.id)" class="editar-comentario">Guardar</button>
-                </div>
-              </template>
-              <template v-else>
-                <p class="comentario-usuario"><strong>{{ comentario.usuario.Nombre_Usuario }}:</strong> {{ comentario.contenido }}</p>
-                <p class="comentario-fecha">{{ new Date(comentario.fecha_creacion).toLocaleString() }}</p>
-                <div class="botones-comentario" v-if="this.$store.state.usuario">
-                  <button class="eliminar-comentario"
-                  @click="eliminarComentario(comentario.id)"
-                  >Eliminar</button>
-                </div>
-              </template>
-            </div>
+          <!-- Componente recursivo para comentarios y respuestas -->
+          <comentario-item
+            v-for="comentario in rutina.comentarios"
+            :key="comentario.id"
+            :comentario="comentario"
+            :rutinaId="rutina.id"
+            :nivel="0"
+            @actualizar-rutina="getRutina"
+          />
         </div>
       </div>
     </div>
@@ -168,9 +154,13 @@
 
 <script>
 import axios from "axios";
+import ComentarioItem from "@/components/ComentarioItem.vue";
 
 export default {
   name: "VerEntrenamiento",
+  components: {
+    ComentarioItem
+  },
   data() {
     return {
       rutina: {},
@@ -479,7 +469,7 @@ export default {
   gap: 2rem;
 }
 
-.rutinas-grid {
+.rutinas-ejercicios-grid {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -564,7 +554,8 @@ export default {
 }
 .rutina-comentarios {
   flex: 0 0 100%;
-  padding: 0 2rem 2rem;
+  padding: 0 2rem;
+  box-sizing: border-box;
   background: var(--color-terciario);
   border-radius: var(--border-radius);
 }
@@ -883,21 +874,15 @@ export default {
 }
 /* Responsividad */
 @media (min-width: 768px) {
-  .rutinas-grid {
+}
+
+@media (min-width: 1024px) {
+  .rutinas-ejercicios-grid {
     flex: 2;
   }
   .rutina-comentarios {
     flex: 1;
     padding: 0;
-  }
-}
-
-@media (min-width: 1024px) {
-  .rutinas-grid {
-    flex: 4;
-  }
-  .rutina-comentarios {
-    flex: 1;
   }
 }
 
