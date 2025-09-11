@@ -4,12 +4,17 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "npm run build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@capacitor/android": "^7.4.3",
+    "@capacitor/cli": "^7.4.3",
+    "@capacitor/core": "^7.4.3",
+    "@capacitor/ios": "^7.4.3",
     "axios": "^1.8.4",
     "core-js": "^3.8.3",
+    "swiper": "^9.4.1",
     "vue": "^3.2.13",
     "vue-router": "^4.5.0",
     "vuex": "^4.0.2"
