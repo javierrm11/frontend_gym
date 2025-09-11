@@ -18,6 +18,7 @@ import Categoria from './components/Categoria.vue';
 import VerRutina from './components/VerRutina.vue';
 import OtherUser from './components/OtherUser.vue';
 import Followers from './components/Followers.vue';
+import Inicio from './components/Inicio.vue';
 import error from './components/404.vue';
 import store from './store';
 
@@ -25,9 +26,14 @@ import store from './store';
 // Definir rutas directamente en main.js
 const routes = [
   {
-    path: '/',
+    path: '/inicio',
     name: 'index',
     component: Index
+  },
+  {
+    path: '/',
+    name: 'Inicio',
+    component: Inicio
   },
   {
     path: '/register',

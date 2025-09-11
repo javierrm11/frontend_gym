@@ -1,0 +1,33 @@
+.swiper-button-next,
+.swiper-button-prev {
+  color: #ff5722; /* color que quieras (primary o accent) */
+  font-weight: bold;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  color: #e64a19; /* color que quieras (primary o accent) */
+  transform: scale(1.1);
+}
+.swiper-button-next:disabled,
+.swiper-button-prev:disabled {
+  color: #bdbdbd; /* color que quieras (grey) */
+  cursor: not-allowed;
+}
+.swiper-pagination-bullet {
+  background: #ff5722; /* color que quieras (primary o accent) */
+  opacity: 0.7;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+.swiper-pagination-bullet-active {
+  background: #e64a19; /* color que quieras (primary o accent) */
+  opacity: 1;
+  transform: scale(1.2);
+}
+.swiper-pagination{
+    bottom: 0 !important;
+}
+.swiper-wrapper
+ {
+    padding-bottom: 2rem;
+ }

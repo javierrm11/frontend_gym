@@ -17,6 +17,7 @@
     <nav :class="{ active: isMenuOpen }" aria-hidden="!isMenuOpen">
       <ul>
         <li><router-link to="/" @click="closeMenu">Inicio</router-link></li>
+        <li><router-link to="/inicio" @click="closeMenu">Red</router-link></li>
         <li v-if="!isLoggedIn">
           <router-link to="/login" @click="closeMenu"
             >Iniciar Sesión</router-link

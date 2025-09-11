@@ -356,17 +356,17 @@ export default ({
 }
 .routine-item h3{
   margin-bottom: 0.5rem;
-  color: var(--color-cuarto);
+  color: var(--color-quinto);
 }
 .routine-item p{
-  color: var(--color-quinto);
+  color: var(--color-sexto);
   min-height: 3rem;
 }
 .btn-view-routine{
   display: inline-block;
   margin-top: 0.5rem;
   padding: 0.5rem 1rem;
-  background-color: var(--color-accent);
+  background-color: var(--color-cuarto);
   color: var(--color-secondary);
   border-radius: 4px;
   text-decoration: none;
@@ -402,7 +402,7 @@ export default ({
 }
 .favorite-item h3{
   margin-bottom: 0.5rem;
-  color: var(--color-cuarto);
+  color: var(--color-quinto);
 }
 .favorite-item p{
   color: var(--color-sexto);
@@ -417,7 +417,7 @@ export default ({
 .btn-view-routine-out{
   display: inline-block;
   padding: 0.5rem 1rem;
-  background-color: var(--color-accent);
+  background-color: var(--color-cuarto);
   color: var(--color-secondary);
   border-radius: 4px;
   text-decoration: none;

@@ -1,44 +1,54 @@
 :root {
-  /* 🎨 Colores principales */
-  --color-primary: #ff9f6e;    /* Naranja tierra más vibrante */
-  --color-secondary: #ffffff;  /* Fondo blanco puro */
-  --color-accent: #ffb685;     /* Naranja pastel más brillante */
-  --color-terciario: #f2f2f0;  /* Gris cálido más luminoso */
-  --color-cuarto: #d6b899;     /* Beige cálido más claro */
-  --color-quinto: #1a1a1a;     /* Texto principal negro intenso */
-  --color-sexto: #707070;      /* Texto secundario gris medio más definido */
-
+  /* 🎨 Colores principales - Tema claro */
+  --color-primary: #FF7D33;       /* Naranja vibrante pero elegante */
+  --color-secondary: #FFFFFF;     /* Blanco puro para fondos */
+  --color-accent: #f05800;        /* Turquesa moderno para acentos */
+  --color-terciario: #F8F9FA;     /* Gris muy claro para fondos secundarios */
+  --color-cuarto: #1A535C;        /* Azul oscuro elegante para contraste */
+  --color-quinto: #212529;        /* Casi negro para texto principal */
+  --color-sexto: #6C757D;         /* Gris medio para texto secundario */
+  
+  /* 🎨 Colores de categorías */
+  --color-pecho: #FF7D33;         /* Naranja */
+  --color-piernas: #4ECDC4;       /* Turquesa */
+  --color-brazos: #FF6B6B;        /* Rojo coral */
+  --color-espalda: #0080db;       /* Azul oscuro */
+  --color-cardio: #9C89B8;        /* Púrpura suave */
+  --color-abdominales: #bfa200;   /* Dorado brillante */
+  
   /* 🚦 Estados */
-  --color-error: #e57373;   /* Rojo más vivo */
-  --color-success: #66bb6a; /* Verde más fresco */
-  --color-warning: #ffca28; /* Amarillo más brillante */
-  --color-info: #42a5f5;    /* Azul más vibrante */
+  --color-error: #FF6B6B;         /* Rojo coral */
+  --color-success: #4CAF50;       /* Verde fresco */
+  --color-warning: #FFD166;       /* Amarillo mostaza */
+  --color-info: #42A5F5;          /* Azul brillante */
 
   /* ⚡ Extras */
   --border-radius: 12px;
   --transition-speed: 0.3s;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.12);
 }
 
-
 .dark {
-  /* 🎨 Colores principales modo oscuro */
-  --color-primary: #ffb685;    /* Naranja pastel más cálido */
-  --color-secondary: #121212;  /* Fondo negro elegante */
-  --color-accent: #ff9f6e;     /* Naranja tierra más vibrante */
-  --color-terciario: #2a2a2a;  /* Gris oscuro más definido */
-  --color-cuarto: #b89c80;     /* Beige oscuro con más calidez */
-  --color-quinto: #f5f5f5;     /* Texto claro más brillante */
-  --color-sexto: #c0c0c0;      /* Texto secundario gris claro más definido */
+  /* 🎨 Colores principales - Tema oscuro */
+  --color-primary: #FF9F6E;       /* Naranja suave */
+  --color-secondary: #121212;     /* Negro elegante */
+  --color-accent: #fa8449;        /* Turquesa más oscuro */
+  --color-terciario: #1E1E1E;     /* Gris muy oscuro */
+  --color-cuarto: #4ECDC4;        /* Turquesa para contraste */
+  --color-quinto: #F5F5F5;        /* Blanco para texto */
+  --color-sexto: #B0BEC5;         /* Gris azulado claro */
+  --color-abdominales: #ffd900;
+  
+  /* 🚦 Estados modo oscuro */
+  --color-error: #EF5350;         /* Rojo suave */
+  --color-success: #66BB6A;       /* Verde suave */
+  --color-warning: #FFCA28;       /* Amarillo dorado */
+  --color-info: #29B6F6;          /* Azul claro */
 
-  /* 🚦 Estados */
-  --color-error: #ef9a9a;   /* Rojo más suave */
-  --color-success: #81c784; /* Verde más vivo */
-  --color-warning: #ffd54f; /* Amarillo más claro */
-  --color-info: #64b5f6;    /* Azul más brillante */
-
-  /* ⚡ Extras */
-  --border-radius: 12px;
-  --transition-speed: 0.3s;
+  /* ⚡ Extras modo oscuro */
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.4);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.5);
 }
 
 
@@ -56,4 +66,88 @@ body {
 main {
   padding: 3rem 0 0;
   min-height: 70dvh;
+}
+.pecho{
+  background-color: var(--color-pecho);
+}
+.piernas{
+  background-color: var(--color-piernas);
+}
+.brazos{
+  background-color: var(--color-brazos);
+}
+.espalda{
+  background-color: var(--color-espalda);
+}
+.cardio{
+  background-color: var(--color-cardio);
+}
+.abdomen{
+  background-color: var(--color-abdominales);
+}
+.default{
+  background-color: var(--color-primary);
+}
+.color-pecho{
+  color: var(--color-pecho);
+}
+.color-piernas{
+  color: var(--color-piernas);
+}
+.color-brazos{
+  color: var(--color-brazos);
+}
+.color-espalda{
+  color: var(--color-espalda);
+}
+.color-cardio{
+  color: var(--color-cardio);
+}
+.color-abdomen{
+  color: var(--color-abdominales);
+}
+.color-default{
+  color: var(--color-primary);
+}
+.border-pecho{
+  border: 1px solid var(--color-pecho);
+}
+.border-piernas{
+  border: 1px solid var(--color-piernas);
+}
+.border-brazos{
+  border: 1px solid var(--color-brazos);
+}
+.border-espalda{
+  border: 1px solid var(--color-espalda);
+}
+.border-cardio{
+  border: 1px solid var(--color-cardio);
+}
+.border-abdomen{
+  border: 1px solid var(--color-abdominales);
+}
+.border-default{
+  border: 1px solid var(--color-primary);
+}
+.filter-pecho{
+  filter: drop-shadow(2px 2px 0px var(--color-pecho));
+}
+.filter-piernas{
+  filter: drop-shadow(2px 2px 0px var(--color-piernas));
+}
+.filter-brazos{
+  filter: drop-shadow(2px 2px 0px var(--color-brazos));
+}
+.filter-espalda{
+  filter: drop-shadow(2px 2px 0px var(--color-espalda));
+}
+.filter-cardio{
+  filter: drop-shadow(2px 2px 0px var(--color-cardio));
+}
+.filter-abdomen{
+  filter: drop-shadow(2px 2px 0px var(--color-abdominales));
+}
+.filter-default{
+  filter: drop-shadow(2px 2px 0px var(--color-primary));
 }

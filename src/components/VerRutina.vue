@@ -46,14 +46,14 @@
           :key="ejercicio.id"
         >
           <div class="ejercicio-info">
-            <h4>{{ ejercicio.Nombre }}</h4>
-            <p class="ejercicio-categoria">
+            <h4 :class="`color-${ejercicio.Categoria?.toLowerCase() || 'color-default'}`">{{ ejercicio.Nombre }}</h4>
+            <p class="ejercicio-categoria" :class="`${ejercicio.Categoria?.toLowerCase() || 'default'}`">
               {{ ejercicio.Categoria }}
             </p>
             <p class="ejercicio-descripcion">
               {{ ejercicio.Descripcion }}
             </p>
-            <p class="series-badge">Series: {{ ejercicio.Num_Series }}</p>
+            <p class="series-badge" :class="`${ejercicio.Categoria?.toLowerCase() || 'default'}`">Series: {{ ejercicio.Num_Series }}</p>
           </div>
         </div>
         <div class="acciones" v-if="this.$store.state.usuario">
@@ -518,7 +518,6 @@ export default {
 
 .ejercicio-info h4 {
   font-size: 1.2rem;
-  color: var(--color-accent);
   margin: 3rem 0 0.5rem 0;
   font-weight: 600;
 }
@@ -527,7 +526,6 @@ export default {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--color-accent);
   color: var(--color-secondary);
   padding: 0.25rem 0.75rem;
   border-radius: 1rem;
@@ -545,7 +543,6 @@ export default {
 .ejercicio-categoria {
   min-width: -webkit-fill-available;
   font-size: 0.9rem;
-  background: var(--color-cuarto);
   padding: 0.5rem 1rem;
   color: var(--color-secondary);
   position: absolute;

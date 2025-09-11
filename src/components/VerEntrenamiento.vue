@@ -26,88 +26,80 @@
       </div>
     </div>
     <div class="rutinas-ejercicios-comentarios-flex">
-      <div class="rutinas-ejercicios-grid">
-        <div class="rutina-card">
-          <div class="card-header">
-            <h3 class="rutina-ejercicios-nombre">Ejercicios</h3>
-          </div>
-          <div class="card-content">
-            <div v-if="rutina.ejercicios?.length" class="lista-ejercicios">
-              <div
-                v-for="ejercicio in rutina.ejercicios"
-                :key="ejercicio._id"
-                class="ejercicio-item"
-              >
-                <div class="ejercicio-info">
-                  <h4>{{ ejercicio.Nombre }}</h4>
-                  <p class="series-badge">{{ ejercicio.Num_Series }} series</p>
-                  <p class="ejercicio-descripcion">{{ ejercicio.Descripcion }}</p>
+      <div class="rutinas-ejercicios-estadisticas">
+        <div class="rutinas-ejercicios-grid">
+          <div class="rutina-card">
+            <div class="card-header">
+              <h3 class="rutina-ejercicios-nombre">Ejercicios</h3>
+            </div>
+            <div class="card-content">
+              <div v-if="rutina.ejercicios?.length" class="lista-ejercicios">
+                <div
+                  v-for="ejercicio in rutina.ejercicios"
+                  :key="ejercicio._id"
+                  class="ejercicio-item"
+                  :class="[
+                    `border-${ejercicio.Categoria?.toLowerCase() || 'border-default'}`,
+                    `filter-${ejercicio.Categoria?.toLowerCase() || 'filter-default'}`
+                  ]"
+                >
+                  <div class="ejercicio-info">
+                    <h4 :class="`color-${ejercicio.Categoria?.toLowerCase() || 'color-default'}`">{{ ejercicio.Nombre }}</h4>
+                    <p class="series-badge" :class="`${ejercicio.Categoria?.toLowerCase() || 'default'}`">{{ ejercicio.Num_Series }} series</p>
+                    <p class="ejercicio-descripcion" :class="`color-${ejercicio.Categoria?.toLowerCase() || 'color-default'}`">{{ ejercicio.Descripcion }}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div v-else>
-              <p>No hay ejercicios disponibles para esta rutina.</p>
-            </div>
-          </div>
-        </div>
-        <div v-if="fechaUsada" class="estadisticas-section">
-      <h2 class="subtitulo">
-        Última vez realizado: {{ fechaUsada || "No disponible" }}
-      </h2>
-      <div class="mb-4 container-fecha">
-        <label for="fecha">Seleccionar fecha:</label>
-        <input
-          type="date"
-          id="fecha"
-          v-model="fechaSeleccionada"
-          @change="getRutina"
-        />
-      </div>
-      <p v-if="duracion" class="duracion">Duración: {{ duracion }}</p>
-
-      <div v-if="rutina.ejercicios?.length && duracion" class="estadisticas-group">
-        <div
-          v-for="ejercicio in rutina.ejercicios"
-          :key="ejercicio._id || ejercicio.ejercicioRutina_id"
-          class="tarjeta-ejercicio"
-        >
-          <h4>{{ ejercicio.Nombre }}</h4>
-          <p>Descripción: {{ ejercicio.Descripcion }}</p>
-          <p>
-            Veces Realizado hoy:
-            {{ Object.keys(ejercicio.estadisticas || {}).length }}
-          </p>
-
-          <div class="estadisticas">
-            <h4>Estadísticas</h4>
-            <div v-if="Object.keys(ejercicio.estadisticas || {}).length">
-              <div
-                v-for="(series, serieId) in ejercicio.estadisticas"
-                :key="serieId"
-                class="serie-block"
-              >
-                <h5>Series {{ Object.keys(series || {}).length }}</h5>
-                <ul>
-                  <li
-                    v-for="(detalle, index) in series"
-                    :key="detalle?.id || index"
-                  >
-                    Peso: {{ detalle.Peso }}kg - Reps:
-                    {{ detalle.Repeticiones }}
-                  </li>
-                </ul>
+              <div v-else class="empty-state">
+                <p>No hay ejercicios disponibles para esta rutina.</p>
               </div>
             </div>
-            <div v-else>
-              <p>No hay estadísticas disponibles.</p>
-            </div>
           </div>
+          
         </div>
-      </div>
-      <div v-else>
-        <p>No hay estadísticas disponibles en este día.</p>
-      </div>
-    </div>
+        <div v-if="estadisticas.length" class="estadisticas-section">
+          <h2 class="subtitulo">Historial de estadísticas</h2>
+
+          <swiper :slides-per-view="1" :modules="modules" :space-between="20" navigation :pagination="{ clickable: true }" :auto-height="true" :centered-slides="true">
+            <swiper-slide
+              v-for="(item, index) in estadisticas"
+              :key="index"
+              class="slide-estadistica"
+            >
+              <!-- Fecha y ejecución -->
+              <h3>{{ item.fecha }}</h3>
+              <p v-if="item.duracion" class="duracion">
+                Duración: {{ item.duracion }}
+              </p>
+
+              <div class="estadisticas-group">
+                <div
+                  v-for="ejercicio in rutina.ejercicios"
+                  :key="ejercicio._id || ejercicio.ejercicioRutina_id"
+                  class="tarjeta-ejercicio"
+                >
+                  <h4>{{ ejercicio.Nombre }}</h4>
+
+                  <div class="estadisticas">
+                    <ul v-if="item.estadisticas.length">
+                      <li
+                        v-for="(detalle, idx) in item.estadisticas"
+                        :key="detalle?.id || idx"
+                      >
+                        Peso: {{ detalle.Peso }}kg - Reps: {{ detalle.Repeticiones }}
+                      </li>
+                    </ul>
+                    <p v-else class="no-rutinas">No hay estadísticas disponibles.</p>
+                  </div>
+                </div>
+              </div>
+            </swiper-slide>
+
+          </swiper>
+        </div>
+        <div v-else class=" no-rutinas">
+          <p>No hay estadísticas disponibles.</p>
+        </div>
       </div>
       <div class="rutina-comentarios">
         <h2>Comentarios</h2>
@@ -155,14 +147,22 @@
 <script>
 import axios from "axios";
 import ComentarioItem from "@/components/ComentarioItem.vue";
+import { Swiper, SwiperSlide } from "swiper/vue";
+import { Navigation, Pagination } from "swiper";
+import "swiper/css";           // estilos base de Swiper
+import "swiper/css/navigation"; // estilos de navegación
+import "swiper/css/pagination"; // estilos de paginación
+import "../styles/slider-button.css";
 
 export default {
   name: "VerEntrenamiento",
   components: {
-    ComentarioItem
+    ComentarioItem,
+    Swiper, SwiperSlide
   },
   data() {
     return {
+      modules: [Navigation, Pagination],
       rutina: {},
       isLoading: true,
       fechaUsada: null,
@@ -178,6 +178,7 @@ export default {
           series: "",
         },
       ],
+      estadisticas: [],
     };
   },
   mounted() {
@@ -204,15 +205,13 @@ export default {
           return;
         }
 
-        const estadisticasPromises = this.rutina.ejercicios.map(
-          async (ejercicio) => {
+          const fetchEstadisticas = async (ejercicio) => {
             try {
               const res = await axios.post(
                 `${process.env.VUE_APP_BASE_URL}/api/estadisticasEjercicio/getByDate`,
                 {
                   id: ejercicio.ejercicioRutina_id,
                   Rutina_id: this.rutina.id,
-                  fecha: this.fechaSeleccionada,
                 },
                 {
                   headers: {
@@ -221,31 +220,29 @@ export default {
                 }
               );
 
-              if (!this.fechaUsada && res.data.fecha) {
-                this.fechaUsada = res.data.fecha;
-              } else if (!this.fechaUsada && this.fechaSeleccionada) {
-                this.fechaUsada = this.fechaSeleccionada;
-              }
+              this.estadisticas = res.data || {};
+              if(this.estadisticas){
+                this.estadisticas.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+                this.estadisticas.forEach(item => {
+                    if (item.duracion) {
+                    const duracionSegundos = item.duracion;
+                    const horas = Math.floor(duracionSegundos / 3600);
+                    const minutos = Math.floor((duracionSegundos % 3600) / 60);
+                    const segundos = duracionSegundos % 60;
 
-              if (res.data.duracion?.Duracion) {
-                const totalSeconds = res.data.duracion.Duracion;
-                const hours = Math.floor(totalSeconds / 3600);
-                const minutes = Math.floor((totalSeconds % 3600) / 60);
-                const seconds = totalSeconds % 60;
-                this.duracion = `${hours}h ${minutes}m ${seconds}s`;
-              } else {
-                this.duracion = null;
+                    item.duracion = `${horas > 0 ? horas + 'h, ' : ''}${minutos > 0 ? minutos + 'm, ' : ''}${segundos}s`;
+                    }
+                });
               }
-
-              ejercicio.estadisticas = res.data.estadisticas || {};
+              console.log("Estadísticas obtenidas:", ejercicio.estadisticas);
+              
             } catch (error) {
               console.error("Error obteniendo estadísticas:", error);
               ejercicio.estadisticas = {};
             }
-          }
-        );
+          };
 
-        await Promise.all(estadisticasPromises);
+        await Promise.all(fetchEstadisticas(this.rutina.ejercicios[0]));
       } catch (error) {
         console.error("Error cargando rutina:", error);
       } finally {
@@ -255,6 +252,12 @@ export default {
     abrirModal() {
       this.modalAgregar = true;
       this.getEjercicios();
+    },
+    onSwiper(swiper) {
+      console.log(swiper)
+    },
+    onSlideChange() {
+      console.log('slide change')
     },
     getEjercicios() {
       axios
@@ -424,13 +427,8 @@ export default {
 .rutina-ejercicios-nombre {
   font-size: 2rem;
   font-weight: 700;
-  background: linear-gradient(
-    to right,
-    var(--color-primary),
-    var(--color-accent)
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  margin: 0;
+  color: var(--color-quinto);
   margin-bottom: 1rem;
   position: relative;
   display: inline-block;
@@ -468,6 +466,29 @@ export default {
   flex-wrap: wrap;
   gap: 2rem;
 }
+.rutinas-ejercicios-estadisticas{
+  display: grid;
+}
+.slide-estadistica {
+  border-radius: 12px;
+}
+.swiper-button-next,
+.swiper-button-prev {
+  color: #ff5722 !important; /* color que quieras (primary o accent) */
+  font-weight: bold;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+.slide-estadistica h3 {
+  font-size: 1.5rem;
+  color: var(--color-primary);
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+.tarjeta-ejercicio {
+  padding: 1rem;
+  background: white;
+}
+
 
 .rutinas-ejercicios-grid {
   display: flex;
@@ -484,9 +505,7 @@ export default {
 }
 
 .card-header {
-  padding: 1.5rem 1.5rem 0;
   text-align: center;
-  margin: -1px -1px 0 -1px;
 }
 
 .rutina-nombre {
@@ -512,7 +531,7 @@ export default {
 }
 
 .ejercicio-item {
-  background: var(--color-primary);
+  background: var(--color-terciario);
   padding: 1.2rem;
   border-radius: calc(var(--border-radius) - 4px);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -521,10 +540,17 @@ export default {
   overflow: hidden;
   flex: 0 0 100%;
 }
+.estadisticas ul {
+  padding-left: 1.2rem;
+  margin: 0.5rem 0 0 0;
+  list-style: disc;
+}
+.estadisticas ul li{
+  color: var(--color-sexto);
+}
 
 .ejercicio-info h4 {
   font-size: 1.2rem;
-  color: var(--color-secondary);
   margin: 0 0 0.5rem 0;
   font-weight: 600;
   display: flex;
@@ -536,19 +562,17 @@ export default {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--color-secondary);
-  color: var(--color-primary);
+  color: var(--color-secondary);
   padding: 0.25rem 0.75rem;
   border-radius: 1rem;
   font-size: 0.85rem;
-  font-weight: 500;
+  font-weight: bold;
   margin-bottom: 0.5rem;
   min-width: 80px;
 }
 
 .ejercicio-descripcion {
   font-size: 0.95rem;
-  color: var(--color-secondary);
   line-height: 1.6;
   opacity: 0.9;
 }
@@ -706,18 +730,20 @@ export default {
   color: var(--color-secondary);
   opacity: 0.7;
 }
+.no-rutinas{
+  flex: 0 0 100%;
+  text-align: center;
+}
 .estadisticas-section{
-  margin: 2rem 1rem;
   padding: 1rem;
-  border-radius: var(--border-radius);
+  overflow: hidden;
 }
 .subtitulo{
-  width: fit-content;
-  place-self: center;
-  font-size: 1.5rem;
-  background: linear-gradient(to right, var(--color-primary), var(--color-accent));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  text-align: center;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--color-cuarto);
+  font-size: 2rem;
+  color: var(--color-quinto);
 }
 .duracion {
   place-self: center;
@@ -755,21 +781,19 @@ export default {
 .estadisticas-group {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
-  margin-top: 2rem;
+  gap: 0.5rem;
 }
 .tarjeta-ejercicio {
   background: var(--color-secondary);
-  padding: 1.2rem;
   border-radius: calc(var(--border-radius) - 4px);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  flex: 1 1 30%;
-  min-width: 300px;
+  width: 100%;
 }
 .tarjeta-ejercicio h4{
   font-size: 1.2rem;
   color: var(--color-primary);
   margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
 }
 .tarjeta-ejercicio p{
   font-size: 0.95rem;
@@ -801,6 +825,9 @@ export default {
   .titulo-principal {
     font-size: 2.2rem;
   }
+  .tarjeta-ejercicio{
+    flex: 1 1 39%;
+  }
 
 
   .descripcion-principal {
@@ -811,9 +838,11 @@ export default {
 /* Desktop */
 @media (min-width: 1024px) {
 
-  .rutina-nombre,
-  .rutina-ejercicios-nombre {
+  .rutina-nombre {
     font-size: 1.6rem;
+  }
+  .rutinas-ejercicios-estadisticas{
+    flex: 2;
   }
 
   .ejercicio-info h4 {
