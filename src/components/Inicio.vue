@@ -219,7 +219,7 @@
   
   /* Hero Section */
   .hero-section {
-    min-height: 94dvh;
+    height: 94dvh;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -638,7 +638,7 @@
   /* Responsive */
   @media (max-width: 988px) {
     .hero-section{
-      min-height: 92dvh;
+      height: 92dvh;
     }
     .stats-grid{
     grid-template-columns: repeat(auto-fit, minmax(285px, 1fr));
@@ -655,6 +655,7 @@
     
     .botones{
       justify-content: center;
+      margin-bottom: 4rem;
     }
     .card-3{
     top: 20%;
