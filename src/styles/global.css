@@ -41,10 +41,10 @@
   --color-abdominales: #ffd900;
   
   /* 🚦 Estados modo oscuro */
-  --color-error: #EF5350;         /* Rojo suave */
-  --color-success: #66BB6A;       /* Verde suave */
-  --color-warning: #FFCA28;       /* Amarillo dorado */
-  --color-info: #29B6F6;          /* Azul claro */
+  --color-error: #FF6B6B;         /* Rojo coral */
+  --color-success: #4CAF50;       /* Verde fresco */
+  --color-warning: #FFD166;       /* Amarillo mostaza */
+  --color-info: #42A5F5;          /* Azul brillante */
 
   /* ⚡ Extras modo oscuro */
   --shadow-sm: 0 2px 8px rgba(0,0,0,0.4);
