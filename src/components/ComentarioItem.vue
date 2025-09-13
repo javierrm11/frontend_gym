@@ -185,9 +185,6 @@
     transition: background-color 0.2s ease;
   }
   
-  .comentario-item:hover {
-    background-color: rgba(0, 0, 0, 0.02);
-  }
   
   .comentario-flex {
     display: flex;

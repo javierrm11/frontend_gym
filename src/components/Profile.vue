@@ -441,6 +441,7 @@ export default {
 /* Botones */
 .card-actions {
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
   gap: 0.75rem;
 }
@@ -525,6 +526,9 @@ export default {
   .cards-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+  .card-actions {
+    flex-direction: row;
+  }
 }
 
 @media (min-width: 1400px) {
@@ -542,7 +546,7 @@ export default {
 
 .card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  filter: drop-shadow(2px 2px 0px var(--color-cuarto) );
 }
 
 .card-header {
@@ -684,7 +688,7 @@ export default {
 
 .achievement-item.unlocked {
   opacity: 1;
-  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  background: linear-gradient(135deg, var(--color-terciario) 0%, var(--color-accent) 100%);
   border-left: 4px solid var(--color-primary);
 }
 

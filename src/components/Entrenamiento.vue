@@ -317,8 +317,6 @@ export default {
   grid-template-columns: 1fr;
   gap: 1.5rem;
   padding: 2rem 1rem;
-  max-width: 1400px;
-  margin: 0 auto;
 }
 
 /* Tarjeta de rutina */

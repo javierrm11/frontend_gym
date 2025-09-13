@@ -36,7 +36,7 @@ const { isDark, toggleTheme } = useTheme();
   cursor: pointer;
   font-size: 1.2rem;
   color: var(--color-accent);
-  padding: 0.5rem 1rem;
+  padding: 0.3rem 1rem;
   transition: background-color 0.3s, color 0.3s;
 }
 @media (max-width: 900px) {

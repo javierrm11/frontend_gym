@@ -2,8 +2,10 @@
     <div class="followers">
         <main class="followers-container">
             <header class="followers-header">
-                <img :src="userData?.Foto" alt="Foto de perfil" class="profile-avatar" />
-                <h2 class="followers-title">{{ userData.Nombre_Usuario || "Usuario" }}</h2>
+                <div class="profile-info">
+                    <img :src="userData?.Foto" alt="Foto de perfil" class="profile-avatar" />
+                    <h2 class="followers-title">{{ userData.Nombre_Usuario || "Usuario" }}</h2>
+                </div>
                 <div class="followers-volver" @click="$router.push({ path: `/profile/${userData.id}` })">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -48,7 +50,7 @@
                                 class="follower-avatar"
                             />
                             <h3 class="follower-name">{{ item.seguido?.Nombre_Usuario ? item.seguido.Nombre_Usuario : item.seguidor.Nombre_Usuario }}</h3>
-                            <div class="followers-actions">
+                            <div class="followers-actions" v-if="type === 'Seguidos' && userData.id == $store.state.usuario">
                                 <button
                                     v-if="type === 'Seguidos' && userData.id == $store.state.usuario"
                                     class="btn-action btn-follow"
@@ -198,125 +200,266 @@ export default {
 </script>
 
 <style scoped>
+
 .followers {
-    background: linear-gradient(90deg, var(--color-secondary), var(--color-accent), var(--color-secondary));
-    width: 100%;
-    text-align: -webkit-center;
+  background: var(--color-terciario);
+  min-height: 100vh;
 }
 
 .followers-container {
-    padding: 0;
-    background: var(--color-terciario);
-    min-height: 92.8vh;
-    position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
 }
-.followers-header {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 1rem;
-    gap: 2rem;
-}
-.profile-avatar {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-.followers-title {
-    color: var(--color-accent);
-    font-size: 1.5rem;
-    font-weight: 600;
-}
-.followers-volver{
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
 
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    cursor: pointer;
+/* Header mejorado */
+.followers-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2rem;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+  border-radius: var(--border-radius);
+  margin-bottom: 2rem;
+  color: var(--color-secondary);
+  box-shadow: var(--shadow);
 }
-.icon-volver {
-    width: 24px;
-    height: 24px;
-    color: var(--color-quinto);
+.profile-info {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
 }
-.followers-volver .volver-texto {
-    color: var(--color-quinto);
-    font-size: 1rem;
-    font-weight: 600;
+
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--color-secondary);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
-.followers-sections {
-    display: flex;
-    flex-wrap: wrap;
+
+.followers-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+  flex: 1;
+  text-align: center;
 }
-.followers-section {
-    flex: 1;
-}
-.followers-grid {
-    flex: 0 0 100%;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1rem;
-    padding: 1rem;
-    box-sizing: border-box;
-}
-.follower-card {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-.header-section {
-    background: var(--color-primary);
-    padding: 0.5rem;
-}
-.section-title {
-    font-size: 1.2rem;
-    color: var(--color-secondary);
-    margin: 1rem;
-}
-.follower-avatar {
-    flex: 1;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: contain;
-}
-.disabled-section {
-    cursor: pointer;
-}
-.active-section {
-    cursor: default;
-    border-bottom: 3px solid var(--color-quinto);
-}
-.active-section .section-title {
-    color: var(--color-secondary);
-}
-.disabled-section .section-title {
-    color: var(--color-terciario);
-}
-.followers-actions{
-    flex: 15;
-    display: flex;
-    justify-content: flex-end;
-}
-.follower-name{
-    flex: 1;
-    color: var(--color-quinto);
-}
-.btn-follow, .btn-unfollow {
-  background: transparent;
-  color: var(--color-error);
-  border: 1px solid var(--color-error);
-  padding: 0.5rem 1rem;
+
+.followers-volver {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: var(--border-radius);
   cursor: pointer;
-  font-weight: 600;
+  transition: all var(--transition-speed);
+  color: var(--color-secondary);
+  text-decoration: none;
 }
-.btn-follow:hover, .btn-unfollow:hover {
+
+.followers-volver:hover {
+  background: var(--color-cuarto);
+  transform: translateY(-2px);
+}
+
+.icon-volver {
+  width: 20px;
+  height: 20px;
+}
+
+.volver-texto {
+  font-weight: 500;
+}
+
+/* Secciones de navegación */
+.followers-sections {
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  margin-bottom: 2rem;
+}
+
+.followers-section {
+  display: inline-block;
+  width: 50%;
+  text-align: center;
+}
+
+.header-section {
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all var(--transition-speed);
+}
+
+.header-section:hover {
+  background: var(--color-accent);
+}
+
+.active-section {
+  background: var(--color-primary);
+  color: var(--color-secondary);
+}
+
+.disabled-section {
+  background: var(--color-sexto);
+  color: var(--color-secondary);
+}
+
+.disabled-section:hover {
+  background: var(--color-quinto);
+}
+
+.section-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Grid de seguidores */
+.followers-grid {
+  padding: 1.5rem 0;
+}
+
+.follower-card {
+  display: flex;
+  align-items: center;
+  padding: 1.25rem;
+  background: var(--color-secondary);
+  border-radius: var(--border-radius);
+  margin-bottom: 1rem;
+  box-shadow: var(--shadow);
+  transition: all var(--transition-speed);
+}
+
+.follower-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+.follower-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 1rem;
+  border: 2px solid var(--color-terciario);
+}
+
+.follower-name {
+  flex: 1;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-quinto);
+  margin: 0;
+}
+
+.followers-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.btn-action {
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-speed);
+  border: none;
+  font-size: 0.9rem;
+}
+
+.btn-follow {
+  background: var(--color-terciario);
+  color: var(--color-error);
+  border: 1px solid var(--color-error);
+}
+
+.btn-follow:hover {
   background: var(--color-error);
-  color: var(--color-terciario);
+  color: var(--color-secondary);
+}
+
+.btn-unfollow {
+  background: var(--color-terciario);
+  color: var(--color-sexto);
+  border: 1px solid #e2e8f0;
+}
+
+.btn-unfollow:hover {
+  background: #e2e8f0;
+  color: var(--color-quinto);
+}
+
+.no-followers {
+  text-align: center;
+  padding: 3rem;
+  color: var(--color-sexto);
+  font-size: 1.1rem;
+  background: var(--color-secondary);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .followers-header {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+    padding: 1.5rem;
+  }
+  .follower-avatar{
+    width: 40px;
+    height: 40px;
+  }
+  .followers-title {
+    font-size: 1.5rem;
+  }
+  
+  .followers-section {
+    width: 100%;
+    display: block;
+  }
+  
+  
+  .followers-actions {
+    justify-content: center;
+  }
+  .profile-info {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .profile-avatar {
+    width: 64px;
+    height: 64px;
+  }
+}
+
+@media (max-width: 480px) {
+  .followers-container {
+    padding: 1rem;
+  }
+  
+  .followers-header {
+    padding: 1.25rem;
+  }
+  
+  .header-section {
+    padding: 1rem;
+  }
+  
+  .follower-card {
+    padding: 1rem;
+  }
+  
+  .btn-action {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+  }
 }
 </style>
