@@ -3,11 +3,19 @@ import { ref, watchEffect } from "vue";
 const isDark = ref(getInitialTheme());
 
 function getInitialTheme() {
+  // ¿Ya existe cookie?
   const themeCookie = document.cookie
     .split("; ")
     .find((row) => row.startsWith("theme="));
-  return themeCookie ? themeCookie.split("=")[1] === "dark" : false;
+
+  if (themeCookie) {
+    return themeCookie.split("=")[1] === "dark";
+  }
+
+  // Si no hay cookie, usar el sistema
+  return window.matchMedia("(prefers-color-scheme: dark)").matches;
 }
+
 
 export function useTheme() {
   const toggleTheme = () => {
