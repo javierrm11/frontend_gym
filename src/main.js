@@ -18,6 +18,7 @@ import Categoria from './components/Categoria.vue';
 import VerRutina from './components/VerRutina.vue';
 import OtherUser from './components/OtherUser.vue';
 import Followers from './components/Followers.vue';
+import Ejercicio from './components/Ejercicio.vue';
 import Inicio from './components/Inicio.vue';
 import error from './components/404.vue';
 import store from './store';
@@ -129,6 +130,11 @@ const routes = [
     name: 'Followers',
     component: Followers,
     props: true
+  },
+  {
+    path: '/ejercicio/:id/',
+    name: 'Ejercicio',
+    component: Ejercicio,
   }
 ];
 
