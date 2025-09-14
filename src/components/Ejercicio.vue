@@ -175,7 +175,7 @@
       
       handleImageError(event) {
         // Establecer una imagen por defecto si la carga falla
-        event.target.src = '/images/ejercicio-default.jpg';
+        event.target.src = require('@/assets/default.webp');
       },
       
       getDifficultyClass(dificultad) {

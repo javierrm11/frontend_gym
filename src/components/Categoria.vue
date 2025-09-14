@@ -122,7 +122,7 @@ export default {
     },
     
     handleImageError(event) {
-      console.log(event);
+      event.target.src = require('@/assets/default.webp');
       
       
     },
@@ -136,23 +136,6 @@ export default {
 </script>
 
 <style scoped>
-/* Variables de colores */
-:root {
-  --color-primary: #4a6cf7;
-  --color-secondary: #ffffff;
-  --color-terciario: #f8f9fa;
-  --color-cuarto: #3a57e8;
-  --color-quinto: #2d3748;
-  --color-sexto: #718096;
-  --color-success: #0abf53;
-  --color-error: #e24d4c;
-  --color-accent: #6c5ce7;
-  --border-radius: 12px;
-  --transition-speed: 0.3s;
-  --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  --shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.12);
-}
-
 .category-main {
   min-height: 100vh;
   background: var(--color-terciario);
