@@ -170,7 +170,7 @@ export default {
   position: sticky;
   top: 0;
   z-index: 1000;
-  padding: 0.75rem 1rem;
+  padding: 2rem 1rem 0.75rem;
 }
 
 .header-container {

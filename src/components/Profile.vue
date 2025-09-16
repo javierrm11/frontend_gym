@@ -279,6 +279,7 @@ export default {
 .profile-main {
   min-height: 100vh;
   background: var(--color-terciario);
+  padding: 0;
   padding-bottom: 2rem;
 }
 

@@ -555,4 +555,4 @@ export default {
     gap: 0.25rem;
   }
 }
-</style>
+</style>style

@@ -42,7 +42,7 @@ const { isDark, toggleTheme } = useTheme();
 @media (max-width: 900px) {
   .theme-toggle {
     position: absolute;
-    top: 0.7rem;
+    top: 1.95rem;
     right: 4rem;
     margin: 0;
   }
