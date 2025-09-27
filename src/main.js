@@ -21,6 +21,7 @@ import Followers from './components/Followers.vue';
 import Ejercicio from './components/Ejercicio.vue';
 import Inicio from './components/Inicio.vue';
 import error from './components/404.vue';
+import Mensajes from './components/Mensajes.vue';
 import store from './store';
 
 
@@ -135,6 +136,12 @@ const routes = [
     path: '/ejercicio/:id/',
     name: 'Ejercicio',
     component: Ejercicio,
+  },
+  {
+    path: '/mensajes',
+    name: 'Mensajes',
+    component: Mensajes,
+    meta: { requiereAuth: true }
   }
 ];
 

@@ -1,4 +1,5 @@
 import { createStore } from 'vuex';
+import socket from './services/socket';
 
 const store = createStore({
     state: {
@@ -23,6 +24,14 @@ const store = createStore({
             commit('login', usuario);
         },
         logout({ commit }) {
+            const usuarioId = localStorage.getItem('usuario'); // si tienes el usuario en el state
+            console.log('Desconectando usuario:', usuarioId);
+            
+      // Notificar al servidor que el usuario se desconecta (opcional)
+
+
+      // Desconectar el socket
+      socket.disconnect();
             localStorage.removeItem('token');
             localStorage.removeItem('usuario');
             localStorage.removeItem('expirationDate');

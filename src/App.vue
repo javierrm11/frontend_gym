@@ -20,6 +20,8 @@
 import Footer from './components/Footer.vue';
 import Header from "./components/Header.vue";
 import "./styles/global.css";
+//import { StatusBar } from '@capacitor/status-bar';
+
 
 export default {
   name: "App",
@@ -29,6 +31,7 @@ export default {
   },
   mounted() {
     this.verificarSesion();
+    //StatusBar.hide();
   },
   methods: {
     async verificarSesion() {

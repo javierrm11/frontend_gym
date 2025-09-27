@@ -82,6 +82,7 @@
 
 <script>
 import axios from "axios";
+import socket from "@/services/socket";
 
 export default {
   name: "LoginUser",
@@ -123,7 +124,9 @@ export default {
           const jwtData = JSON.parse(decoded);
           const exp = jwtData.exp;
           const expirationDate = new Date(exp * 1000);
-
+          const userId = response.data.idUser;
+          socket.connect();
+          socket.emit("join", userId);
           this.$store.dispatch("login", { token, usuario, expirationDate });
           this.$router.push("/inicio");
         })
