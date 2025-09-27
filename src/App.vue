@@ -1,10 +1,22 @@
 <template>
   <!DOCTYPE html>
-  <html lang="en">
+  <html lang="es">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover">
     <title>Document</title>
+    <meta name="description" content="GymPro es la red social fitness donde puedes crear, compartir y seguir rutinas de entrenamiento mientras conectas con una comunidad activa. Disponible en web y app móvil.">
+    <meta name="keywords" content="fitness, rutinas, gym, entrenamiento, app fitness, comunidad fitness, deporte, salud">
+    <meta name="author" content="GymPro">
+  
+    <!-- Open Graph (para compartir en redes sociales) -->
+    <meta property="og:title" content="GymPro - Conecta, entrena, evoluciona">
+    <meta property="og:description" content="La red social fitness donde tus entrenamientos se convierten en una experiencia social. Disponible en web y móvil.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://frontend-gym-gamma.vercel.app/">
+    <meta property="og:image" content="https://frontend-gym-gamma.vercel.app/og-image.png">
+    <meta property="og:site_name" content="GymPro">
+    <meta property="og:locale" content="es_ES">
   </head>
   <body>
     <div id="app">
