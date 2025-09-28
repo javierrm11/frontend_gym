@@ -11,7 +11,7 @@
             <path d="M8 8h.01"/>
             <path d="M2 2h20v20H2z"/>
           </svg>
-          <h1 class="logo-text">GymPro</h1>
+          <h1 class="logo-text">MoleroFit</h1>
         </router-link>
       </div>
       
