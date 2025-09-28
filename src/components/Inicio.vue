@@ -69,7 +69,7 @@
     <section class="features-section">
       <div class="container">
         <h2 class="section-title">Potencia tu <span class="text-highlight">entrenamiento</span></h2>
-        <p class="section-subtitle">GymConnect te ofrece las herramientas para maximizar tus resultados y conectar con una comunidad de fitness.</p>
+        <p class="section-subtitle">MoleroFit te ofrece las herramientas para maximizar tus resultados y conectar con una comunidad de fitness.</p>
         
         <div class="features-grid">
           <div class="feature-card" data-aos="fade-up">
