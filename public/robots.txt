@@ -22,4 +22,4 @@ Disallow: /*.env$
 
 
 # Sitemap location
-Sitemap: https://https://frontend-gym-gamma.vercel.app/sitemap.xml
+Sitemap: https://www.molerofit.es/sitemap.xml

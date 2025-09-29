@@ -3,7 +3,7 @@
 
    <!-- Página principal -->
    <url>
-      <loc>https://frontend-gym-gamma.vercel.app/</loc>
+      <loc>https://www.molerofit.es/</loc>
       <lastmod>2025-09-13</lastmod>
       <changefreq>daily</changefreq>
       <priority>1.0</priority>
@@ -11,84 +11,84 @@
 
    <!-- Rutas estáticas -->
    <url>
-      <loc>https://frontend-gym-gamma.vercel.app/inicio</loc>
+      <loc>https://www.molerofit.es/inicio</loc>
       <lastmod>2025-09-13</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.9</priority>
    </url>
 
    <url>
-      <loc>https://frontend-gym-gamma.vercel.app/register</loc>
+      <loc>https://www.molerofit.es/register</loc>
       <lastmod>2025-09-13</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.8</priority>
    </url>
 
    <url>
-      <loc>https://frontend-gym-gamma.vercel.app/login</loc>
+      <loc>https://www.molerofit.es/login</loc>
       <lastmod>2025-09-13</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.8</priority>
    </url>
 
    <url>
-      <loc>https://frontend-gym-gamma.vercel.app/profile</loc>
+      <loc>https://www.molerofit.es/profile</loc>
       <lastmod>2025-09-13</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.7</priority>
    </url>
 
    <url>
-      <loc>https://frontend-gym-gamma.vercel.app/edit-profile</loc>
+      <loc>https://www.molerofit.es/edit-profile</loc>
       <lastmod>2025-09-13</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.6</priority>
    </url>
 
    <url>
-      <loc>https://frontend-gym-gamma.vercel.app/delete-profile</loc>
+      <loc>https://www.molerofit.es/delete-profile</loc>
       <lastmod>2025-09-13</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.6</priority>
    </url>
 
    <url>
-      <loc>https://frontend-gym-gamma.vercel.app/logout</loc>
+      <loc>https://www.molerofit.es/logout</loc>
       <lastmod>2025-09-13</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.5</priority>
    </url>
 
    <url>
-      <loc>https://frontend-gym-gamma.vercel.app/mensaje</loc>
+      <loc>https://www.molerofit.es/mensaje</loc>
       <lastmod>2025-09-13</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.7</priority>
    </url>
 
    <url>
-      <loc>https://frontend-gym-gamma.vercel.app/entrenamiento</loc>
+      <loc>https://www.molerofit.es/entrenamiento</loc>
       <lastmod>2025-09-13</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
 
    <url>
-      <loc>https://frontend-gym-gamma.vercel.app/anadirEntrenamiento</loc>
+      <loc>https://www.molerofit.es/anadirEntrenamiento</loc>
       <lastmod>2025-09-13</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.7</priority>
    </url>
 
    <url>
-      <loc>https://frontend-gym-gamma.vercel.app/error</loc>
+      <loc>https://www.molerofit.es/error</loc>
       <lastmod>2025-09-13</lastmod>
       <changefreq>yearly</changefreq>
       <priority>0.3</priority>
    </url>
 
    <url>
-      <loc>https://frontend-gym-gamma.vercel.app/mensajes</loc>
+      <loc>https://www.molerofit.es/mensajes</loc>
       <lastmod>2025-09-13</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.6</priority>

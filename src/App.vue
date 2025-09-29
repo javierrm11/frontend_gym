@@ -13,8 +13,8 @@
     <meta property="og:title" content="GymPro - Conecta, entrena, evoluciona">
     <meta property="og:description" content="La red social fitness donde tus entrenamientos se convierten en una experiencia social. Disponible en web y móvil.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://frontend-gym-gamma.vercel.app/">
-    <meta property="og:image" content="https://frontend-gym-gamma.vercel.app/og-image.png">
+    <meta property="og:url" content="https://www.molerofit.es/">
+    <meta property="og:image" content="https://www.molerofit.es/og-image.png">
     <meta property="og:site_name" content="GymPro">
     <meta property="og:locale" content="es_ES">
   </head>
